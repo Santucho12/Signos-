@@ -1,0 +1,710 @@
+/*============================================================================
+  style-redesign.scss
+
+  REDISEÑO COMPLETO - Solo aplica cuando <html> tiene .redesign-active
+  ════════════════════════════════════════════════════════════════════════════
+  REGLA DE ORO: Todas las reglas van dentro de .redesign-active { ... }
+  Esto garantiza que el sitio actual NO se vea afectado bajo ningún concepto.
+
+  WORKFLOW:
+    Activar  → tutienda.com?redesign=mi_redesign_2026
+    Desactivar → tutienda.com?redesign=off (o cerrar sin cookie)
+
+  GO LIVE (cuando el diseño esté listo):
+    1. Copiar todo el contenido dentro de .redesign-active { } a los archivos
+       principales (style-critical.scss, style-colors.scss, style-async.scss)
+    2. Eliminar el wrapper .redesign-active de cada regla
+    3. Eliminar este archivo
+    4. Eliminar el bloque {% if is_redesign %} de layout.tpl
+    5. Subir por FTP → activación INSTANTÁNEA sin downtime
+==============================================================================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Oswald:wght@500;700&display=swap');
+
+/*============================================================================
+  Instrucciones de uso
+  
+  Para estilos:
+    .redesign-active .selector { ... }
+    
+  Para overrides con mayor especificidad:
+    .redesign-active .selector.otra-clase { ... }
+    
+  Para variables CSS globales:
+    .redesign-active { --variable: valor; }
+  
+  La especificidad de .redesign-active garantiza que TODOS los estilos
+  aquí van a ganar a los del tema actual sin necesidad de !important.
+==============================================================================*/
+
+/* ============================================================
+   1. VARIABLES Y TOKENS DEL NUEVO DISEÑO
+   ============================================================ */
+
+.redesign-active {
+
+  /* Paleta de colores - ajustá estos valores */
+  --redesign-primary: #1a1a2e;
+  --redesign-secondary: #16213e;
+  --redesign-accent: #0f3460;
+  --redesign-highlight: #e94560;
+  --redesign-text: #f5f5f5;
+  --redesign-text-muted: #a0a0b0;
+  --redesign-bg: #0d0d0d;
+  --redesign-card-bg: #1a1a2e;
+  --redesign-border: rgba(255, 255, 255, .08);
+  --redesign-radius: 12px;
+  --redesign-radius-lg: 20px;
+  --redesign-shadow: 0 8px 32px rgba(0, 0, 0, .4);
+  --redesign-transition: all .3s cubic-bezier(.25, .8, .25, 1);
+
+}
+
+/* ============================================================
+   2. BASE / RESET DEL NUEVO DISEÑO
+   ============================================================ */
+
+.redesign-active body {
+  /* Ejemplo: background global del nuevo diseño */
+  /* background-color: var(--redesign-bg); */
+  /* color: var(--redesign-text); */
+}
+
+/* ============================================================
+   3. HEADER (Glassmorphism Transparente)
+   ============================================================ */
+
+.redesign-active .head-main,
+.redesign-active [data-store="header"] {
+  position: absolute !important;
+  width: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 1000 !important;
+  background: transparent !important;
+  /* Totalmente transparente */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: none !important;
+  padding-top: 2px !important;
+  /* Reducido drásticamente el alto */
+  padding-bottom: 2px !important;
+  /* Reducido drásticamente el alto */
+  transition: all 0.4s ease !important;
+}
+
+/* Cuando scrollea, se pone blanco sólido */
+.redesign-active .js-head-main-scrolled,
+.redesign-active .head-main.scrolled {
+  position: fixed !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Estilo para los links del NAV */
+.redesign-active .nav-list-link,
+.redesign-active .js-item-name {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  font-size: 13px !important;
+  color: #fff !important;
+  /* Letras blancas sobre el transparente */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  /* Sombra para q se lea sobre video */
+  padding-top: 8px !important;
+  /* Forzar menos relleno vertical */
+  padding-bottom: 8px !important;
+  /* Forzar menos relleno vertical */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  transition: color 0.3s ease !important;
+}
+
+/* Forzar que los íconos de usuario/carrito no empujen la altura del menú */
+.redesign-active .head-main .header-icon,
+.redesign-active .head-main .cart-summary {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Cuando baja, las letras vuelven a negro */
+.redesign-active .js-head-main-scrolled .nav-list-link,
+.redesign-active .head-main.scrolled .nav-list-link {
+  color: #000 !important;
+  text-shadow: none;
+}
+
+.redesign-active .nav-list-link:hover,
+.redesign-active .nav-item>a:hover,
+.redesign-active .js-item-name:hover {
+  color: var(--redesign-primary) !important;
+  /* Dorado */
+}
+
+/* ============================================================
+   4. HOME PRINCIPAL (Lógica de vistas)
+   ============================================================ */
+
+/* Por defecto, la versión rediseñada NO se ve */
+.redesign-home-content {
+  display: none;
+}
+
+/* Solo cuando está activo el rediseño... */
+.redesign-active .redesign-home-content {
+  display: block;
+}
+
+.redesign-active .original-home-content {
+  display: none !important;
+}
+
+/* ============================================================
+   5. HOME — HERO SECTION (Video interactivo)
+   ============================================================ */
+
+/* Anular el espacio en blanco (padding) que Tiendanube reserva forzosamente para su menú */
+.redesign-active body,
+.redesign-active #page-content,
+.redesign-active .container-fluid,
+.redesign-active .page-wrapper {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+.redesign-active .redesign-hero {
+  position: relative;
+  width: 100vw;
+  height: calc(100vh + 40px);
+  /* Compensa el margen negativo para que llegue sí o sí al borde inferior */
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+  /* Levantarlo un poquito a la fuerza por si queda algún margen perdido de Tiendanube */
+  margin-top: -40px;
+}
+
+.redesign-active .redesign-hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 105vw;
+  height: 105vh;
+  object-fit: cover;
+  z-index: 1;
+  /* Efecto cinematográfico Ken Burns */
+  animation: heroVideoZoom 20s ease-in-out infinite;
+}
+
+@keyframes heroVideoZoom {
+  0% {
+    transform: translate(-50%, -50%) scale(1.02);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.02);
+  }
+}
+
+.redesign-active .redesign-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  /* Oscurece el video para que el texto resalte */
+  z-index: 2;
+}
+
+.redesign-active .redesign-hero-content-box {
+  position: relative;
+  z-index: 3;
+  color: var(--redesign-text);
+  padding: 0 20px;
+}
+
+.redesign-active .redesign-hero-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 80px;
+  /* Mas grande e impactante */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 5px;
+  color: #fff;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  line-height: 1;
+  position: relative;
+  top: -9px; /* Subirlo otros 6px (total -9px) */
+}
+
+.redesign-active .redesign-hero-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 40px;
+  color: #f1f1f1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.redesign-active .redesign-btn-primary {
+  font-family: 'Montserrat', sans-serif;
+  display: inline-block;
+  background: #FFD700;
+  /* Dorado SIGNOS */
+  color: #000;
+  padding: 16px 40px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 30px;
+  /* <--- Más redondo */
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25); /* Reducida sutilmente */
+}
+
+.redesign-active .redesign-btn-primary:hover {
+  background: #fff;
+  color: #000;
+  transform: translateY(-3px) scale(1.05) !important;
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.6);
+}
+
+/* --- Animaciones de entrada elegantes --- */
+.redesign-active .redesign-hero-title,
+.redesign-active .redesign-hero-subtitle {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.redesign-active .redesign-btn-primary {
+  opacity: 0;
+  /* Espera 1.2s para subir, luego de que aparezca el subtítulo */
+  animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.2s,
+    btnNeonPulse 1s infinite alternate 3s !important;
+}
+
+.redesign-active .redesign-hero-title {
+  animation-delay: 0.3s;
+}
+
+.redesign-active .redesign-hero-subtitle {
+  animation-delay: 0.6s;
+}
+
+@keyframes heroFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Animación moderada para llamar atención (TITILA suave) --- */
+@keyframes btnNeonPulse {
+  0% {
+    transform: scale(1) translateY(0);
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.1);
+  }
+
+  100% {
+    transform: scale(1.05) translateY(0);
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.7), 0 0 25px rgba(255, 215, 0, 0.5); /* Sombra 15% más sutil */
+  }
+}
+
+/* --- Rotador de texto Piel/Viento (100% CSS puro para evitar caché de JS) --- */
+.redesign-active .redesign-text-rotator {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  height: 30px;
+  width: 100%;
+}
+
+/* Span genérico escondido con efecto de viento listo */
+.redesign-active .redesign-text-rotator span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  white-space: nowrap; /* Fuerza una sola fila */
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+}
+
+/* Primer texto (Precios) */
+.redesign-active .redesign-text-rotator span:nth-child(1) {
+  animation: windRotate1 7.8s infinite;
+  /* Tiempo de lectura +20% */
+}
+
+/* Segundo texto (Calidad) */
+.redesign-active .redesign-text-rotator span:nth-child(2) {
+  animation: windRotate2 7.8s infinite;
+  /* Tiempo de lectura +20% */
+}
+
+@keyframes windRotate1 {
+
+  0%,
+  40% {
+    opacity: 1;
+    filter: blur(0);
+    letter-spacing: 0;
+    transform: translate(0, 0) skewX(0);
+  }
+
+  45%,
+  50% {
+    opacity: 0;
+    filter: blur(10px);
+    letter-spacing: 12px;
+    transform: translate(40px, -15px) skewX(15deg);
+  }
+
+  51%,
+  95% {
+    opacity: 0;
+    filter: blur(10px);
+    letter-spacing: 12px;
+    transform: translate(-40px, 15px) skewX(-15deg);
+    /* Viene desde el otro lado invisible */
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    letter-spacing: 0;
+    transform: translate(0, 0) skewX(0);
+  }
+}
+
+@keyframes windRotate2 {
+
+  0%,
+  45% {
+    opacity: 0;
+    filter: blur(10px);
+    letter-spacing: 12px;
+    transform: translate(-40px, 15px) skewX(-15deg);
+    /* Espera del otro lado */
+  }
+
+  50%,
+  90% {
+    opacity: 1;
+    filter: blur(0);
+    letter-spacing: 0;
+    transform: translate(0, 0) skewX(0);
+  }
+
+  95%,
+  100% {
+    opacity: 0;
+    filter: blur(10px);
+    letter-spacing: 12px;
+    transform: translate(40px, -15px) skewX(15deg);
+  }
+}
+
+/* --- Scroll Indicator --- */
+.redesign-active .redesign-scroll-indicator {
+  position: absolute;
+  bottom: 53px;
+  /* Bajó otros 4px (total 53px) */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  /* Entra en fade up después del botón a los 1.8s */
+  animation: fadeUpIndicator 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.8s,
+    bounceIndicator 2s infinite 2.8s;
+  z-index: 10;
+}
+
+@keyframes fadeUpIndicator {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) translateX(-50%);
+  }
+  100% {
+    opacity: 0.8;
+    transform: translateY(0) translateX(-50%);
+  }
+}
+
+@keyframes bounceIndicator {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0) translateX(-50%);
+  }
+
+  40% {
+    transform: translateY(-15px) translateX(-50%);
+  }
+
+  60% {
+    transform: translateY(-7px) translateX(-50%);
+  }
+}
+
+/* --- Ocultar Logo temporalmente --- */
+.redesign-active .header-logo,
+.redesign-active .logo-img,
+.redesign-active .logo-text,
+.redesign-active .header-logo-container {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .redesign-active .redesign-hero {
+    height: 70vh;
+  }
+
+  .redesign-active .redesign-hero-title {
+    font-size: 32px;
+  }
+
+  .redesign-active .redesign-hero-subtitle {
+    font-size: 16px;
+  }
+}
+
+
+/* Sección de productos destacados */
+.redesign-active .section-featured-home {
+  /* Ejemplo */
+}
+
+/* ============================================================
+   6. PRODUCT GRID
+   ============================================================ */
+
+.redesign-active .item {
+  /* Ejemplo: tarjeta de producto */
+  /* border-radius: var(--redesign-radius);
+  overflow: hidden;
+  transition: var(--redesign-transition);
+  background: var(--redesign-card-bg); */
+}
+
+.redesign-active .item:hover {
+  /* Ejemplo: elevación al hover */
+  /* transform: translateY(-8px);
+  box-shadow: var(--redesign-shadow); */
+}
+
+.redesign-active .item-name {
+  /* Ejemplo: nombre del producto */
+  /* font-size: 14px;
+  font-weight: 600; */
+}
+
+.redesign-active .item-price {
+  /* Ejemplo: precio */
+  /* color: var(--redesign-highlight);
+  font-size: 18px; */
+}
+
+/* ============================================================
+   7. PRODUCT DETAIL
+   ============================================================ */
+
+.redesign-active .product-detail-container {
+  /* Ejemplo */
+}
+
+/* ============================================================
+   8. FOOTER
+   ============================================================ */
+
+.redesign-active footer {
+  /* Ejemplo */
+  /* background: var(--redesign-secondary);
+  border-top: 1px solid var(--redesign-border); */
+}
+
+.redesign-active footer a svg,
+.redesign-active footer .social-icon,
+.redesign-active footer .social-icon svg {
+  fill: #ccc !important;
+  color: #ccc !important;
+}
+
+.redesign-active .footer-legal {
+  /* Ejemplo */
+  /* border-top: 1px solid var(--redesign-border);
+  opacity: .6; */
+}
+
+/* ============================================================
+   9. BOTONES
+   ============================================================ */
+
+.redesign-active .btn-primary {
+  /* Ejemplo: botón primario rediseñado */
+  /* background: var(--redesign-highlight);
+  border: none;
+  border-radius: 8px;
+  padding: 14px 28px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  transition: var(--redesign-transition); */
+}
+
+.redesign-active .btn-primary:hover {
+  /* Ejemplo: hover con brillo */
+  /* filter: brightness(1.15);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(233,69,96,.4); */
+}
+
+/* ============================================================
+   10. ANIMACIONES (de entrada, de scroll, etc.)
+   ============================================================
+   Las animaciones CSS se definen FUERA de .redesign-active
+   para que @keyframes compile correctamente en SCSS.
+   Las clases que usan esas animaciones van DENTRO.
+   ============================================================ */
+
+/* Definición de keyframes fuera del scope */
+@keyframes redesign-fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes redesign-fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes redesign-slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes redesign-pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+/* Clases de animación (aplicadas por JS) */
+.redesign-active .redesign-animate-fadeUp {
+  animation: redesign-fadeUp .7s ease both;
+}
+
+.redesign-active .redesign-animate-fadeIn {
+  animation: redesign-fadeIn .5s ease both;
+}
+
+.redesign-active .redesign-animate-slideLeft {
+  animation: redesign-slideLeft .6s ease both;
+}
+
+/* Delay helpers */
+.redesign-active .redesign-delay-1 {
+  animation-delay: .1s;
+}
+
+.redesign-active .redesign-delay-2 {
+  animation-delay: .2s;
+}
+
+.redesign-active .redesign-delay-3 {
+  animation-delay: .3s;
+}
+
+.redesign-active .redesign-delay-4 {
+  animation-delay: .4s;
+}
+
+.redesign-active .redesign-delay-5 {
+  animation-delay: .5s;
+}
+
+/* ============================================================
+   11. SECCIONES CUSTOM (HTML nuevo que agregues con Twig)
+   ============================================================ */
+
+/* Si agregás un bloque Twig como:
+   {% if is_redesign %}
+     <section class="redesign-hero-custom"> ... </section>
+   {% endif %}
+   
+   Sus estilos van acá:
+*/
+
+.redesign-hero-custom {
+  /* Solo existe en el redesign, no necesita scope */
+}
+
+/* ============================================================
+   12. RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  .redesign-active .item {
+    /* Ajustes mobile */
+  }
+
+  .redesign-active .head-main {
+    /* Ajustes mobile del header */
+  }
+
+}
+
+@media (min-width: 768px) {
+  .redesign-active .item:hover {
+    /* Hover solo en desktop */
+  }
+}

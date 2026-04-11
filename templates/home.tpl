@@ -31,6 +31,11 @@
 {% endif %}
 
 {% set newArray = [] %}
+
+<!-- ========================================== -->
+<!-- ORIGINAL HOME CONTENT (Hidden in Redesign) -->
+<!-- ========================================== -->
+<div class="original-home-content">
 <div class="js-home-sections-container home-sections-container">
 	{% for i in 1..18 %}
         {% set section = 'home_order_position_' ~ i %}
@@ -58,3 +63,46 @@
 {% if settings.home_promotional_popup and ("home_popup_image.jpg" | has_custom_image or settings.home_popup_title or settings.home_popup_txt or settings.home_news_box or (settings.home_popup_btn and settings.home_popup_url)) %}
 	{% include 'snipplets/home/home-popup.tpl' %}
 {% endif %}
+</div>
+
+<!-- ========================================== -->
+<!-- REDESIGN HOME CONTENT (Visible in Redesign)-->
+<!-- ========================================== -->
+<style>
+    /* Ocultar elementos para evitar que parpadeen antes de que cargue el CSS de la animación */
+    .redesign-hero-title, .redesign-hero-subtitle, .redesign-btn-primary {
+        opacity: 0;
+    }
+</style>
+<div class="redesign-home-content">
+    
+    <!-- 1. HERO VIDEO -->
+    <section class="redesign-hero">
+        <!-- Video de fondo cargado desde el FTP -->
+        <video autoplay muted loop playsinline class="redesign-hero-video">
+            <source src="{{ 'recortado-7026828-uhd_4096_2160_25fps.mp4' | static_url }}" type="video/mp4">
+        </video>
+        
+        <div class="redesign-hero-overlay"></div>
+        
+        <div class="redesign-hero-content-box">
+            <h1 class="redesign-hero-title">TEMP'26</h1>
+            <p class="redesign-hero-subtitle">
+                <span class="redesign-text-rotator">
+                    <span class="active">LOS MEJORES PRECIOS</span>
+                    <span>LA MEJOR CALIDAD</span>
+                </span>
+            </p>
+            <a href="/productos" class="redesign-btn-primary">
+                VER COLECCIÓN
+            </a>
+            
+            <div class="redesign-scroll-indicator">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+</div>
