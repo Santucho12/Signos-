@@ -26,7 +26,7 @@
 			{% if megamenu %}
 			<div class="nav-item-container">
 			{% endif %}
-				<a class="{% if hamburger %}js-toggle-menu-panel align-items-center{% endif %} nav-list-link position-relative {{ item.current ? 'selected' : '' }}" href="{% if megamenu and item.url %}{{ item.url }}{% else %}#{% endif %}">{{ item.name }}
+				<a class="{% if hamburger %}js-toggle-menu-panel align-items-center{% endif %} nav-list-link position-relative {{ item.current ? 'selected' : '' }}" href="{% if megamenu and item.url %}{{ item.url }}{% else %}#{% endif %}"><span class="nav-item-text-wrapper">{{ item.name }}</span>
 					{% if not subitem or hamburger %}
 						<span class="nav-list-arrow ml-1">
 							<svg class="icon-inline svg-icon-text {{ arrow_classes }}"><use xlink:href="#{{ arrow_type }}"/></svg>
@@ -87,7 +87,7 @@
 		</li>
 	{% else %}
 		<li class="js-item-desktop nav-item {% if megamenu %}nav-item-desktop {% if not subitem %}nav-main-item{% endif %}{% endif %}" data-component="menu.item">
-			<a class="nav-list-link {{ item.current ? 'selected' : '' }}" href="{% if item.url %}{{ item.url | setting_url }}{% else %}#{% endif %}">{{ item.name }}</a>
+			<a class="nav-list-link {{ item.current ? 'selected' : '' }}" href="{% if item.url %}{{ item.url | setting_url }}{% else %}#{% endif %}"><span class="nav-item-text-wrapper">{{ item.name }}</span></a>
 		</li>
 	{% endif %}
 {% endfor %}

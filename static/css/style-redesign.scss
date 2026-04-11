@@ -86,10 +86,10 @@
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border-bottom: none !important;
-  padding-top: 2px !important;
-  /* Reducido drásticamente el alto */
-  padding-bottom: 2px !important;
-  /* Reducido drásticamente el alto */
+  padding-top: 12px !important;
+  /* Navbar un poco más alto */
+  padding-bottom: 12px !important;
+  /* Navbar un poco más alto */
   transition: all 0.4s ease !important;
 }
 
@@ -120,6 +120,41 @@
   margin-top: 0 !important;
   margin-bottom: 0 !important;
   transition: color 0.3s ease !important;
+  position: relative;
+  display: inline-block;
+}
+
+/* Base de la línea que se anima, ahora aplicada SOLO al wrapper de texto y no al flechita */
+.redesign-active .nav-item-text-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.redesign-active .nav-item-text-wrapper::after,
+.redesign-active .js-item-name::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px; /* Bajamos un poco la línea para que quede igual de pegada pero del span */
+  left: 5%; /* Comienza 5% desde la izquierda para que al crecer al 90% quede centrado */
+  background-color: #FFD700 !important;
+  transition: width 0.3s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); /* Para que resalte igual que el texto */
+}
+
+/* Anulamos la línea vieja o bordes negros del tema orignal */
+.redesign-active .nav-list-link::after {
+  display: none !important;
+}
+.redesign-active .nav-list-link:hover {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+.redesign-active .nav-item-desktop.item-with-subitems:hover > .nav-list-link,
+.redesign-active .nav-item-desktop.active > .nav-list-link {
+  border-bottom: none !important;
+  text-decoration: none !important;
 }
 
 /* Forzar que los íconos de usuario/carrito no empujen la altura del menú */
@@ -141,8 +176,116 @@
 .redesign-active .nav-list-link:hover,
 .redesign-active .nav-item>a:hover,
 .redesign-active .js-item-name:hover {
-  color: var(--redesign-primary) !important;
-  /* Dorado */
+  /* No seteamos el dorado acá, así la letra queda blanca o negra según scrollee */
+}
+
+/* Efecto hover: la línea crece del centro hacia los lados ocupando el 90% del ancho del texto */
+.redesign-active .nav-list-link:hover .nav-item-text-wrapper::after,
+.redesign-active .nav-item.item-with-subitems:hover > .nav-list-link .nav-item-text-wrapper::after,
+.redesign-active .js-item-name:hover::after {
+  width: 90%;
+}
+
+.redesign-active .nav-dropdown-content,
+.redesign-active .desktop-dropdown {
+  background-color: rgba(20, 20, 20, 0.5) !important;
+  backdrop-filter: blur(5px); /* Un poco menos desenfoque, más nítido */
+  -webkit-backdrop-filter: blur(5px);
+  border-top: 1px solid rgba(255, 215, 0, 0.5) !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7) !important;
+  padding: 15px 30px 15px 30px !important; /* -10% de espacio superior e inferior extraído */
+}
+
+/* Anulamos cualquier fondo blanco de los contenedores internos nativos de TiendaNube */
+.redesign-active .desktop-dropdown ul,
+.redesign-active .desktop-list-subitems,
+.redesign-active .list-subitems,
+.redesign-active .nav-list-panel {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Layout de cajas FLEX para evitar jerarquías rotas */
+.redesign-active .desktop-dropdown .desktop-list-subitems {
+  column-count: auto; /* Anulamos las columnas viejas */
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  gap: 15px 40px !important; /* Apenas 15px de distancia vertical */
+}
+
+.redesign-active .desktop-dropdown .desktop-list-subitems > .nav-item {
+  break-inside: auto;
+  page-break-inside: auto;
+  margin-bottom: 10px; /* Reducción al mínimo del margen inferior de cada bloque */
+  display: flex;
+  flex-direction: column;
+  min-width: 160px; /* Para que todos los títulos midan parejo */
+  flex: 1 1 16%; /* Ocupan aprox 5-6 lugares por fila y si hay más, bajan limpios */
+}
+
+/* Los links principales (Títulos de categoría: EJ. JEANS, REMERAS) */
+.redesign-active .desktop-dropdown .desktop-list-subitems > .nav-item > .nav-list-link {
+  color: #fff !important;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  padding: 4px 10px !important; /* Reducido verticalmente al mínimo */
+  display: inline-block;
+  opacity: 1; /* Al máximo de opacidad porque son títulos */
+  position: relative; 
+}
+
+/* Los sub-links (Subcategorías adentro de Jeans, etc: Ej MOM, SKINNY) */
+.redesign-active .desktop-dropdown .desktop-list-subitems .list-subitems .nav-list-link {
+  color: #fff !important;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px !important;
+  font-weight: 400 !important; /* Más fino para diferenciarse */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  padding: 4px 10px !important; /* Extrema compactación */
+  display: inline-block;
+  opacity: 0.5; /* Tenues para que el título mande visualmente */
+  position: relative;
+}
+
+/* Flecha oculta que acompaña a TODAS las opciones en reposo */
+.redesign-active .desktop-dropdown .nav-item .nav-list-link::before {
+  content: '▸';
+  position: absolute;
+  left: -15px; /* A la izquierda y oculta */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #FFD700;
+  font-size: 16px;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hover de cada item: pasa a dorado, sube al 100% de opacidad y se mueve suavemente a la derecha */
+.redesign-active .desktop-dropdown .nav-item > .nav-list-link:hover {
+  color: #FFD700 !important;
+  opacity: 1;
+  transform: translateX(12px) !important; /* Más translación para acomodar la flecha */
+  background: transparent !important;
+}
+
+/* La flecha aparece deslizándose hacia la palabra */
+.redesign-active .desktop-dropdown .nav-item > .nav-list-link:hover::before {
+  opacity: 1;
+  left: -10px;
+}
+
+/* Ocultamos que la línea dorada del navbar principal suceda acá adentro */
+.redesign-active .desktop-dropdown .nav-item-text-wrapper::after {
+  display: none !important;
 }
 
 /* ============================================================
@@ -178,7 +321,7 @@
 
 .redesign-active .redesign-hero {
   position: relative;
-  width: 100vw;
+  width: 100%; /* Cambiado a 100% para evitar el scroll lateral de Windows con los scrollbars */
   height: calc(100vh + 40px);
   /* Compensa el margen negativo para que llegue sí o sí al borde inferior */
   min-height: 500px;
@@ -276,10 +419,9 @@
 }
 
 .redesign-active .redesign-btn-primary:hover {
-  background: #fff;
-  color: #000;
-  transform: translateY(-3px) scale(1.05) !important;
-  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.6);
+  background: #FFD700 !important;
+  color: #000 !important;
+  /* Ningún efecto en el hover, se mantiene idéntico */
 }
 
 /* --- Animaciones de entrada elegantes --- */
@@ -426,15 +568,15 @@
   }
 }
 
-/* --- Scroll Indicator --- */
+/* --- Scroll Indicator (Flecha rebotando) --- */
 .redesign-active .redesign-scroll-indicator {
   position: absolute;
   bottom: 53px;
-  /* Bajó otros 4px (total 53px) */
+  /* Está calculada para quedar justo arriba del botón */
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
-  /* Entra en fade up después del botón a los 1.8s */
+  /* Entra en fade up después del botón a los 1.8s, y luego queda rebotando infinito */
   animation: fadeUpIndicator 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.8s,
     bounceIndicator 2s infinite 2.8s;
   z-index: 10;
@@ -452,24 +594,16 @@
 }
 
 @keyframes bounceIndicator {
-
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
+  0%, 20%, 50%, 80%, 100% {
     transform: translateY(0) translateX(-50%);
   }
-
   40% {
     transform: translateY(-15px) translateX(-50%);
   }
-
   60% {
     transform: translateY(-7px) translateX(-50%);
   }
 }
-
 /* --- Ocultar Logo temporalmente --- */
 .redesign-active .header-logo,
 .redesign-active .logo-img,
@@ -707,4 +841,35 @@
   .redesign-active .item:hover {
     /* Hover solo en desktop */
   }
+}
+
+/* ============================================================
+   12. WHATSAPP BUTTON PULSE
+   ============================================================ */
+
+/* Definición de la animación de latido/brillo fuera del scope para evitar problemas */
+@keyframes waPulseAnim {
+  0% {
+    transform: scale(1.3);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+  }
+  50% {
+    transform: scale(1.35);
+    box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+  }
+  100% {
+    transform: scale(1.3);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+/* Aplicando al botón de TiendaNube */
+.redesign-active .js-btn-whatsapp,
+.redesign-active .btn-whatsapp,
+.redesign-active [data-store="whatsapp-button"],
+.redesign-active .whatsapp-button {
+  animation: waPulseAnim 2s infinite ease-in-out !important;
+  border-radius: 50% !important; /* Para asegurar que el glow sea redondo */
+  transform-origin: center right !important; /* Para que al agrandarse no se rompa contra el borde de la pantalla */
+  margin-bottom: 10px !important; /* Subir el botón 10px */
 }
