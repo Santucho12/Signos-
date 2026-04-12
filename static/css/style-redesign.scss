@@ -364,7 +364,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   /* Oscurece el video para que el texto resalte */
   z-index: 2;
 }
@@ -611,7 +611,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(3px); /* Menos difuso, más nítido */
   -webkit-backdrop-filter: blur(3px);
   padding: 12px 25px;
@@ -1234,4 +1234,413 @@
   .novedades-description {
     max-width: 100%;
   }
+}
+
+/* ============================================================
+   14. OFFERS SECTION (Carrusel 3 Fotos con Urgencia)
+   ============================================================ */
+.redesign-offers {
+  width: 100%;
+  padding: 40px 0; /* Compactado */
+  background-color: #f9f9f9; 
+  overflow: hidden;
+}
+
+.offers-header {
+  text-align: center;
+  margin-bottom: 60px;
+  padding: 0 20px;
+}
+
+.offers-eyebrow {
+  font-family: 'Outfit', sans-serif;
+  color: #f9d423; /* Amarillo de urgencia */
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.offers-section-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 34px; /* Reducido de 52px */
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.offers-urgency-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* El contenedor de la grilla estática */
+.offers-carousel-wrapper {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 20px;
+  overflow: visible !important; 
+  position: relative;
+}
+
+/* Grilla de 4 columnas */
+.offers-track {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+  animation: none !important; /* Desactivar carrusel */
+}
+
+@keyframes offersScroll {
+  /* Eliminado */
+}
+
+.offer-item {
+  position: relative;
+  background: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  transition: transform 0.4s ease;
+}
+
+.offer-item:hover {
+  transform: none;
+}
+
+.offer-img-box {
+  position: relative;
+  aspect-ratio: 5 / 6; /* 20% mas de altura que el formato 1:1 */
+  overflow: hidden;
+  border-radius: 2px;
+  margin-bottom: 15px;
+}
+
+.offer-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1s ease;
+}
+
+.offer-item:hover .offer-img-box img {
+  transform: none;
+}
+
+/* Badge de Urgencia */
+.offer-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  display: inline-block;
+  background-color: #f9d423;
+  color: #000; /* Texto negro para mejor contraste con amarillo */
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 15px;
+  border-radius: 25px;
+  z-index: 5;
+  box-shadow: 0 4px 10px rgba(249, 212, 35, 0.3);
+}
+
+/* Información de Producto */
+.offer-info {
+  text-align: center;
+}
+
+.offer-info h4 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+}
+
+.price-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.old-price {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.new-price {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  color: #f9d423;
+}
+
+.offers-footer {
+  text-align: center;
+  margin-top: 35px; /* Compactado */
+}
+
+
+/* En mobile mostramos en 2 columnas */
+@media (max-width: 991px) {
+  .offers-track {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+}
+
+/* En mobile muy chico 1 columna */
+@media (max-width: 480px) {
+  .offers-track {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   15. FOOTER REDESIGN (Premium Editorial Dark Footer)
+   ============================================================ */
+.redesign-active footer.js-footer {
+  background-color: #080808; /* Negro profundo equilibrado */
+  color: #fff;
+  padding: 100px 0 0; /* Más espacio superior */
+  border-top: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+  text-align: center; /* Centramos todo el contenido del footer */
+}
+
+/* Línea de luz dorada en el tope del footer */
+.redesign-active footer.js-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ffffff, transparent);
+  opacity: 0.3;
+}
+
+/* Títulos de sección en el footer: Estilo Editorial */
+.redesign-active footer .subtitle {
+  font-family: 'Oswald', sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: #ffffff !important; /* Blanco puro para títulos */
+  margin-bottom: 35px !important;
+  opacity: 1;
+  position: relative;
+}
+
+.redesign-active footer .subtitle::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 1px;
+  background: #ffffff;
+  opacity: 0.5;
+}
+
+/* Enlaces del footer: Animación de "deslizamiento" gold */
+.redesign-active footer a,
+.redesign-active footer .contact-link,
+.redesign-active footer .contact-link a,
+.redesign-active footer .footer-menu-item {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7) !important;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+.redesign-active footer a:hover,
+.redesign-active footer .contact-link:hover,
+.redesign-active footer .contact-link a:hover {
+  color: #ffffff !important;
+  transform: translateY(-2px); /* Cambio desplazamiento lateral por elevación leve */
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Iconos elegantes para links de contacto en blanco (ajustado para centrado) */
+.redesign-active .contact-link[href*="wa.me"]::before { content: '→ '; font-weight: bold; margin-right: 5px; color: #ffffff; opacity: 0; display: inline-block; transition: all 0.3s ease; transform: translateX(-10px); }
+.redesign-active .contact-link:hover::before { opacity: 1; transform: translateX(0); margin-right: 10px; }
+
+/* Newsletter Redesign */
+.redesign-active .newsletter {
+  background: transparent;
+  padding: 0;
+}
+
+.redesign-active .newsletter-form {
+  position: relative;
+  display: flex !important;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50px;
+  padding: 5px;
+  transition: border-color 0.3s ease;
+  flex-direction: row !important;
+  max-width: 400px;
+  margin: 0 auto !important; /* Centramos la caja del newsletter */
+}
+
+.redesign-active .newsletter-form:focus-within {
+  border-color: #ffffff;
+}
+
+.redesign-active .newsletter-form .form-group {
+  flex-grow: 1;
+  margin-bottom: 0 !important;
+}
+
+.redesign-active .newsletter-form .form-control {
+  background: transparent !important;
+  border: none !important;
+  color: #ffffff !important; /* Texto que escribe el usuario en blanco */
+  font-family: 'Outfit', sans-serif;
+  padding: 10px 25px !important;
+  height: 45px !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.redesign-active .newsletter-form .form-control::placeholder {
+  color: #ffffff !important; /* Placeholder en blanco */
+  opacity: 0.8 !important;   /* Mayor opacidad para que se vea bien */
+}
+
+.redesign-active .newsletter-form input[type="submit"].newsletter-btn {
+  background: transparent !important; /* Totalmente transparente */
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border-radius: 50px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 0 10px !important;
+  height: 45px;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0 !important;
+  display: block !important;
+  min-width: 60px;
+}
+
+.redesign-active .newsletter-form input[type="submit"].newsletter-btn:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+.redesign-active .newsletter-form svg.newsletter-btn {
+  display: none !important; /* Quitamos flecha duplicada si estorba */
+}
+
+/* Social Links */
+.redesign-active .social-links {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+  justify-content: center; /* Centramos iconos sociales */
+}
+
+.redesign-active .social-links a {
+  width: 45px;
+  height: 45px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  margin: 0;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.redesign-active .social-links a:hover {
+  background: #ffffff;
+  color: #000 !important;
+  transform: translateY(-5px) rotate(8deg);
+  border-color: #ffffff;
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+}
+
+.redesign-active .social-links svg {
+  fill: currentColor;
+  width: 18px;
+  height: 18px;
+}
+
+/* Payments & Shipping */
+.redesign-active .footer-payments-shipping-logos {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 40px;
+  margin-top: 50px;
+  filter: none !important; /* Volver a colores originales */
+  opacity: 1 !important;
+  transition: opacity 0.3s ease;
+}
+
+.redesign-active .footer-payments-shipping-logos:hover {
+  opacity: 1;
+}
+
+.redesign-active .footer-payments-shipping-logos img {
+  height: 25px;
+  width: auto;
+  margin: 5px 10px;
+}
+
+/* Footer Legal */
+.redesign-active .footer-legal {
+  background-color: #050505;
+  padding: 40px 0;
+  border-top: 1px solid rgba(255,255,255,0.02);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 200;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.redesign-active .footer-legal a {
+  display: inline !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+
+.redesign-active .footer-legal a:hover {
+  color: #ffffff !important;
+}
+
+.redesign-active footer hr {
+  display: none;
 }

@@ -171,4 +171,66 @@
         </div>
     </section>
 
+    <!-- 3. OFFERS SECTION (Grilla Estática 4 Fotos con Urgencia) -->
+    <section class="redesign-offers">
+        <div class="container-wide">
+            <div class="offers-header" data-redesign-animate="fadeUp">
+                <h2 class="offers-section-title">OFERTAS Y DESCUENTOS</h2>
+                <p class="offers-urgency-text">STOCK LIMITADO — ¡ESTAS PRENDAS SE TERMINAN HOY!</p>
+            </div>
+            
+            <div class="offers-carousel-wrapper" data-redesign-animate="fadeIn">
+                <div class="offers-track">
+                    <!-- Item 1 -->
+                    <div class="offer-item">
+                        <div class="offer-img-box">
+                            <span class="offer-badge">-50% OFF</span>
+                            <img src="{{ 'images/WhatsApp Image 2026-04-08 at 23.43.30 (1).jpeg' | static_url }}" alt="Oferta 1">
+                        </div>
+                        <div class="offer-info">
+                            <h4>NUEVA COLECCIÓN I</h4>
+                            <p class="price-box"><span class="old-price">$45.000</span> <span class="new-price">$22.500</span></p>
+                        </div>
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="offer-item">
+                        <div class="offer-img-box">
+                            <span class="offer-badge">-40% OFF</span>
+                            <img src="{{ 'images/WhatsApp Image 2026-04-08 at 23.43.30 (2).jpeg' | static_url }}" alt="Oferta 2">
+                        </div>
+                        <div class="offer-info">
+                            <h4>NUEVA COLECCIÓN II</h4>
+                            <p class="price-box"><span class="old-price">$38.000</span> <span class="new-price">$22.800</span></p>
+                        </div>
+                    </div>
+                    <!-- Item 3 -->
+                    <div class="offer-item">
+                        <div class="offer-img-box">
+                            <span class="offer-badge">-30% OFF</span>
+                            <img src="{{ 'images/WhatsApp Image 2026-04-08 at 23.43.30 (3).jpeg' | static_url }}" alt="Oferta 3">
+                        </div>
+                        <div class="offer-info">
+                            <h4>NUEVA COLECCIÓN III</h4>
+                            <p class="price-box"><span class="old-price">$18.000</span> <span class="new-price">$12.600</span></p>
+                        </div>
+                    </div>
+                    <!-- Item 4 -->
+                    <div class="offer-item">
+                        <div class="offer-img-box">
+                            <span class="offer-badge">-35% OFF</span>
+                            <img src="{{ 'images/WhatsApp Image 2026-04-08 at 23.43.30.jpeg' | static_url }}" alt="Oferta 4">
+                        </div>
+                        <div class="offer-info">
+                            <h4>NUEVA COLECCIÓN IV</h4>
+                            <p class="price-box"><span class="old-price">$52.000</span> <span class="new-price">$33.800</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="offers-footer" data-redesign-animate="fadeUp">
+                <a href="/promociones" class="redesign-btn-gold">APROVECHAR LIQUIDACIÓN</a>
+            </div>
+        </div>
+    </section>
 </div>
