@@ -136,23 +136,28 @@
   position: absolute;
   width: 0;
   height: 2px;
-  bottom: -4px; /* Bajamos un poco la línea para que quede igual de pegada pero del span */
-  left: 5%; /* Comienza 5% desde la izquierda para que al crecer al 90% quede centrado */
+  bottom: -4px;
+  /* Bajamos un poco la línea para que quede igual de pegada pero del span */
+  left: 5%;
+  /* Comienza 5% desde la izquierda para que al crecer al 90% quede centrado */
   background-color: #FFD700 !important;
   transition: width 0.3s ease;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); /* Para que resalte igual que el texto */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  /* Para que resalte igual que el texto */
 }
 
 /* Anulamos la línea vieja o bordes negros del tema orignal */
 .redesign-active .nav-list-link::after {
   display: none !important;
 }
+
 .redesign-active .nav-list-link:hover {
   text-decoration: none !important;
   border-bottom: none !important;
 }
-.redesign-active .nav-item-desktop.item-with-subitems:hover > .nav-list-link,
-.redesign-active .nav-item-desktop.active > .nav-list-link {
+
+.redesign-active .nav-item-desktop.item-with-subitems:hover>.nav-list-link,
+.redesign-active .nav-item-desktop.active>.nav-list-link {
   border-bottom: none !important;
   text-decoration: none !important;
 }
@@ -181,7 +186,7 @@
 
 /* Efecto hover: la línea crece del centro hacia los lados ocupando el 90% del ancho del texto */
 .redesign-active .nav-list-link:hover .nav-item-text-wrapper::after,
-.redesign-active .nav-item.item-with-subitems:hover > .nav-list-link .nav-item-text-wrapper::after,
+.redesign-active .nav-item.item-with-subitems:hover>.nav-list-link .nav-item-text-wrapper::after,
 .redesign-active .js-item-name:hover::after {
   width: 90%;
 }
@@ -189,11 +194,13 @@
 .redesign-active .nav-dropdown-content,
 .redesign-active .desktop-dropdown {
   background-color: rgba(20, 20, 20, 0.5) !important;
-  backdrop-filter: blur(5px); /* Un poco menos desenfoque, más nítido */
+  backdrop-filter: blur(5px);
+  /* Un poco menos desenfoque, más nítido */
   -webkit-backdrop-filter: blur(5px);
   border-top: 1px solid rgba(255, 215, 0, 0.5) !important;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7) !important;
-  padding: 15px 30px 15px 30px !important; /* -10% de espacio superior e inferior extraído */
+  padding: 15px 30px 15px 30px !important;
+  /* -10% de espacio superior e inferior extraído */
 }
 
 /* Anulamos cualquier fondo blanco de los contenedores internos nativos de TiendaNube */
@@ -209,25 +216,30 @@
 
 /* Layout de cajas FLEX para evitar jerarquías rotas */
 .redesign-active .desktop-dropdown .desktop-list-subitems {
-  column-count: auto; /* Anulamos las columnas viejas */
+  column-count: auto;
+  /* Anulamos las columnas viejas */
   display: flex !important;
   flex-direction: row !important;
   flex-wrap: wrap !important;
-  gap: 15px 40px !important; /* Apenas 15px de distancia vertical */
+  gap: 15px 40px !important;
+  /* Apenas 15px de distancia vertical */
 }
 
-.redesign-active .desktop-dropdown .desktop-list-subitems > .nav-item {
+.redesign-active .desktop-dropdown .desktop-list-subitems>.nav-item {
   break-inside: auto;
   page-break-inside: auto;
-  margin-bottom: 10px; /* Reducción al mínimo del margen inferior de cada bloque */
+  margin-bottom: 10px;
+  /* Reducción al mínimo del margen inferior de cada bloque */
   display: flex;
   flex-direction: column;
-  min-width: 160px; /* Para que todos los títulos midan parejo */
-  flex: 1 1 16%; /* Ocupan aprox 5-6 lugares por fila y si hay más, bajan limpios */
+  min-width: 160px;
+  /* Para que todos los títulos midan parejo */
+  flex: 1 1 16%;
+  /* Ocupan aprox 5-6 lugares por fila y si hay más, bajan limpios */
 }
 
 /* Los links principales (Títulos de categoría: EJ. JEANS, REMERAS) */
-.redesign-active .desktop-dropdown .desktop-list-subitems > .nav-item > .nav-list-link {
+.redesign-active .desktop-dropdown .desktop-list-subitems>.nav-item>.nav-list-link {
   color: #fff !important;
   font-family: 'Montserrat', sans-serif;
   font-size: 14px !important;
@@ -235,10 +247,12 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  padding: 4px 10px !important; /* Reducido verticalmente al mínimo */
+  padding: 4px 10px !important;
+  /* Reducido verticalmente al mínimo */
   display: inline-block;
-  opacity: 1; /* Al máximo de opacidad porque son títulos */
-  position: relative; 
+  opacity: 1;
+  /* Al máximo de opacidad porque son títulos */
+  position: relative;
 }
 
 /* Los sub-links (Subcategorías adentro de Jeans, etc: Ej MOM, SKINNY) */
@@ -246,13 +260,16 @@
   color: #fff !important;
   font-family: 'Montserrat', sans-serif;
   font-size: 13px !important;
-  font-weight: 400 !important; /* Más fino para diferenciarse */
+  font-weight: 400 !important;
+  /* Más fino para diferenciarse */
   letter-spacing: 0.5px;
   text-transform: uppercase;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  padding: 4px 10px !important; /* Extrema compactación */
+  padding: 4px 10px !important;
+  /* Extrema compactación */
   display: inline-block;
-  opacity: 0.5; /* Tenues para que el título mande visualmente */
+  opacity: 0.5;
+  /* Tenues para que el título mande visualmente */
   position: relative;
 }
 
@@ -260,7 +277,8 @@
 .redesign-active .desktop-dropdown .nav-item .nav-list-link::before {
   content: '▸';
   position: absolute;
-  left: -15px; /* A la izquierda y oculta */
+  left: -15px;
+  /* A la izquierda y oculta */
   top: 50%;
   transform: translateY(-50%);
   color: #FFD700;
@@ -270,15 +288,16 @@
 }
 
 /* Hover de cada item: pasa a dorado, sube al 100% de opacidad y se mueve suavemente a la derecha */
-.redesign-active .desktop-dropdown .nav-item > .nav-list-link:hover {
+.redesign-active .desktop-dropdown .nav-item>.nav-list-link:hover {
   color: #FFD700 !important;
   opacity: 1;
-  transform: translateX(12px) !important; /* Más translación para acomodar la flecha */
+  transform: translateX(12px) !important;
+  /* Más translación para acomodar la flecha */
   background: transparent !important;
 }
 
 /* La flecha aparece deslizándose hacia la palabra */
-.redesign-active .desktop-dropdown .nav-item > .nav-list-link:hover::before {
+.redesign-active .desktop-dropdown .nav-item>.nav-list-link:hover::before {
   opacity: 1;
   left: -10px;
 }
@@ -321,7 +340,8 @@
 
 .redesign-active .redesign-hero {
   position: relative;
-  width: 100%; /* Cambiado a 100% para evitar el scroll lateral de Windows con los scrollbars */
+  width: 100%;
+  /* Cambiado a 100% para evitar el scroll lateral de Windows con los scrollbars */
   height: calc(100vh + 40px);
   /* Compensa el margen negativo para que llegue sí o sí al borde inferior */
   min-height: 500px;
@@ -350,9 +370,11 @@
   0% {
     transform: translate(-50%, -50%) scale(1.02);
   }
+
   50% {
     transform: translate(-50%, -50%) scale(1.12);
   }
+
   100% {
     transform: translate(-50%, -50%) scale(1.02);
   }
@@ -388,7 +410,8 @@
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   line-height: 1;
   position: relative;
-  top: -9px; /* Subirlo otros 6px (total -9px) */
+  top: -9px;
+  /* Subirlo otros 6px (total -9px) */
 }
 
 .redesign-active .redesign-hero-subtitle {
@@ -415,7 +438,8 @@
   /* <--- Más redondo */
   transition: all 0.3s ease;
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25); /* Reducida sutilmente */
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
+  /* Reducida sutilmente */
 }
 
 .redesign-active .redesign-btn-primary:hover {
@@ -468,7 +492,8 @@
 
   100% {
     transform: scale(1.05) translateY(0);
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.7), 0 0 25px rgba(255, 215, 0, 0.5); /* Sombra 15% más sutil */
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.7), 0 0 25px rgba(255, 215, 0, 0.5);
+    /* Sombra 15% más sutil */
   }
 }
 
@@ -487,7 +512,8 @@
   top: 0;
   left: 0;
   width: 100%;
-  white-space: nowrap; /* Fuerza una sola fila */
+  white-space: nowrap;
+  /* Fuerza una sola fila */
   opacity: 0;
   pointer-events: none;
   text-align: center;
@@ -587,6 +613,7 @@
     opacity: 0;
     transform: translateY(20px) translateX(-50%);
   }
+
   100% {
     opacity: 0.8;
     transform: translateY(0) translateX(-50%);
@@ -594,9 +621,15 @@
 }
 
 @keyframes bounceIndicator {
-  0%, 20%, 50%, 80%, 100% {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
     transform: translateY(0) translateX(-50%);
   }
+
   40% {
     transform: translateY(-10px) translateX(-50%);
   }
@@ -612,11 +645,13 @@
   align-items: center;
   gap: 15px;
   background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(3px); /* Menos difuso, más nítido */
+  backdrop-filter: blur(3px);
+  /* Menos difuso, más nítido */
   -webkit-backdrop-filter: blur(3px);
   padding: 12px 25px;
   border-radius: 4px;
-  border-left: none; /* Quitamos el amarillo */
+  border-left: none;
+  /* Quitamos el amarillo */
   opacity: 0;
   animation: heroFadeIn 1s forwards 2.5s;
 }
@@ -624,7 +659,8 @@
 .benefit-text {
   color: #ffffff;
   font-family: 'Outfit', sans-serif;
-  font-size: 10px; /* Tamaño "etiqueta" elegante */
+  font-size: 10px;
+  /* Tamaño "etiqueta" elegante */
   font-weight: 500;
   letter-spacing: 1.2px;
   text-transform: uppercase;
@@ -638,8 +674,15 @@
 }
 
 @keyframes heroFadeIn {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* Responsive: en móviles muy chicos achicamos o scrolleamos */
@@ -652,6 +695,7 @@
     overflow: hidden;
     gap: 10px;
   }
+
   .benefit-text {
     font-size: 8px;
     letter-spacing: 0.5px;
@@ -659,16 +703,24 @@
 }
 
 @keyframes bounceIndicator {
-  0%, 20%, 50%, 80%, 100% {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
     transform: translateY(0) translateX(-50%);
   }
+
   40% {
     transform: translateY(-15px) translateX(-50%);
   }
+
   60% {
     transform: translateY(-7px) translateX(-50%);
   }
 }
+
 /* --- Ocultar Logo temporalmente --- */
 .redesign-active .header-logo,
 .redesign-active .logo-img,
@@ -918,10 +970,12 @@
     transform: scale(1.3);
     box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
   }
+
   50% {
     transform: scale(1.35);
     box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
   }
+
   100% {
     transform: scale(1.3);
     box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
@@ -933,18 +987,21 @@
 .redesign-active .btn-whatsapp,
 .redesign-active [data-store="whatsapp-button"],
 .redesign-active .whatsapp-button {
-  bottom: 25px !important; /* Desplazamos 10px hacia arriba */
+  bottom: 25px !important;
+  /* Desplazamos 10px hacia arriba */
   animation: waPulseAnim 2s infinite ease-in-out !important;
-  border-radius: 50% !important; /* Para asegurar que el glow sea redondo */
-  transform-origin: center right !important; /* Para que al agrandarse no se rompa contra el borde de la pantalla */
+  border-radius: 50% !important;
+  /* Para asegurar que el glow sea redondo */
+  transform-origin: center right !important;
+  /* Para que al agrandarse no se rompa contra el borde de la pantalla */
 }
 
 /* ============================================================
    13. NOVEDADES SECTION (Editorial / High Impact)
    ============================================================ */
 .redesign-novedades {
-  background-color: #ffffff; 
-  height: 100vh; 
+  background-color: #ffffff;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -956,7 +1013,8 @@
 
 .novedades-container {
   display: flex !important;
-  flex-direction: row; /* Horizontal */
+  flex-direction: row;
+  /* Horizontal */
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -965,10 +1023,10 @@
   gap: 80px;
 }
 
-/* Columna Izquierda: Imagen Editorial Gigante */
+/* Columna Izquierda: Carrusel de pares */
 .novedades-media {
-  flex: 1 1 50%;
-  max-width: 50%;
+  flex: 1 1 55%;
+  max-width: 55%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -978,52 +1036,66 @@
 .novedades-carousel {
   position: relative;
   width: 100%;
-  max-width: 500px;
-  aspect-ratio: 4 / 5;
+  max-width: 700px; /* Más ancho para 2 imágenes */
+  aspect-ratio: 8 / 5; /* Más horizontal para pares */
   overflow: hidden;
   background: #ffffff;
 }
 
-/* El track tiene 4 slides (A-B-C-A') = 400% de ancho total */
+/* El track tiene 3 slides (A-B-A') = 300% de ancho total */
 .novedades-carousel-track {
   display: flex;
-  width: 400%;
+  width: 300%;
   height: 100%;
   transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Animación CSS infinita — Ciclo de 16s (4s por imagen)
-   A (0-25) -> B (25-50) -> C (50-75) -> A' (75-100) 
-   El salto de A' a A al final es instantáneo e invisible. */
+/* Animación CSS infinita — Ciclo de 10s (5s por par)
+   A (0-45%) -> B (45-90%) -> A'(90-100% reset) */
 @keyframes novedadesSlide {
-  0%          { transform: translateX(0); }
-  20%         { transform: translateX(0); }      /* 1. PAUSA EN A */
-  25%         { transform: translateX(-25%); }   /* DESLIZA A B */
-  45%         { transform: translateX(-25%); }   /* 2. PAUSA EN B */
-  50%         { transform: translateX(-50%); }   /* DESLIZA A C */
-  70%         { transform: translateX(-50%); }   /* 3. PAUSA EN C */
-  75%         { transform: translateX(-75%); }   /* DESLIZA A A'(clon) */
-  95%         { transform: translateX(-75%); }   /* 4. PAUSA EN A' */
-  100%        { transform: translateX(-75%); }   /* RESET INSTANTÁNEO A 0% */
+  0%   { transform: translateX(0); }
+  40%  { transform: translateX(0); }       /* PAUSA EN PAR A */
+  50%  { transform: translateX(-33.333%); } /* DESLIZA A PAR B */
+  90%  { transform: translateX(-33.333%); } /* PAUSA EN PAR B */
+  100% { transform: translateX(-66.666%); } /* DESLIZA A A'(clon) → reset */
 }
 
 .redesign-active .novedades-carousel-track {
-  animation: novedadesSlide 16s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  animation: novedadesSlide 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 
-/* Cada slide = 1 cuarto del track */
+/* Cada slide = 1 tercio del track */
 .novedades-slide {
-  flex: 0 0 25%;
+  flex: 0 0 33.333%;
   height: 100%;
   overflow: hidden;
 }
 
-.novedades-slide img {
+/* Par de imágenes dentro de cada slide */
+.novedades-slide-pair {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  padding: 0 4px;
+}
+
+.novedades-slide-pair img {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15px;
+  border-radius: 8px;
+}
+
+/* (imágenes sueltas ya no se usan, pero mantenemos por compatibilidad)
+.novedades-slide > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center 15px;
-}
+} */
 
 /* --- Puntos indicadores --- */
 .novedades-dots {
@@ -1041,42 +1113,50 @@
   height: 3px;
   border-radius: 2px;
   background: rgba(0, 0, 0, 0.25);
-  transition: none; /* El CSS animation lo maneja */
+  transition: none;
+  /* El CSS animation lo maneja */
 }
 
-/* Sincronia de dots con el ciclo de 16s */
+/* Sincronia de dots con el ciclo de 10s (2 pares) */
 @keyframes dot1 {
-  0%, 20%, 75%, 100% { background: #000; width: 48px; }
-  25%, 70%           { background: rgba(0,0,0,0.25); width: 28px; }
+  0%, 40%, 90%, 100% {
+    background: #000;
+    width: 48px;
+  }
+  50%, 85% {
+    background: rgba(0, 0, 0, 0.25);
+    width: 28px;
+  }
 }
 
 @keyframes dot2 {
-  0%, 20%           { background: rgba(0,0,0,0.25); width: 28px; }
-  25%, 45%           { background: #000; width: 48px; }
-  50%, 100%         { background: rgba(0,0,0,0.25); width: 28px; }
-}
-
-@keyframes dot3 {
-  0%, 45%           { background: rgba(0,0,0,0.25); width: 28px; }
-  50%, 70%           { background: #000; width: 48px; }
-  75%, 100%         { background: rgba(0,0,0,0.25); width: 28px; }
+  0%, 40% {
+    background: rgba(0, 0, 0, 0.25);
+    width: 28px;
+  }
+  50%, 85% {
+    background: #000;
+    width: 48px;
+  }
+  90%, 100% {
+    background: rgba(0, 0, 0, 0.25);
+    width: 28px;
+  }
 }
 
 .redesign-active .novedades-dot:nth-child(1) {
-  animation: dot1 16s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  animation: dot1 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
+
 .redesign-active .novedades-dot:nth-child(2) {
-  animation: dot2 16s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-}
-.redesign-active .novedades-dot:nth-child(3) {
-  animation: dot3 16s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  animation: dot2 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 
 
-/* Columna Derecha: Contenido de Texto Premium */
+/* Columna Derecha: Contenido de Texto Premium (comprimido) */
 .novedades-text-content {
-  flex: 1 1 50%;
-  max-width: 550px;
+  flex: 1 1 40%;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1086,23 +1166,26 @@
 
 .novedades-eyebrow {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 19px; /* Aumentado para mayor presencia */
+  font-size: 19px;
+  /* Aumentado para mayor presencia */
   font-weight: 500;
   font-style: italic;
   letter-spacing: 1px;
   text-transform: none;
-  color: #888888; /* Un poco más oscuro para legibilidad */
+  color: #888888;
+  /* Un poco más oscuro para legibilidad */
   margin-bottom: 25px;
 }
 
 .novedades-title {
   font-family: 'Montserrat', sans-serif;
-  font-size: 48px; 
+  font-size: 48px;
   line-height: 1.1;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #1a1a1a; /* NEGRO SUAVIZADO PREMIUM */
+  color: #1a1a1a;
+  /* NEGRO SUAVIZADO PREMIUM */
   margin: 0 0 35px 0;
 }
 
@@ -1111,7 +1194,7 @@
   font-size: 18px;
   font-weight: 300;
   line-height: 1.6;
-  color: #444444; 
+  color: #444444;
   margin-bottom: 45px;
   max-width: 450px;
 }
@@ -1132,7 +1215,8 @@
   transition: all 0.3s ease;
   position: relative;
   box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
-  animation: btnNeonPulse 1s infinite alternate !important; /* Titila suavemente */
+  animation: btnNeonPulse 1s infinite alternate !important;
+  /* Titila suavemente */
 }
 
 .redesign-btn-gold:hover {
@@ -1147,6 +1231,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1154,8 +1239,13 @@
 }
 
 @keyframes novedadesFadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* --- Estado inicial: todos los elementos de Novedades invisibles --- */
@@ -1196,14 +1286,24 @@
 }
 
 /* Clases legacy del IntersectionObserver — las dejamos para no romper otras secciones */
-.redesign-animate-fadeUp  { opacity: 1; transform: translateY(0); }
-.redesign-animate-slideLeft { opacity: 1; transform: translateX(0); }
-.redesign-animate-fadeIn  { opacity: 1; }
+.redesign-animate-fadeUp {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.redesign-animate-slideLeft {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.redesign-animate-fadeIn {
+  opacity: 1;
+}
 
 .novedades-cta-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 /* Responsive: Ajustes para pantallas chicas */
@@ -1212,25 +1312,32 @@
     height: auto;
     padding: 120px 5%;
   }
+
   .novedades-container {
     flex-direction: column;
     gap: 70px;
   }
-  .novedades-media, .novedades-text-content {
+
+  .novedades-media,
+  .novedades-text-content {
     max-width: 100%;
     width: 100%;
     text-align: center;
     align-items: center;
   }
+
   .novedades-cta-wrapper {
     align-items: center;
   }
+
   .novedades-media {
     height: 65vh;
   }
+
   .novedades-title {
     font-size: 42px;
   }
+
   .novedades-description {
     max-width: 100%;
   }
@@ -1241,8 +1348,9 @@
    ============================================================ */
 .redesign-offers {
   width: 100%;
-  padding: 40px 0; /* Compactado */
-  background-color: #f9f9f9; 
+  padding: 120px 0;
+  /* Espaciado aumentado */
+  background-color: #ffffff;
   overflow: hidden;
 }
 
@@ -1254,7 +1362,8 @@
 
 .offers-eyebrow {
   font-family: 'Outfit', sans-serif;
-  color: #f9d423; /* Amarillo de urgencia */
+  color: #f9d423;
+  /* Amarillo de urgencia */
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 5px;
@@ -1264,7 +1373,8 @@
 
 .offers-section-title {
   font-family: 'Montserrat', sans-serif;
-  font-size: 34px; /* Reducido de 52px */
+  font-size: 34px;
+  /* Reducido de 52px */
   font-weight: 800;
   letter-spacing: -1px;
   color: #1a1a1a;
@@ -1286,7 +1396,7 @@
   max-width: 1300px;
   margin: 0 auto;
   padding: 0 20px;
-  overflow: visible !important; 
+  overflow: visible !important;
   position: relative;
 }
 
@@ -1296,7 +1406,8 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   width: 100%;
-  animation: none !important; /* Desactivar carrusel */
+  animation: none !important;
+  /* Desactivar carrusel */
 }
 
 @keyframes offersScroll {
@@ -1308,7 +1419,7 @@
   background: #fff;
   padding: 10px;
   border-radius: 4px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
   transition: transform 0.4s ease;
 }
 
@@ -1318,7 +1429,8 @@
 
 .offer-img-box {
   position: relative;
-  aspect-ratio: 5 / 6; /* 20% mas de altura que el formato 1:1 */
+  aspect-ratio: 5 / 6;
+  /* 20% mas de altura que el formato 1:1 */
   overflow: hidden;
   border-radius: 2px;
   margin-bottom: 15px;
@@ -1342,7 +1454,8 @@
   left: 15px;
   display: inline-block;
   background-color: #f9d423;
-  color: #000; /* Texto negro para mejor contraste con amarillo */
+  color: #000;
+  /* Texto negro para mejor contraste con amarillo */
   font-family: 'Outfit', sans-serif;
   font-size: 11px;
   font-weight: 700;
@@ -1374,22 +1487,47 @@
 }
 
 .old-price {
-  font-family: 'Outfit', sans-serif;
-  font-size: 13px;
-  color: #999;
   text-decoration: line-through;
+  color: #999;
+  font-size: 14px;
+  margin-right: 10px;
 }
 
 .new-price {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 19px;
+  color: #000000;
   font-weight: 800;
-  color: #f9d423;
+  font-size: 22px;
+}
+
+.offer-installments {
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  color: #000; /* Negro como pidió el usuario */
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.offer-installments strong {
+  font-weight: 700;
+}
+
+.offer-installments::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M426.67,102.4H85.33a28.44,28.44,0,0,0-28.44,28.44V381.16A28.44,28.44,0,0,0,85.33,409.6H426.67a28.44,28.44,0,0,0,28.44-28.44V130.84A28.44,28.44,0,0,0,426.67,102.4Zm22.75,278.76a22.76,22.76,0,0,1-22.75,22.75H85.33a22.76,22.76,0,0,1-22.75-22.75V202H449.42Zm0-184.89H62.58V130.84a22.76,22.76,0,0,1,22.75-22.75H426.67a22.76,22.76,0,0,1,22.75,22.75ZM352.71,355.56h39.82a14.23,14.23,0,0,0,14.23-14.23V301.51a14.23,14.23,0,0,0-14.23-14.22H352.71a14.22,14.22,0,0,0-14.22,14.22v39.82A14.23,14.23,0,0,0,352.71,355.56Zm-8.53-54.05a8.53,8.53,0,0,1,8.53-8.53h39.82a8.53,8.53,0,0,1,8.54,8.53v39.82a8.54,8.54,0,0,1-8.54,8.54H352.71a8.53,8.53,0,0,1-8.53-8.54Zm-165,54.05H108.09v-5.69H179.2Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  filter: grayscale(1) brightness(0); /* Forzamos a negro */
 }
 
 .offers-footer {
   text-align: center;
-  margin-top: 35px; /* Compactado */
+  margin-top: 35px;
+  /* Compactado */
 }
 
 
@@ -1412,13 +1550,16 @@
    15. FOOTER REDESIGN (Premium Editorial Dark Footer)
    ============================================================ */
 .redesign-active footer.js-footer {
-  background-color: #080808; /* Negro profundo equilibrado */
+  background-color: #080808;
+  /* Negro profundo equilibrado */
   color: #fff;
-  padding: 100px 0 0; /* Más espacio superior */
+  padding: 100px 0 0;
+  /* Más espacio superior */
   border-top: 1px solid transparent;
   position: relative;
   overflow: hidden;
-  text-align: center; /* Centramos todo el contenido del footer */
+  text-align: center;
+  /* Centramos todo el contenido del footer */
 }
 
 /* Línea de luz dorada en el tope del footer */
@@ -1440,7 +1581,8 @@
   font-weight: 700 !important;
   text-transform: uppercase;
   letter-spacing: 4px;
-  color: #ffffff !important; /* Blanco puro para títulos */
+  color: #ffffff !important;
+  /* Blanco puro para títulos */
   margin-bottom: 35px !important;
   opacity: 1;
   position: relative;
@@ -1478,13 +1620,28 @@
 .redesign-active footer .contact-link:hover,
 .redesign-active footer .contact-link a:hover {
   color: #ffffff !important;
-  transform: translateY(-2px); /* Cambio desplazamiento lateral por elevación leve */
+  transform: translateY(-2px);
+  /* Cambio desplazamiento lateral por elevación leve */
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 /* Iconos elegantes para links de contacto en blanco (ajustado para centrado) */
-.redesign-active .contact-link[href*="wa.me"]::before { content: '→ '; font-weight: bold; margin-right: 5px; color: #ffffff; opacity: 0; display: inline-block; transition: all 0.3s ease; transform: translateX(-10px); }
-.redesign-active .contact-link:hover::before { opacity: 1; transform: translateX(0); margin-right: 10px; }
+.redesign-active .contact-link[href*="wa.me"]::before {
+  content: '→ ';
+  font-weight: bold;
+  margin-right: 5px;
+  color: #ffffff;
+  opacity: 0;
+  display: inline-block;
+  transition: all 0.3s ease;
+  transform: translateX(-10px);
+}
+
+.redesign-active .contact-link:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+  margin-right: 10px;
+}
 
 /* Newsletter Redesign */
 .redesign-active .newsletter {
@@ -1495,14 +1652,15 @@
 .redesign-active .newsletter-form {
   position: relative;
   display: flex !important;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50px;
   padding: 5px;
   transition: border-color 0.3s ease;
   flex-direction: row !important;
   max-width: 400px;
-  margin: 0 auto !important; /* Centramos la caja del newsletter */
+  margin: 0 auto !important;
+  /* Centramos la caja del newsletter */
 }
 
 .redesign-active .newsletter-form:focus-within {
@@ -1517,7 +1675,8 @@
 .redesign-active .newsletter-form .form-control {
   background: transparent !important;
   border: none !important;
-  color: #ffffff !important; /* Texto que escribe el usuario en blanco */
+  color: #ffffff !important;
+  /* Texto que escribe el usuario en blanco */
   font-family: 'Outfit', sans-serif;
   padding: 10px 25px !important;
   height: 45px !important;
@@ -1526,12 +1685,15 @@
 }
 
 .redesign-active .newsletter-form .form-control::placeholder {
-  color: #ffffff !important; /* Placeholder en blanco */
-  opacity: 0.8 !important;   /* Mayor opacidad para que se vea bien */
+  color: #ffffff !important;
+  /* Placeholder en blanco */
+  opacity: 0.8 !important;
+  /* Mayor opacidad para que se vea bien */
 }
 
 .redesign-active .newsletter-form input[type="submit"].newsletter-btn {
-  background: transparent !important; /* Totalmente transparente */
+  background: transparent !important;
+  /* Totalmente transparente */
   background-color: transparent !important;
   color: #ffffff !important;
   border-radius: 50px;
@@ -1558,7 +1720,8 @@
 }
 
 .redesign-active .newsletter-form svg.newsletter-btn {
-  display: none !important; /* Quitamos flecha duplicada si estorba */
+  display: none !important;
+  /* Quitamos flecha duplicada si estorba */
 }
 
 /* Social Links */
@@ -1566,20 +1729,22 @@
   margin-top: 30px;
   display: flex;
   gap: 15px;
-  justify-content: center; /* Centramos iconos sociales */
+  justify-content: center;
+  /* Centramos iconos sociales */
 }
 
 .redesign-active .social-links a {
   width: 45px;
   height: 45px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   display: flex !important;
   align-items: center;
   justify-content: center;
   padding: 0 !important;
   margin: 0;
+  color: #fff;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1599,10 +1764,11 @@
 
 /* Payments & Shipping */
 .redesign-active .footer-payments-shipping-logos {
-  border-top: 1px solid rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   padding-top: 40px;
   margin-top: 50px;
-  filter: none !important; /* Volver a colores originales */
+  filter: none !important;
+  /* Volver a colores originales */
   opacity: 1 !important;
   transition: opacity 0.3s ease;
 }
@@ -1621,7 +1787,7 @@
 .redesign-active .footer-legal {
   background-color: #050505;
   padding: 40px 0;
-  border-top: 1px solid rgba(255,255,255,0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.02);
   font-family: 'Outfit', sans-serif;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.3);
@@ -1643,4 +1809,300 @@
 
 .redesign-active footer hr {
   display: none;
+}
+
+/* 16. SOCIAL EXPERIENCE SECTION (Instagram & TikTok) */
+.redesign-active .redesign-social-feed {
+  padding: 120px 0;
+  background-color: #ffffff; /* Fondo blanco */
+  color: #000000; /* Letras negras */
+  text-align: center;
+  position: relative;
+}
+
+.redesign-active .social-header {
+  margin-bottom: 30px; /* Reducido */
+}
+
+.redesign-active .social-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  color: #000; /* Negro */
+}
+
+.redesign-active .social-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 18px;
+  opacity: 0.8;
+  color: #000; /* Negro */
+}
+
+.redesign-active .social-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  max-width: 1350px; /* Incrementado para dar más presencia */
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+.redesign-active .social-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 24px; /* Incrementado */
+  border-radius: 30px;
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  text-align: left;
+}
+
+.redesign-active .social-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.redesign-active .social-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px; /* Reducido */
+  position: relative;
+}
+
+.redesign-active .profile-pic-container {
+  width: 60px; /* Un poco más grande para compensar el crop */
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  overflow: hidden; /* CLAVE: Recorta el borde negro de la imagen */
+  border: none !important;
+}
+
+.redesign-active .profile-pic {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover; /* Cambiado a cover para que el zoom funcione bien */
+  transform: scale(1.4); /* ZOOM: Oculta el anillo negro periférico del logo */
+  border: none !important;
+}
+
+.redesign-active .profile-info-text {
+  flex: 1;
+}
+
+.redesign-active .profile-username {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px; /* Aumentado */
+  font-weight: 800;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.redesign-active .verified-badge {
+  width: 16px;
+  height: 16px;
+}
+
+.redesign-active .profile-full-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  color: #666;
+  font-weight: 400;
+}
+
+.redesign-active .social-platform-icon {
+  position: absolute;
+  top: 25px; /* Más abajo para que no choque con el borde */
+  right: 25px;
+  transition: all 0.4s ease;
+  z-index: 5;
+}
+
+.redesign-active .social-platform-icon svg {
+  width: 28px; /* Más grandes */
+  height: 28px;
+  opacity: 0.8;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.redesign-active .instagram-profile-card .social-platform-icon svg {
+  fill: #E1306C;
+}
+
+.redesign-active .tiktok-profile-card .social-platform-icon svg {
+  fill: #ff0050 !important;
+}
+
+.redesign-active .social-card:hover .social-platform-icon {
+  transform: scale(1.3);
+  opacity: 1;
+}
+
+/* Stats */
+.redesign-active .profile-stats {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0; /* Reducido */
+  border-top: 1px solid rgba(0,0,0,0.05);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  margin-bottom: 10px; /* Reducido */
+}
+
+.redesign-active .stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.redesign-active .stat-item strong {
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px; /* Aumentado */
+  font-weight: 800;
+  color: #000;
+}
+
+.redesign-active .stat-item span {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  color: #999;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Bio */
+.redesign-active .profile-bio {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px; /* Aumentado */
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 20px; /* Incrementado */
+}
+
+.redesign-active .profile-bio p {
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+/* Photo Grid */
+.redesign-active .social-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin-bottom: 15px; /* Reducido */
+}
+
+.redesign-active .grid-img {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #f5f5f5;
+  position: relative;
+}
+
+.redesign-active .grid-img img,
+.redesign-active .grid-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.redesign-active .grid-img:hover img,
+.redesign-active .grid-img:hover .grid-video {
+  transform: scale(1.1);
+}
+
+.redesign-active .video-align-top {
+  object-position: top !important;
+}
+
+.redesign-active .social-actions-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.redesign-active .social-link-btn {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border: none !important;
+  border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px; /* Aumentado */
+  font-weight: 700;
+  color: #fff !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.redesign-active .btn-ig {
+  background-color: #0095f6 !important; /* Celeste Instagram */
+}
+
+.redesign-active .btn-tk {
+  background-color: #ff0050 !important; /* Rojo/Rosa TikTok */
+}
+
+.redesign-active .social-share-btn {
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  background-color: #f0f0f0 !important; /* Forzado a gris claro */
+  display: flex!important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.redesign-active .social-share-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: #000 !important; /* Icono negro sólido */
+}
+
+.redesign-active .social-link-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.redesign-active .social-share-btn:hover {
+  background-color: #e5e5e5;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 991px) {
+  .redesign-active .social-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .redesign-active .social-title {
+    font-size: 42px;
+  }
+  
+  .redesign-active .social-subtitle {
+    font-size: 18px;
+  }
 }

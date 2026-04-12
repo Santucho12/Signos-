@@ -1,4 +1,4 @@
-<div class="text-center {% if template != 'password' %}text-md-left{% endif %}">
+<div class="social-links text-center {% if template != 'password' %}text-md-left{% endif %}">
     {% for sn in ['instagram', 'facebook', 'youtube', 'tiktok', 'twitter', 'pinterest'] %}
         {% set sn_url = attribute(store,sn) %}
         {% if sn_url %}

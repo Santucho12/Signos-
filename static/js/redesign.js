@@ -127,12 +127,12 @@
       var current = 0;
       var total   = dots.length;
 
-      // Sincroniza los dots con el ciclo CSS (4s por slide = 12s total)
+      // Sincroniza los dots con el ciclo CSS (5s por par = 10s total)
       setInterval(function () {
         dots[current].classList.remove('active');
         current = (current + 1) % total;
         dots[current].classList.add('active');
-      }, 4000);
+      }, 5000);
     },
 
     /* ── 2. Animaciones de hover en tarjetas de producto
