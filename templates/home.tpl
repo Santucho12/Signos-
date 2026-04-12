@@ -69,7 +69,14 @@
 <!-- REDESIGN HOME CONTENT (Visible in Redesign)-->
 <!-- ========================================== -->
 <style>
-    /* Ocultar elementos para evitar que parpadeen antes de que cargue el CSS de la animación */
+    /* SEGURIDAD: Ocultar el rediseño para clientes finales si el CSS aún no cargó */
+    .redesign-home-content {
+        display: none !important;
+    }
+    .redesign-active .redesign-home-content {
+        display: block !important;
+    }
+    /* Ocultar elementos para evitar que parpadeen antes de que carguen las animaciones */
     .redesign-hero-title, .redesign-hero-subtitle, .redesign-btn-primary {
         opacity: 0;
     }
@@ -103,6 +110,109 @@
                 </svg>
             </div>
         </div>
+
+        <!-- Banner de Beneficios en el Video -->
+        <div class="redesign-hero-benefits">
+            <span class="benefit-text">15% DE DESCUENTO CON TRANSFERENCIA</span>
+            <span class="benefit-sep">|</span>
+            <span class="benefit-text">ENVIOS A TODO EL PAIS</span>
+            <span class="benefit-sep">|</span>
+            <span class="benefit-text">3 Y 6 CUOTAS SIN INTERES</span>
+        </div>
     </section>
 
+    <!-- 2. NOVEDADES SECTION -->
+    <section class="redesign-novedades">
+        <div class="novedades-container">
+            <!-- Columna Izquierda: Imagen / Carrusel -->
+            <!-- Columna Izquierda: Carrusel Automático -->
+            <div class="novedades-media">
+                <div class="novedades-carousel" data-redesign-animate="fadeIn" data-redesign-delay="0">
+                    <!-- Slides -->
+                    <div class="novedades-carousel-track">
+                        <div class="novedades-slide">
+                            <img src="{{ 'images/Gemini_Generated_Image_bwi1xsbwi1xsbwi1.png' | static_url }}" alt="Signos Editorial 2026 — 1">
+                        </div>
+                        <div class="novedades-slide">
+                            <img src="{{ 'images/Gemini_Generated_Image_88smk788smk788sm.png' | static_url }}" alt="Signos Editorial 2026 — 2">
+                        </div>
+                        <div class="novedades-slide">
+                            <img src="{{ 'images/Gemini_Generated_Image_pz2dg5pz2dg5pz2d.png' | static_url }}" alt="Signos Editorial 2026 — 3">
+                        </div>
+                        <!-- Clon del primero para loop infinito -->
+                        <div class="novedades-slide">
+                            <img src="{{ 'images/Gemini_Generated_Image_bwi1xsbwi1xsbwi1.png' | static_url }}" alt="Signos Editorial 2026 — 1 Clone">
+                        </div>
+                    </div>
+                    <!-- Puntos indicadores (sin flechas) -->
+                    <div class="novedades-dots">
+                        <span class="novedades-dot active" data-index="0"></span>
+                        <span class="novedades-dot" data-index="1"></span>
+                        <span class="novedades-dot" data-index="2"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Columna Derecha: Textos -->
+            <div class="novedades-text-content">
+                <p class="novedades-eyebrow" data-redesign-animate="fadeUp" data-redesign-delay="300">Otoño / Invierno — Colección 2026</p>
+                <h2 class="novedades-title" data-redesign-animate="fadeUp" data-redesign-delay="600">Tu outfit habla antes que vos. <br>Dale algo bueno para contar.</h2>
+                <p class="novedades-description" data-redesign-animate="fadeUp" data-redesign-delay="900">Cada pieza fue seleccionada pensando en vos. <br>Stock limitado, calidad que se nota</p>
+                
+                <div class="novedades-cta-wrapper" data-redesign-animate="fadeUp" data-redesign-delay="1200">
+                    <div class="redesign-scroll-indicator" style="margin: 19px 0 1px 0; opacity: 0.5;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <a href="/productos" class="redesign-btn-gold">VER NOVEDADES</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 3. SALES SECTION (Dark / Luxury) -->
+    <section class="redesign-sales" id="ofertas-section">
+        <div class="sales-wrapper">
+            <!-- Columna Izquierda: Mensaje de Oferta -->
+            <div class="sales-text-content">
+                <p class="sales-eyebrow" data-redesign-animate="fadeUp" data-redesign-delay="200">Final de Temporada</p>
+                <h2 class="sales-title" data-redesign-animate="fadeUp" data-redesign-delay="400">SALE <br>SELECTION</h2>
+                <div class="sales-description" data-redesign-animate="fadeUp" data-redesign-delay="600">
+                    <p>Hasta 40% OFF en piezas seleccionadas.</p>
+                    <p>La calidad de siempre, a precio de oportunidad.</p>
+                </div>
+                <div class="sales-cta" data-redesign-animate="fadeUp" data-redesign-delay="800">
+                    <a href="/sale" class="redesign-btn-outline">VER TODAS LAS OFERTAS</a>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Grid de Productos Destacados -->
+             <div class="sales-products-grid" data-redesign-animate="fadeIn" data-redesign-delay="300">
+                <!-- Producto 1 -->
+                <div class="sales-card">
+                    <div class="sales-card-image">
+                        <img src="{{ 'images/Gemini_Generated_Image_pz2dg5pz2dg5pz2d.png' | static_url }}" alt="Oferta 1">
+                        <span class="sales-badge">30% OFF</span>
+                    </div>
+                    <div class="sales-card-info">
+                        <span class="product-category">ABRIGOS</span>
+                        <h3 class="product-name">Campera Puffer Black</h3>
+                        <p class="product-price"><span class="old-price">$120.000</span> $84.000</p>
+                    </div>
+                </div>
+                <!-- Producto 2 -->
+                <div class="sales-card">
+                    <div class="sales-card-image">
+                        <img src="{{ 'images/Gemini_Generated_Image_88smk788smk788sm.png' | static_url }}" alt="Oferta 2">
+                        <span class="sales-badge">40% OFF</span>
+                    </div>
+                    <div class="sales-card-info">
+                        <span class="product-category">PANTALONES</span>
+                        <h3 class="product-name">Jean Relaxed Fit</h3>
+                        <p class="product-price"><span class="old-price">$85.000</span> $51.000</p>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </section>
 </div>

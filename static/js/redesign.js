@@ -29,9 +29,24 @@
     return Array.prototype.slice.call((context || document).querySelectorAll(selector));
   }
 
-  /** Agrega clase con delay opcional */
-  function addClassDelayed(el, className, delay) {
-    setTimeout(function () { el.classList.add(className); }, delay || 0);
+  /** Agrega clase con animación suave usando doble rAF + delay
+   *  El doble rAF garantiza que el navegador PINTE el estado inicial
+   *  (opacity:0) ANTES de disparar la transición hacia opacity:1.
+   *  Sin esto, el navegador colapsa inicio y fin en un solo frame → sin transición.
+   */
+  function addClassAnimated(el, className, delay) {
+    var apply = function () {
+      requestAnimationFrame(function () {      // Frame 1: navegador registra la lectura del estado actual
+        requestAnimationFrame(function () {   // Frame 2: ahora sí dispara la transición
+          if (delay) {
+            setTimeout(function () { el.classList.add(className); }, delay);
+          } else {
+            el.classList.add(className);
+          }
+        });
+      });
+    };
+    apply();
   }
 
   /** Intersection Observer factory — llama a callback cuando el elemento entra en viewport */
@@ -66,11 +81,45 @@
       if (!animated.length) return;
 
       onVisible(animated, function (el) {
-        var type    = el.dataset.redesignAnimate || 'fadeUp';
-        var delay   = el.dataset.redesignDelay   || 0;
-        el.style.opacity = '0'; // initial hidden state
-        addClassDelayed(el, 'redesign-animate-' + type, parseInt(delay, 10));
+        var type  = el.dataset.redesignAnimate || 'fadeUp';
+        var delay = parseInt(el.dataset.redesignDelay || 0, 10);
+        addClassAnimated(el, 'redesign-animate-' + type, delay);
       });
+    },
+
+    /* ── 1b. Animación de la sección Novedades al hacer scroll
+    ─────────────────────────────────────────────────────────────────────────
+    Observa la sección completa. Cuando el usuario scrollea y la sección entra
+    al viewport, añade la clase .is-visible. Los CSS @keyframes definidos en
+    style-redesign.scss esperan esa clase para dispararse en cascada.
+    ──────────────────────────────────────────────────────────────────────── */
+    initNovedadesAnimation: function () {
+      var sections = $$('.redesign-novedades, .redesign-sales');
+      if (!sections.length) return;
+
+      onVisible(sections, function (section) {
+        section.classList.add('is-visible');
+      });
+    },
+
+    /* ── 1c. Carrusel automático de la sección Novedades
+    ─────────────────────────────────────────────────────────────────────────
+    Auto-play con crossfade entre slides cada 4 segundos.
+    Actualiza los puntos indicadores (dots) sin usar flechas.
+    ──────────────────────────────────────────────────────────────────────── */
+    initNovedadesCarousel: function () {
+      var dots  = $$('.novedades-dot');
+      if (!dots.length) return;
+
+      var current = 0;
+      var total   = dots.length;
+
+      // Sincroniza los dots con el ciclo CSS (4s por slide = 12s total)
+      setInterval(function () {
+        dots[current].classList.remove('active');
+        current = (current + 1) % total;
+        dots[current].classList.add('active');
+      }, 4000);
     },
 
     /* ── 2. Animaciones de hover en tarjetas de producto
@@ -178,12 +227,16 @@
     },
 
 
+
+
     /* ── INIT: punto de entrada ─────────────────────────────────────────── */
     init: function () {
       // Esperar a que el DOM esté listo
       var self = this;
       function run() {
         self.initScrollAnimations();
+        self.initNovedadesAnimation();
+        self.initNovedadesCarousel();
         self.initProductCardEffects();
         self.initHeaderScroll();
         self.initDOMInjections();

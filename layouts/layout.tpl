@@ -20,6 +20,9 @@
         <title>{{ page_title }}</title>
         <meta name="description" content="{{ page_description }}" />
         <link rel="preload" as="style" href="{{ [settings.font_headings, settings.font_rest] | google_fonts_url('400,700') }}" />
+        {# Fuentes Premium para el Rediseño 2026 #}
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+        
         <link rel="preload" href="{{ 'css/style-critical.scss' | static_url }}" as="style" />
         <link rel="preload" href="{{ 'css/style-colors.scss' | static_url }}" as="style" />
 

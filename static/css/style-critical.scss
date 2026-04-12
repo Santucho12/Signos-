@@ -7295,3 +7295,17 @@ header.head-main.compress .logo-img-small {
     width: auto !important
   }
 }
+
+/* ============================================================ 
+   SEGURIDAD REDISEÑO: No borrar ni mover 
+   Evita que los clientes vean el nuevo home sin estilos.
+   ============================================================ */
+.redesign-home-content {
+  display: none !important;
+}
+.redesign-active .redesign-home-content {
+  display: block !important;
+}
+.redesign-active .original-home-content {
+  display: none !important;
+}
