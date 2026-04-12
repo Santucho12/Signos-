@@ -170,49 +170,5 @@
             </div>
         </div>
     </section>
-    <!-- 3. SALES SECTION (Dark / Luxury) -->
-    <section class="redesign-sales" id="ofertas-section">
-        <div class="sales-wrapper">
-            <!-- Columna Izquierda: Mensaje de Oferta -->
-            <div class="sales-text-content">
-                <p class="sales-eyebrow" data-redesign-animate="fadeUp" data-redesign-delay="200">Final de Temporada</p>
-                <h2 class="sales-title" data-redesign-animate="fadeUp" data-redesign-delay="400">SALE <br>SELECTION</h2>
-                <div class="sales-description" data-redesign-animate="fadeUp" data-redesign-delay="600">
-                    <p>Hasta 40% OFF en piezas seleccionadas.</p>
-                    <p>La calidad de siempre, a precio de oportunidad.</p>
-                </div>
-                <div class="sales-cta" data-redesign-animate="fadeUp" data-redesign-delay="800">
-                    <a href="/sale" class="redesign-btn-outline">VER TODAS LAS OFERTAS</a>
-                </div>
-            </div>
 
-            <!-- Columna Derecha: Grid de Productos Destacados -->
-             <div class="sales-products-grid" data-redesign-animate="fadeIn" data-redesign-delay="300">
-                <!-- Producto 1 -->
-                <div class="sales-card">
-                    <div class="sales-card-image">
-                        <img src="{{ 'images/Gemini_Generated_Image_pz2dg5pz2dg5pz2d.png' | static_url }}" alt="Oferta 1">
-                        <span class="sales-badge">30% OFF</span>
-                    </div>
-                    <div class="sales-card-info">
-                        <span class="product-category">ABRIGOS</span>
-                        <h3 class="product-name">Campera Puffer Black</h3>
-                        <p class="product-price"><span class="old-price">$120.000</span> $84.000</p>
-                    </div>
-                </div>
-                <!-- Producto 2 -->
-                <div class="sales-card">
-                    <div class="sales-card-image">
-                        <img src="{{ 'images/Gemini_Generated_Image_88smk788smk788sm.png' | static_url }}" alt="Oferta 2">
-                        <span class="sales-badge">40% OFF</span>
-                    </div>
-                    <div class="sales-card-info">
-                        <span class="product-category">PANTALONES</span>
-                        <h3 class="product-name">Jean Relaxed Fit</h3>
-                        <p class="product-price"><span class="old-price">$85.000</span> $51.000</p>
-                    </div>
-                </div>
-             </div>
-        </div>
-    </section>
 </div>

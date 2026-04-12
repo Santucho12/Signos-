@@ -94,12 +94,25 @@
     style-redesign.scss esperan esa clase para dispararse en cascada.
     ──────────────────────────────────────────────────────────────────────── */
     initNovedadesAnimation: function () {
-      var sections = $$('.redesign-novedades, .redesign-sales');
-      if (!sections.length) return;
+      var section = document.querySelector('.redesign-novedades');
+      if (!section) return;
 
-      onVisible(sections, function (section) {
+      if (!window.IntersectionObserver) {
+        // Fallback: mostrar todo sin animación si el browser es muy viejo
         section.classList.add('is-visible');
-      });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            section.classList.add('is-visible');
+            observer.unobserve(section); // Solo se dispara una vez
+          }
+        });
+      }, { threshold: 0.1 }); // Dispara cuando el 10% de la sección es visible
+
+      observer.observe(section);
     },
 
     /* ── 1c. Carrusel automático de la sección Novedades
