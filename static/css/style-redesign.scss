@@ -82,23 +82,28 @@
   left: 0 !important;
   z-index: 1000 !important;
   background: transparent !important;
-  /* Totalmente transparente */
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border-bottom: none !important;
-  padding-top: 12px !important;
-  /* Navbar un poco más alto */
-  padding-bottom: 12px !important;
-  /* Navbar un poco más alto */
-  transition: all 0.4s ease !important;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+  /* Transición suave solo en color y fondo */
+  transition: background-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease !important;
 }
 
-/* Cuando scrollea, se pone blanco sólido */
-.redesign-active .js-head-main-scrolled,
-.redesign-active .head-main.scrolled {
+.redesign-active .head-main.scrolled,
+.redesign-active [data-store="header"].scrolled {
   position: fixed !important;
   background: rgba(255, 255, 255, 0.98) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+/* Auto-hide: Esconde el navbar al bajar, lo muestra al subir */
+.redesign-active .head-main.redesign-header-hidden,
+.redesign-active [data-store="header"].redesign-header-hidden {
+  transform: translateY(-100%) !important;
 }
 
 /* Estilo para los links del NAV */
@@ -841,6 +846,12 @@
    Las clases que usan esas animaciones van DENTRO.
    ============================================================ */
 
+/* Estado inicial de elementos con animación de scroll */
+.redesign-active [data-redesign-animate] {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
 /* Definición de keyframes fuera del scope */
 @keyframes redesign-fadeUp {
   from {
@@ -997,99 +1008,575 @@
 }
 
 /* ============================================================
-   13. NOVEDADES SECTION (Editorial / High Impact)
+   12.5 CATEGORÍAS SECTION (Editorial Grid)
    ============================================================ */
-.redesign-novedades {
-  background-color: #ffffff;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: 0 8%;
-  color: #000000;
+
+.redesign-categorias {
+  background: #fff;
+  padding: 60px 5% 50px;
+  color: #111;
   position: relative;
 }
 
-.novedades-container {
-  display: flex !important;
-  flex-direction: row;
-  /* Horizontal */
-  align-items: center;
+/* --- Header --- */
+.categorias-header {
+  display: flex;
   justify-content: space-between;
-  width: 100%;
+  align-items: baseline;
+  max-width: 1300px;
+  margin: 0 auto 35px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.categorias-header-left {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #000;
+}
+
+.categorias-header-right {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #999;
+}
+
+/* --- Grid 2×2 izquierda grande + 3 derecha --- */
+.categorias-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+  gap: 2px;
   max-width: 1400px;
   margin: 0 auto;
-  gap: 80px;
+  height: 460px; /* Aumentado un 15% para dar más presencia a las imágenes */
 }
 
-/* Columna Izquierda: Carrusel de pares */
-.novedades-media {
-  flex: 1 1 55%;
-  max-width: 55%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* --- Carrusel de Novedades (Sliding Horizontal, CSS puro) --- */
-.novedades-carousel {
+/* Card base */
+.categoria-card {
   position: relative;
-  width: 100%;
-  max-width: 700px; /* Más ancho para 2 imágenes */
-  aspect-ratio: 8 / 5; /* Más horizontal para pares */
-  overflow: hidden;
-  background: #ffffff;
-}
-
-/* El track tiene 3 slides (A-B-A') = 300% de ancho total */
-.novedades-carousel-track {
   display: flex;
-  width: 300%;
-  height: 100%;
-  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Animación CSS infinita — Ciclo de 10s (5s por par)
-   A (0-45%) -> B (45-90%) -> A'(90-100% reset) */
-@keyframes novedadesSlide {
-  0%   { transform: translateX(0); }
-  40%  { transform: translateX(0); }       /* PAUSA EN PAR A */
-  50%  { transform: translateX(-33.333%); } /* DESLIZA A PAR B */
-  90%  { transform: translateX(-33.333%); } /* PAUSA EN PAR B */
-  100% { transform: translateX(-66.666%); } /* DESLIZA A A'(clon) → reset */
-}
-
-.redesign-active .novedades-carousel-track {
-  animation: novedadesSlide 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-}
-
-/* Cada slide = 1 tercio del track */
-.novedades-slide {
-  flex: 0 0 33.333%;
-  height: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px 30px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  color: #fff;
   overflow: hidden;
+  transition: all 0.4s ease;
 }
 
-/* Par de imágenes dentro de cada slide */
-.novedades-slide-pair {
-  display: flex;
-  gap: 8px;
+.categoria-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transform: translateY(-5px);
+}
+
+/* Imagen de fondo absoluta */
+.categoria-bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
-  padding: 0 4px;
-}
-
-.novedades-slide-pair img {
-  flex: 1;
-  min-width: 0;
   height: 100%;
   object-fit: cover;
-  object-position: center 15px;
-  border-radius: 8px;
+  object-position: center top;
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
 }
 
-/* (imágenes sueltas ya no se usan, pero mantenemos por compatibilidad)
+/* Overlay oscuro degradado para legibilidad del texto */
+.categoria-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.75) 0%,
+      rgba(0, 0, 0, 0.25) 50%,
+      rgba(0, 0, 0, 0.1) 100%);
+  z-index: 2;
+  transition: background 0.4s ease;
+}
+
+/* Hover effects handled by JS and specific CTA reveal classes below */
+
+.categoria-card:hover .categoria-overlay {
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.35) 50%,
+      rgba(0, 0, 0, 0.15) 100%);
+}
+
+  /* Eliminados overrides de tarjetas asimétricas para grid simétrico de 4 */
+
+
+  /* --- Número --- */
+  .categoria-number {
+    position: absolute;
+    top: 22px;
+    left: 28px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.7);
+    z-index: 3;
+  }
+
+
+
+  /* --- Subtítulo (categoría sub / Eyebrow) --- */
+  .categoria-sub {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 300; /* Mucho más fino para look boutique */
+    letter-spacing: 4px; /* Mayor espaciado */
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 8px;
+    opacity: 0.8;
+    z-index: 3;
+    position: relative;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  /* --- Nombre grande --- */
+  .categoria-name {
+    font-family: 'Oswald', sans-serif;
+    /* Cambio a Oswald para un look más Editorial/Boutique */
+    font-size: 38px;
+    /* Un poco más grande para compensar que es condensada */
+    font-weight: 700;
+    letter-spacing: 2px;
+    /* Más espaciado para elegancia */
+    text-transform: uppercase;
+    color: #ffffff;
+    line-height: 1;
+    z-index: 3;
+    position: relative;
+    display: inline-block;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.4s ease;
+  }
+
+  /* --- CTA Reveal --- */
+  .categoria-cta {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #facc00; /* Amarillo SIGNOS */
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    z-index: 3;
+    position: relative;
+    margin-top: 15px;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-block;
+  }
+
+  .categoria-card:hover .categoria-name {
+    transform: translateY(-5px);
+  }
+
+  .categoria-card:hover .categoria-cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Optimizar para Parallax */
+  .categoria-bg-img {
+    height: 130%; /* Altura extra para permitir el movimiento parallax */
+    top: -15%;   /* Centrado inicial */
+    will-change: transform;
+  }
+
+
+  /* --- Footer --- */
+  .categorias-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1300px;
+    margin: 35px auto 0;
+    padding-top: 18px;
+    border-top: 1px solid #e0e0e0;
+    position: relative;
+    /* Para centrar el mouse absoluto */
+  }
+
+  .categorias-footer-left {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #999;
+  }
+
+  .categorias-footer-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .mouse-scroll-icon {
+    width: 22px;
+    height: 36px;
+    border: 2px solid #555;
+    /* Borde más oscuro */
+    border-radius: 12px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    animation: mouseBodyBounce 2s infinite;
+    /* Titila/rebota hacia abajo */
+  }
+
+  .mouse-wheel {
+    width: 3px;
+    height: 8px;
+    background-color: #333;
+    border-radius: 2px;
+    margin-top: 6px;
+    animation: mouseScrollAnim 2s infinite;
+  }
+
+  @keyframes mouseBodyBounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateY(0);
+    }
+
+    40% {
+      transform: translateY(5px);
+    }
+
+    60% {
+      transform: translateY(2px);
+    }
+  }
+
+  @keyframes mouseScrollAnim {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+
+
+  .categorias-btn-vertodo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #111;
+    text-decoration: none;
+    padding: 12px 28px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+  }
+
+  .categorias-btn-vertodo:hover {
+    background: #111;
+    color: #fff;
+    border-color: #111;
+  }
+
+  /* --- Responsive: Mobile --- */
+  @media (max-width: 768px) {
+    .categorias-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      height: auto;
+    }
+
+    .categoria-card {
+      min-height: 200px;
+      padding: 22px 20px;
+    }
+
+    .categoria-card-large .categoria-name {
+      font-size: 38px;
+    }
+
+    .categoria-name {
+      font-size: 24px;
+    }
+
+    .categorias-header,
+    .categorias-footer {
+      flex-direction: column;
+      gap: 10px;
+      text-align: center;
+      align-items: center;
+    }
+
+    .categorias-footer-left {
+      order: 2;
+    }
+
+    .categorias-btn-vertodo {
+      order: 1;
+    }
+
+    .categorias-footer-center {
+      order: 3;
+    }
+
+    .redesign-categorias {
+      padding: 40px 4% 35px;
+    }
+  }
+
+  /* ============================================================
+   13. NOVEDADES SECTION (Editorial / High Impact)
+   ============================================================ */
+  .redesign-novedades {
+    background-color: #ffffff;
+    padding: 55px 5% 100px;
+    color: #000000;
+    position: relative;
+  }
+
+  .novedades-header {
+    max-width: 1300px;
+    margin: 50px auto 10px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .novedades-header-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #000;
+
+    /* Efecto de Atención: Respiración y Brillo sutil */
+    animation: titlePulse 4s infinite ease-in-out;
+    display: inline-block;
+  }
+
+  @keyframes titlePulse {
+
+    0%,
+    100% {
+      letter-spacing: 2px;
+      text-shadow: 0 0 0px rgba(0, 0, 0, 0);
+    }
+
+    50% {
+      letter-spacing: 4px;
+      text-shadow: 0 0 15px rgba(250, 204, 0, 0.3);
+      /* Brillo ambar muy suave */
+    }
+  }
+
+  .novedades-container {
+    display: flex !important;
+    flex-direction: row;
+    /* Alineación al tope para cerrar el gap con el título */
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 80px;
+  }
+
+  /* Columna Izquierda: Carrusel de pares */
+  .novedades-media {
+    flex: 1 1 65%;
+    max-width: 65%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* --- Carrusel de Novedades (Sliding Horizontal, CSS puro) --- */
+  .novedades-carousel {
+    position: relative;
+    width: 100%;
+    max-width: 1050px;
+    /* Mas ancho todavia */
+    aspect-ratio: 8 / 5;
+    /* Más horizontal para pares */
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .novedades-media {
+    flex: 1;
+    height: 620px;
+    /* Reducido 10% para compactar la sección y acercar al título */
+    background-color: transparent;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .novedades-carousel-track {
+    display: flex;
+    width: 300%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Animación CSS infinita — Ciclo de 10s (5s por par)
+   A (0-45%) -> B (45-90%) -> A'(90-100% reset) */
+  @keyframes novedadesSlide {
+    0% {
+      transform: translateX(0);
+    }
+
+    40% {
+      transform: translateX(0);
+    }
+
+    /* PAUSA EN PAR A */
+    50% {
+      transform: translateX(-33.333%);
+    }
+
+    /* DESLIZA A PAR B */
+    90% {
+      transform: translateX(-33.333%);
+    }
+
+    /* PAUSA EN PAR B */
+    100% {
+      transform: translateX(-66.666%);
+    }
+
+    /* DESLIZA A A'(clon) → reset */
+  }
+
+  .redesign-active .novedades-carousel-track {
+    animation: novedadesSlide 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  /* Cada slide = 1 tercio del track */
+  .novedades-slide {
+    flex: 0 0 33.333%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Par de imágenes dentro de cada slide */
+  .novedades-slide-pair {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    padding: 0 4px;
+  }
+
+  .novedades-media {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .novedades-slide-pair img {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15px;
+    border-radius: 8px;
+    transition: filter 0.5s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .novedades-global-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.15); /* Aún menos oscuro */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    z-index: 10;
+    transition: opacity 0.4s ease;
+    text-decoration: none !important;
+    backdrop-filter: blur(2px); /* Desenfoque súper sutil */
+    -webkit-backdrop-filter: blur(2px);
+    border-radius: 8px;
+  }
+
+  .redesign-btn-ghost {
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px; /* Reducido de 13px a 12px */
+    font-weight: 500;
+    letter-spacing: 1.5px; /* Reducido un poquito para compactar */
+    text-transform: uppercase;
+    color: #ffffff !important;
+    background-color: transparent !important;
+    border: 1px solid #ffffff;
+    padding: 12px 35px; /* Reducido padding considerablemente */
+    border-radius: 35px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    animation: none !important; /* Sin titileo */
+  }
+
+  .redesign-btn-ghost:hover {
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    color: #000000 !important;
+  }
+
+  .novedades-global-overlay .redesign-btn-ghost {
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .novedades-media:hover .novedades-global-overlay {
+    opacity: 1;
+  }
+
+  .novedades-media:hover .novedades-global-overlay .redesign-btn-ghost {
+    transform: translateY(0);
+  }
+
+  /* Smooth zoom on background images when hovering the media container */
+  .novedades-media:hover .novedades-slide-pair img {
+    transform: scale(1.03);
+  }
+
+  /* (imágenes sueltas ya no se usan, pero mantenemos por compatibilidad)
 .novedades-slide > img {
   width: 100%;
   height: 100%;
@@ -1097,1012 +1584,1211 @@
   object-position: center 15px;
 } */
 
-/* --- Puntos indicadores --- */
-.novedades-dots {
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  z-index: 2;
-}
-
-.novedades-dot {
-  width: 28px;
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(0, 0, 0, 0.25);
-  transition: none;
-  /* El CSS animation lo maneja */
-}
-
-/* Sincronia de dots con el ciclo de 10s (2 pares) */
-@keyframes dot1 {
-  0%, 40%, 90%, 100% {
-    background: #000;
-    width: 48px;
+  /* --- Puntos indicadores --- */
+  .novedades-dots {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 2;
   }
-  50%, 85% {
-    background: rgba(0, 0, 0, 0.25);
+
+  .novedades-dot {
     width: 28px;
-  }
-}
-
-@keyframes dot2 {
-  0%, 40% {
+    height: 3px;
+    border-radius: 2px;
     background: rgba(0, 0, 0, 0.25);
-    width: 28px;
-  }
-  50%, 85% {
-    background: #000;
-    width: 48px;
-  }
-  90%, 100% {
-    background: rgba(0, 0, 0, 0.25);
-    width: 28px;
-  }
-}
-
-.redesign-active .novedades-dot:nth-child(1) {
-  animation: dot1 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-}
-
-.redesign-active .novedades-dot:nth-child(2) {
-  animation: dot2 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-}
-
-
-/* Columna Derecha: Contenido de Texto Premium (comprimido) */
-.novedades-text-content {
-  flex: 1 1 40%;
-  max-width: 420px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: left;
-}
-
-.novedades-eyebrow {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 19px;
-  /* Aumentado para mayor presencia */
-  font-weight: 500;
-  font-style: italic;
-  letter-spacing: 1px;
-  text-transform: none;
-  color: #888888;
-  /* Un poco más oscuro para legibilidad */
-  margin-bottom: 25px;
-}
-
-.novedades-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 48px;
-  line-height: 1.1;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #1a1a1a;
-  /* NEGRO SUAVIZADO PREMIUM */
-  margin: 0 0 35px 0;
-}
-
-.novedades-description {
-  font-family: 'Outfit', sans-serif;
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 1.6;
-  color: #444444;
-  margin-bottom: 45px;
-  max-width: 450px;
-}
-
-/* Botón Dorado Redondeado (Pill Style) con Glow y Animación (Igual al Hero) */
-.redesign-btn-gold {
-  display: inline-block;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #000000 !important;
-  background-color: #FFD700 !important;
-  padding: 16px 45px;
-  border-radius: 35px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  position: relative;
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
-  animation: btnNeonPulse 1s infinite alternate !important;
-  /* Titila suavemente */
-}
-
-.redesign-btn-gold:hover {
-  /* No hace nada adicional en hover, mantiene su estado animado */
-  text-decoration: none !important;
-  color: #000000 !important;
-}
-
-/* --- Keyframe base --- */
-@keyframes novedadesFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+    transition: none;
+    /* El CSS animation lo maneja */
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+  /* Sincronia de dots con el ciclo de 10s (2 pares) */
+  @keyframes dot1 {
 
-@keyframes novedadesFadeIn {
-  from {
-    opacity: 0;
-  }
+    0%,
+    40%,
+    90%,
+    100% {
+      background: #000;
+      width: 48px;
+    }
 
-  to {
-    opacity: 1;
-  }
-}
-
-/* --- Estado inicial: todos los elementos de Novedades invisibles --- */
-.redesign-active .novedades-image-wrapper,
-.redesign-active .novedades-eyebrow,
-.redesign-active .novedades-title,
-.redesign-active .novedades-description,
-.redesign-active .novedades-cta-wrapper {
-  opacity: 0;
-}
-
-/* --- Animaciones: se disparan SOLO cuando JS añade .is-visible a la sección ---
-   Esto ocurre cuando el usuario scrollea y llega a la sección Novedades.
---------------------------------------------------------------------------- */
-.redesign-active .redesign-novedades.is-visible .novedades-image-wrapper {
-  animation: novedadesFadeIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: 0.05s;
-}
-
-.redesign-active .redesign-novedades.is-visible .novedades-eyebrow {
-  animation: novedadesFadeUp 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: 0.25s;
-}
-
-.redesign-active .redesign-novedades.is-visible .novedades-title {
-  animation: novedadesFadeUp 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: 0.5s;
-}
-
-.redesign-active .redesign-novedades.is-visible .novedades-description {
-  animation: novedadesFadeUp 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: 0.75s;
-}
-
-.redesign-active .redesign-novedades.is-visible .novedades-cta-wrapper {
-  animation: novedadesFadeUp 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: 1.0s;
-}
-
-/* Clases legacy del IntersectionObserver — las dejamos para no romper otras secciones */
-.redesign-animate-fadeUp {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.redesign-animate-slideLeft {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.redesign-animate-fadeIn {
-  opacity: 1;
-}
-
-.novedades-cta-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-/* Responsive: Ajustes para pantallas chicas */
-@media (max-width: 1024px) {
-  .redesign-novedades {
-    height: auto;
-    padding: 120px 5%;
+    50%,
+    85% {
+      background: rgba(0, 0, 0, 0.25);
+      width: 28px;
+    }
   }
 
-  .novedades-container {
-    flex-direction: column;
-    gap: 70px;
+  @keyframes dot2 {
+
+    0%,
+    40% {
+      background: rgba(0, 0, 0, 0.25);
+      width: 28px;
+    }
+
+    50%,
+    85% {
+      background: #000;
+      width: 48px;
+    }
+
+    90%,
+    100% {
+      background: rgba(0, 0, 0, 0.25);
+      width: 28px;
+    }
   }
 
-  .novedades-media,
+  .redesign-active .novedades-dot:nth-child(1) {
+    animation: dot1 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .redesign-active .novedades-dot:nth-child(2) {
+    animation: dot2 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+
+  /* Columna Derecha: Contenido de Texto Premium (comprimido) */
   .novedades-text-content {
-    max-width: 100%;
-    width: 100%;
-    text-align: center;
-    align-items: center;
+    flex: 1 1 40%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
   }
 
-  .novedades-cta-wrapper {
-    align-items: center;
-  }
-
-  .novedades-media {
-    height: 65vh;
+  .novedades-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    /* Aumentado para mayor presencia */
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: 1px;
+    text-transform: none;
+    color: #888888;
+    /* Un poco más oscuro para legibilidad */
+    margin-bottom: 25px;
   }
 
   .novedades-title {
-    font-size: 42px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 48px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    /* NEGRO SUAVIZADO PREMIUM */
+    margin: 0 0 35px 0;
+
+    /* Animacion de Viento solicitada */
+    animation: windErase 8s infinite ease-in-out;
+    display: block;
+  }
+
+  @keyframes windErase {
+    0% {
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateX(-20px) skewX(15deg);
+    }
+
+    15% {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateX(0) skewX(0);
+    }
+
+    75% {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateX(0) skewX(0);
+    }
+
+    85% {
+      opacity: 0.5;
+      filter: blur(5px);
+      transform: translateX(40px) skewX(-20deg);
+    }
+
+    95%,
+    100% {
+      opacity: 0;
+      filter: blur(15px);
+      transform: translateX(100px) skewX(-40deg);
+    }
   }
 
   .novedades-description {
-    max-width: 100%;
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.6;
+    color: #444444;
+    margin-bottom: 45px;
+    max-width: 450px;
   }
-}
 
-/* ============================================================
+  /* Botón Dorado Redondeado (Pill Style) con Glow y Animación (Igual al Hero) */
+  .redesign-btn-gold {
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #000000 !important;
+    background-color: #FFD700 !important;
+    padding: 16px 45px;
+    border-radius: 35px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
+    animation: btnNeonPulse 1s infinite alternate !important;
+    /* Titila suavemente */
+  }
+
+  .redesign-btn-gold:hover {
+    /* No hace nada adicional en hover, mantiene su estado animado */
+    text-decoration: none !important;
+    color: #000000 !important;
+  }
+
+  /* --- Keyframe base --- */
+  @keyframes novedadesFadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes novedadesFadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* --- Estado inicial: todos los elementos de Novedades invisibles --- */
+  .redesign-active .novedades-image-wrapper,
+  .redesign-active .novedades-eyebrow,
+  .redesign-active .novedades-title,
+  .redesign-active .novedades-description,
+  .redesign-active .novedades-cta-wrapper {
+    opacity: 0;
+  }
+
+  /* --- Animaciones: se disparan SOLO cuando JS añade .is-visible a la sección ---
+   Esto ocurre cuando el usuario scrollea y llega a la sección Novedades.
+--------------------------------------------------------------------------- */
+  .redesign-active .redesign-novedades.is-visible .novedades-image-wrapper {
+    animation: novedadesFadeIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: 0.05s;
+  }
+
+  .redesign-active .redesign-novedades.is-visible .novedades-eyebrow {
+    animation: novedadesFadeUp 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: 0.25s;
+  }
+
+  .redesign-active .redesign-novedades.is-visible .novedades-title {
+    animation: novedadesFadeUp 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: 0.5s;
+  }
+
+  .redesign-active .redesign-novedades.is-visible .novedades-description {
+    animation: novedadesFadeUp 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: 0.75s;
+  }
+
+  .redesign-active .redesign-novedades.is-visible .novedades-cta-wrapper {
+    animation: novedadesFadeUp 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: 1.0s;
+  }
+
+  /* Clases legacy del IntersectionObserver — las dejamos para no romper otras secciones */
+  .redesign-animate-fadeUp {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .redesign-animate-slideLeft {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .redesign-animate-fadeIn {
+    opacity: 1;
+  }
+
+  .novedades-cta-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Responsive: Ajustes para pantallas chicas */
+  @media (max-width: 1024px) {
+    .redesign-novedades {
+      height: auto;
+      padding: 120px 5%;
+    }
+
+    .novedades-container {
+      flex-direction: column;
+      gap: 70px;
+    }
+
+    .novedades-media,
+    .novedades-text-content {
+      max-width: 100%;
+      width: 100%;
+      text-align: center;
+      align-items: center;
+    }
+
+    .novedades-cta-wrapper {
+      align-items: center;
+    }
+
+    .novedades-media {
+      height: 65vh;
+    }
+
+    .novedades-title {
+      font-size: 42px;
+    }
+
+    .novedades-description {
+      max-width: 100%;
+    }
+  }
+
+  /* ============================================================
    14. OFFERS SECTION (Carrusel 3 Fotos con Urgencia)
    ============================================================ */
-.redesign-offers {
-  width: 100%;
-  padding: 120px 0;
-  /* Espaciado aumentado */
-  background-color: #ffffff;
-  overflow: hidden;
-}
+  .redesign-offers {
+    width: 100%;
+    padding: 80px 0;
+    background-color: #ffffff;
+  }
 
-.offers-header {
-  text-align: center;
-  margin-bottom: 60px;
-  padding: 0 20px;
-}
+  /* Header split matching Section 2 */
+  .offers-header-split {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    max-width: 1300px;
+    margin: 0 auto 30px;
+    padding: 0 20px 15px;
+    border-bottom: 1px solid #eee;
+  }
 
-.offers-eyebrow {
-  font-family: 'Outfit', sans-serif;
-  color: #f9d423;
-  /* Amarillo de urgencia */
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 5px;
-  margin-bottom: 15px;
-  display: block;
-}
+  .offers-brand-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #111;
+    text-transform: uppercase;
 
-.offers-section-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 34px;
-  /* Reducido de 52px */
-  font-weight: 800;
-  letter-spacing: -1px;
-  color: #1a1a1a;
-  margin-bottom: 10px;
-}
+    /* Efecto de Atención: Respiración y Brillo */
+    animation: titlePulse 4s infinite ease-in-out;
+    display: inline-block;
+  }
 
-.offers-urgency-text {
-  font-family: 'Outfit', sans-serif;
-  font-size: 16px;
-  font-weight: 300;
-  color: #666;
-  max-width: 600px;
-  margin: 0 auto;
-}
+  .offers-label-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #999;
+  }
 
-/* El contenedor de la grilla estática */
-.offers-carousel-wrapper {
-  width: 100%;
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 20px;
-  overflow: visible !important;
-  position: relative;
-}
-
-/* Grilla de 4 columnas */
-.offers-track {
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  width: 100%;
-  animation: none !important;
-  /* Desactivar carrusel */
-}
-
-@keyframes offersScroll {
-  /* Eliminado */
-}
-
-.offer-item {
-  position: relative;
-  background: #fff;
-  padding: 10px;
-  border-radius: 4px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-  transition: transform 0.4s ease;
-}
-
-.offer-item:hover {
-  transform: none;
-}
-
-.offer-img-box {
-  position: relative;
-  aspect-ratio: 5 / 6;
-  /* 20% mas de altura que el formato 1:1 */
-  overflow: hidden;
-  border-radius: 2px;
-  margin-bottom: 15px;
-}
-
-.offer-img-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 1s ease;
-}
-
-.offer-item:hover .offer-img-box img {
-  transform: none;
-}
-
-/* Badge de Urgencia */
-.offer-badge {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  display: inline-block;
-  background-color: #f9d423;
-  color: #000;
-  /* Texto negro para mejor contraste con amarillo */
-  font-family: 'Outfit', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 6px 15px;
-  border-radius: 25px;
-  z-index: 5;
-  box-shadow: 0 4px 10px rgba(249, 212, 35, 0.3);
-}
-
-/* Información de Producto */
-.offer-info {
-  text-align: center;
-}
-
-.offer-info h4 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-  color: #1a1a1a;
-}
-
-.price-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-.old-price {
-  text-decoration: line-through;
-  color: #999;
-  font-size: 14px;
-  margin-right: 10px;
-}
-
-.new-price {
-  color: #000000;
-  font-weight: 800;
-  font-size: 22px;
-}
-
-.offer-installments {
-  font-family: 'Outfit', sans-serif;
-  font-size: 12px;
-  color: #000; /* Negro como pidió el usuario */
-  margin-top: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-
-.offer-installments strong {
-  font-weight: 700;
-}
-
-.offer-installments::before {
-  content: '';
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M426.67,102.4H85.33a28.44,28.44,0,0,0-28.44,28.44V381.16A28.44,28.44,0,0,0,85.33,409.6H426.67a28.44,28.44,0,0,0,28.44-28.44V130.84A28.44,28.44,0,0,0,426.67,102.4Zm22.75,278.76a22.76,22.76,0,0,1-22.75,22.75H85.33a22.76,22.76,0,0,1-22.75-22.75V202H449.42Zm0-184.89H62.58V130.84a22.76,22.76,0,0,1,22.75-22.75H426.67a22.76,22.76,0,0,1,22.75,22.75ZM352.71,355.56h39.82a14.23,14.23,0,0,0,14.23-14.23V301.51a14.23,14.23,0,0,0-14.23-14.22H352.71a14.22,14.22,0,0,0-14.22,14.22v39.82A14.23,14.23,0,0,0,352.71,355.56Zm-8.53-54.05a8.53,8.53,0,0,1,8.53-8.53h39.82a8.53,8.53,0,0,1,8.54,8.53v39.82a8.54,8.54,0,0,1-8.54,8.54H352.71a8.53,8.53,0,0,1-8.53-8.54Zm-165,54.05H108.09v-5.69H179.2Z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  filter: grayscale(1) brightness(0); /* Forzamos a negro */
-}
-
-.offers-footer {
-  text-align: center;
-  margin-top: 35px;
-  /* Compactado */
-}
-
-
-/* En mobile mostramos en 2 columnas */
-@media (max-width: 991px) {
-  .offers-track {
-    grid-template-columns: repeat(2, 1fr);
+  /* Grilla de 4 */
+  .offers-grid-premium {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 15px;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
-}
 
-/* En mobile muy chico 1 columna */
-@media (max-width: 480px) {
-  .offers-track {
-    grid-template-columns: 1fr;
+  /* Card Premium (similar a categorias) */
+  .offer-card-premium {
+    position: relative;
+    height: 440px;
+    /* Aumentado 15% (de 380px) */
+    background: #000;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 24px;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.05);
   }
-}
 
-/* ============================================================
+  .offer-bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .offer-gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.2) 50%,
+        transparent 100%);
+    z-index: 2;
+  }
+
+  .offer-card-premium:hover .offer-bg-img {
+    transform: scale(1.08);
+  }
+
+  /* Badge sutil */
+  .offer-badge-subtle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    z-index: 3;
+    letter-spacing: 0.5px;
+  }
+
+  /* Info minimalista */
+  .offer-info-minimal {
+    position: relative;
+    z-index: 3;
+    color: #fff;
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .offer-card-premium:hover .offer-info-minimal {
+    transform: translateY(-10px);
+  }
+
+  .offer-category {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    opacity: 0.8;
+  }
+
+  .offer-title-minimal {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  .offer-price-minimal {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .offer-price-minimal .old-price {
+    text-decoration: line-through;
+    opacity: 0.6;
+    font-size: 13px;
+    margin-right: 8px;
+  }
+
+  .offer-price-minimal .new-price {
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .offer-installments {
+    display: block;
+    margin-top: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #facc00; /* Mismo color que el botón Aprovechar ofertas */
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* CTA Reveal effect */
+  .offer-cta-reveal {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 15px;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.1s;
+  }
+
+  .offer-card-premium:hover .offer-cta-reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .offer-cta-reveal svg {
+    transition: transform 0.3s ease;
+  }
+  
+  .offer-card-premium:hover .offer-cta-reveal svg {
+    transform: translateX(4px);
+  }
+
+  /* Footer minimalista */
+  .offers-footer-minimal {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    /* Subido otros 20px */
+  }
+
+  .offers-cta-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .offers-arrow-indicator svg {
+    animation: arrowFlicker 2s infinite;
+    opacity: 0.7;
+  }
+
+  .redesign-btn-verofertas {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    /* Reducido de 14px */
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #000 !important;
+    background: #facc00 !important;
+    /* Amarillo intenso forzado */
+    padding: 16px 45px;
+    /* Reducido un 10-15% */
+    border-radius: 50px;
+    text-decoration: none !important;
+    border: none;
+    box-shadow: 0 8px 30px rgba(250, 204, 0, 0.7);
+    /* Sombra amarilla mas intensa */
+    animation: buttonFlicker 2.5s infinite ease-in-out;
+    display: inline-block;
+    transition: none !important;
+    /* Evita cualquier transicion en hover */
+  }
+
+  /* Forzamos que en hover NO pase nada, manteniendo el estado de la animacion */
+  .redesign-btn-verofertas:hover {
+    background: #facc00 !important;
+    color: #000 !important;
+    transform: none;
+    /* Nota: esto podria pausar la animacion en algunos navegadores, pero es lo que pide el usuario */
+    box-shadow: 0 8px 30px rgba(250, 204, 0, 0.7) !important;
+  }
+
+  /* Animación de titileo (flicker) y pulso (agrande/achique) */
+  @keyframes buttonFlicker {
+
+    0%,
+    100% {
+      box-shadow: 0 5px 15px rgba(250, 204, 0, 0.3);
+      opacity: 0.95;
+      transform: scale(1);
+    }
+
+    50% {
+      box-shadow: 0 15px 40px rgba(250, 204, 0, 0.7);
+      opacity: 1;
+      transform: scale(1.08);
+      /* Se agranda un poco */
+    }
+  }
+
+  @keyframes arrowFlicker {
+
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.5;
+    }
+
+    50% {
+      transform: translateY(8px);
+      opacity: 1;
+    }
+  }
+
+  .redesign-btn-verofertas:hover {
+    background: #f9d423;
+    color: #000;
+    transform: none;
+  }
+
+  @media (max-width: 991px) {
+    .offers-grid-premium {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .offers-grid-premium {
+      grid-template-columns: 1fr;
+    }
+
+    .offers-header-split {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+
+  /* ============================================================
    15. FOOTER REDESIGN (Premium Editorial Dark Footer)
    ============================================================ */
-.redesign-active footer.js-footer {
-  background-color: #080808;
-  /* Negro profundo equilibrado */
-  color: #fff;
-  padding: 100px 0 0;
-  /* Más espacio superior */
-  border-top: 1px solid transparent;
-  position: relative;
-  overflow: hidden;
-  text-align: center;
-  /* Centramos todo el contenido del footer */
-}
-
-/* Línea de luz dorada en el tope del footer */
-.redesign-active footer.js-footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 10%;
-  width: 80%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #ffffff, transparent);
-  opacity: 0.3;
-}
-
-/* Títulos de sección en el footer: Estilo Editorial */
-.redesign-active footer .subtitle {
-  font-family: 'Oswald', sans-serif !important;
-  font-size: 15px !important;
-  font-weight: 700 !important;
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  color: #ffffff !important;
-  /* Blanco puro para títulos */
-  margin-bottom: 35px !important;
-  opacity: 1;
-  position: relative;
-}
-
-.redesign-active footer .subtitle::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30px;
-  height: 1px;
-  background: #ffffff;
-  opacity: 0.5;
-}
-
-/* Enlaces del footer: Animación de "deslizamiento" gold */
-.redesign-active footer a,
-.redesign-active footer .contact-link,
-.redesign-active footer .contact-link a,
-.redesign-active footer .footer-menu-item {
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7) !important;
-  text-decoration: none;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  display: block;
-  margin-bottom: 15px;
-  font-weight: 300;
-  letter-spacing: 0.5px;
-}
-
-.redesign-active footer a:hover,
-.redesign-active footer .contact-link:hover,
-.redesign-active footer .contact-link a:hover {
-  color: #ffffff !important;
-  transform: translateY(-2px);
-  /* Cambio desplazamiento lateral por elevación leve */
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-/* Iconos elegantes para links de contacto en blanco (ajustado para centrado) */
-.redesign-active .contact-link[href*="wa.me"]::before {
-  content: '→ ';
-  font-weight: bold;
-  margin-right: 5px;
-  color: #ffffff;
-  opacity: 0;
-  display: inline-block;
-  transition: all 0.3s ease;
-  transform: translateX(-10px);
-}
-
-.redesign-active .contact-link:hover::before {
-  opacity: 1;
-  transform: translateX(0);
-  margin-right: 10px;
-}
-
-/* Newsletter Redesign */
-.redesign-active .newsletter {
-  background: transparent;
-  padding: 0;
-}
-
-.redesign-active .newsletter-form {
-  position: relative;
-  display: flex !important;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 50px;
-  padding: 5px;
-  transition: border-color 0.3s ease;
-  flex-direction: row !important;
-  max-width: 400px;
-  margin: 0 auto !important;
-  /* Centramos la caja del newsletter */
-}
-
-.redesign-active .newsletter-form:focus-within {
-  border-color: #ffffff;
-}
-
-.redesign-active .newsletter-form .form-group {
-  flex-grow: 1;
-  margin-bottom: 0 !important;
-}
-
-.redesign-active .newsletter-form .form-control {
-  background: transparent !important;
-  border: none !important;
-  color: #ffffff !important;
-  /* Texto que escribe el usuario en blanco */
-  font-family: 'Outfit', sans-serif;
-  padding: 10px 25px !important;
-  height: 45px !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-
-.redesign-active .newsletter-form .form-control::placeholder {
-  color: #ffffff !important;
-  /* Placeholder en blanco */
-  opacity: 0.8 !important;
-  /* Mayor opacidad para que se vea bien */
-}
-
-.redesign-active .newsletter-form input[type="submit"].newsletter-btn {
-  background: transparent !important;
-  /* Totalmente transparente */
-  background-color: transparent !important;
-  color: #ffffff !important;
-  border-radius: 50px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  padding: 0 10px !important;
-  height: 45px;
-  border: none !important;
-  box-shadow: none !important;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin: 0 !important;
-  display: block !important;
-  min-width: 60px;
-}
-
-.redesign-active .newsletter-form input[type="submit"].newsletter-btn:hover {
-  background-color: #ffffff !important;
-  color: #000000 !important;
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-}
-
-.redesign-active .newsletter-form svg.newsletter-btn {
-  display: none !important;
-  /* Quitamos flecha duplicada si estorba */
-}
-
-/* Social Links */
-.redesign-active .social-links {
-  margin-top: 30px;
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  /* Centramos iconos sociales */
-}
-
-.redesign-active .social-links a {
-  width: 45px;
-  height: 45px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  padding: 0 !important;
-  margin: 0;
-  color: #fff;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.redesign-active .social-links a:hover {
-  background: #ffffff;
-  color: #000 !important;
-  transform: translateY(-5px) rotate(8deg);
-  border-color: #ffffff;
-  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
-}
-
-.redesign-active .social-links svg {
-  fill: currentColor;
-  width: 18px;
-  height: 18px;
-}
-
-/* Payments & Shipping */
-.redesign-active .footer-payments-shipping-logos {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding-top: 40px;
-  margin-top: 50px;
-  filter: none !important;
-  /* Volver a colores originales */
-  opacity: 1 !important;
-  transition: opacity 0.3s ease;
-}
-
-.redesign-active .footer-payments-shipping-logos:hover {
-  opacity: 1;
-}
-
-.redesign-active .footer-payments-shipping-logos img {
-  height: 25px;
-  width: auto;
-  margin: 5px 10px;
-}
-
-/* Footer Legal */
-.redesign-active .footer-legal {
-  background-color: #050505;
-  padding: 40px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.02);
-  font-family: 'Outfit', sans-serif;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.3);
-  font-weight: 200;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.redesign-active .footer-legal a {
-  display: inline !important;
-  color: rgba(255, 255, 255, 0.4) !important;
-  margin: 0 10px;
-  transition: color 0.3s ease;
-}
-
-.redesign-active .footer-legal a:hover {
-  color: #ffffff !important;
-}
-
-.redesign-active footer hr {
-  display: none;
-}
-
-/* 16. SOCIAL EXPERIENCE SECTION (Instagram & TikTok) */
-.redesign-active .redesign-social-feed {
-  padding: 120px 0;
-  background-color: #ffffff; /* Fondo blanco */
-  color: #000000; /* Letras negras */
-  text-align: center;
-  position: relative;
-}
-
-.redesign-active .social-header {
-  margin-bottom: 30px; /* Reducido */
-}
-
-.redesign-active .social-title {
-  font-family: 'Oswald', sans-serif;
-  font-size: 42px;
-  font-weight: 700;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  margin-bottom: 5px;
-  color: #000; /* Negro */
-}
-
-.redesign-active .social-subtitle {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 18px;
-  opacity: 0.8;
-  color: #000; /* Negro */
-}
-
-.redesign-active .social-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  max-width: 1350px; /* Incrementado para dar más presencia */
-  margin: 0 auto;
-  padding: 0 5%;
-}
-
-.redesign-active .social-card {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 24px; /* Incrementado */
-  border-radius: 30px;
-  position: relative;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  text-align: left;
-}
-
-.redesign-active .social-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
-  border-color: rgba(0, 0, 0, 0.2);
-}
-
-.redesign-active .social-profile-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 10px; /* Reducido */
-  position: relative;
-}
-
-.redesign-active .profile-pic-container {
-  width: 60px; /* Un poco más grande para compensar el crop */
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  overflow: hidden; /* CLAVE: Recorta el borde negro de la imagen */
-  border: none !important;
-}
-
-.redesign-active .profile-pic {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover; /* Cambiado a cover para que el zoom funcione bien */
-  transform: scale(1.4); /* ZOOM: Oculta el anillo negro periférico del logo */
-  border: none !important;
-}
-
-.redesign-active .profile-info-text {
-  flex: 1;
-}
-
-.redesign-active .profile-username {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 20px; /* Aumentado */
-  font-weight: 800;
-  color: #000;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.redesign-active .verified-badge {
-  width: 16px;
-  height: 16px;
-}
-
-.redesign-active .profile-full-name {
-  font-family: 'Outfit', sans-serif;
-  font-size: 13px;
-  color: #666;
-  font-weight: 400;
-}
-
-.redesign-active .social-platform-icon {
-  position: absolute;
-  top: 25px; /* Más abajo para que no choque con el borde */
-  right: 25px;
-  transition: all 0.4s ease;
-  z-index: 5;
-}
-
-.redesign-active .social-platform-icon svg {
-  width: 28px; /* Más grandes */
-  height: 28px;
-  opacity: 0.8;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-}
-
-.redesign-active .instagram-profile-card .social-platform-icon svg {
-  fill: #E1306C;
-}
-
-.redesign-active .tiktok-profile-card .social-platform-icon svg {
-  fill: #ff0050 !important;
-}
-
-.redesign-active .social-card:hover .social-platform-icon {
-  transform: scale(1.3);
-  opacity: 1;
-}
-
-/* Stats */
-.redesign-active .profile-stats {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0; /* Reducido */
-  border-top: 1px solid rgba(0,0,0,0.05);
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-  margin-bottom: 10px; /* Reducido */
-}
-
-.redesign-active .stat-item {
-  text-align: center;
-  flex: 1;
-}
-
-.redesign-active .stat-item strong {
-  display: block;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 18px; /* Aumentado */
-  font-weight: 800;
-  color: #000;
-}
-
-.redesign-active .stat-item span {
-  font-family: 'Outfit', sans-serif;
-  font-size: 10px;
-  color: #999;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-/* Bio */
-.redesign-active .profile-bio {
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px; /* Aumentado */
-  line-height: 1.5;
-  color: #333;
-  margin-bottom: 20px; /* Incrementado */
-}
-
-.redesign-active .profile-bio p {
-  margin: 0;
-  margin-bottom: 4px;
-}
-
-/* Photo Grid */
-.redesign-active .social-preview-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
-  margin-bottom: 15px; /* Reducido */
-}
-
-.redesign-active .grid-img {
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-radius: 4px;
-  background: #f5f5f5;
-  position: relative;
-}
-
-.redesign-active .grid-img img,
-.redesign-active .grid-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.redesign-active .grid-img:hover img,
-.redesign-active .grid-img:hover .grid-video {
-  transform: scale(1.1);
-}
-
-.redesign-active .video-align-top {
-  object-position: top !important;
-}
-
-.redesign-active .social-actions-row {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-}
-
-.redesign-active .social-link-btn {
-  flex: 1;
-  text-align: center;
-  padding: 10px;
-  border: none !important;
-  border-radius: 12px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 15px; /* Aumentado */
-  font-weight: 700;
-  color: #fff !important;
-  text-decoration: none !important;
-  transition: all 0.3s ease;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-}
-
-.redesign-active .btn-ig {
-  background-color: #0095f6 !important; /* Celeste Instagram */
-}
-
-.redesign-active .btn-tk {
-  background-color: #ff0050 !important; /* Rojo/Rosa TikTok */
-}
-
-.redesign-active .social-share-btn {
-  width: 45px;
-  height: 45px;
-  border: none;
-  border-radius: 50%;
-  background-color: #f0f0f0 !important; /* Forzado a gris claro */
-  display: flex!important;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.redesign-active .social-share-btn svg {
-  width: 18px;
-  height: 18px;
-  fill: #000 !important; /* Icono negro sólido */
-}
-
-.redesign-active .social-link-btn:hover {
-  filter: brightness(1.1);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.redesign-active .social-share-btn:hover {
-  background-color: #e5e5e5;
-  transform: translateY(-2px);
-}
-
-@media (max-width: 991px) {
+  .redesign-active footer.js-footer {
+    background-color: #080808;
+    /* Negro profundo equilibrado */
+    color: #fff;
+    padding: 100px 0 0;
+    /* Más espacio superior */
+    border-top: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    /* Centramos todo el contenido del footer */
+  }
+
+  /* Línea de luz dorada en el tope del footer */
+  .redesign-active footer.js-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ffffff, transparent);
+    opacity: 0.3;
+  }
+
+  /* Títulos de sección en el footer: Estilo Editorial */
+  .redesign-active footer .subtitle {
+    font-family: 'Oswald', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #ffffff !important;
+    /* Blanco puro para títulos */
+    margin-bottom: 35px !important;
+    opacity: 1;
+    position: relative;
+  }
+
+  .redesign-active footer .subtitle::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 1px;
+    background: #ffffff;
+    opacity: 0.5;
+  }
+
+  /* Enlaces del footer: Animación de "deslizamiento" gold */
+  .redesign-active footer a,
+  .redesign-active footer .contact-link,
+  .redesign-active footer .contact-link a,
+  .redesign-active footer .footer-menu-item {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7) !important;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  .redesign-active footer a:hover,
+  .redesign-active footer .contact-link:hover,
+  .redesign-active footer .contact-link a:hover {
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    /* Cambio desplazamiento lateral por elevación leve */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+
+  /* Iconos elegantes para links de contacto en blanco (ajustado para centrado) */
+  .redesign-active .contact-link[href*="wa.me"]::before {
+    content: '→ ';
+    font-weight: bold;
+    margin-right: 5px;
+    color: #ffffff;
+    opacity: 0;
+    display: inline-block;
+    transition: all 0.3s ease;
+    transform: translateX(-10px);
+  }
+
+  .redesign-active .contact-link:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+    margin-right: 10px;
+  }
+
+  /* Newsletter Redesign */
+  .redesign-active .newsletter {
+    background: transparent;
+    padding: 0;
+  }
+
+  .redesign-active .newsletter-form {
+    position: relative;
+    display: flex !important;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    padding: 5px;
+    transition: border-color 0.3s ease;
+    flex-direction: row !important;
+    max-width: 400px;
+    margin: 0 auto !important;
+    /* Centramos la caja del newsletter */
+  }
+
+  .redesign-active .newsletter-form:focus-within {
+    border-color: #ffffff;
+  }
+
+  .redesign-active .newsletter-form .form-group {
+    flex-grow: 1;
+    margin-bottom: 0 !important;
+  }
+
+  .redesign-active .newsletter-form .form-control {
+    background: transparent !important;
+    border: none !important;
+    color: #ffffff !important;
+    /* Texto que escribe el usuario en blanco */
+    font-family: 'Outfit', sans-serif;
+    padding: 10px 25px !important;
+    height: 45px !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  .redesign-active .newsletter-form .form-control::placeholder {
+    color: #ffffff !important;
+    /* Placeholder en blanco */
+    opacity: 0.8 !important;
+    /* Mayor opacidad para que se vea bien */
+  }
+
+  .redesign-active .newsletter-form input[type="submit"].newsletter-btn {
+    background: transparent !important;
+    /* Totalmente transparente */
+    background-color: transparent !important;
+    color: #ffffff !important;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0 10px !important;
+    height: 45px;
+    border: none !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 !important;
+    display: block !important;
+    min-width: 60px;
+  }
+
+  .redesign-active .newsletter-form input[type="submit"].newsletter-btn:hover {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+  }
+
+  .redesign-active .newsletter-form svg.newsletter-btn {
+    display: none !important;
+    /* Quitamos flecha duplicada si estorba */
+  }
+
+  /* Social Links */
+  .redesign-active .social-links {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    /* Centramos iconos sociales */
+  }
+
+  .redesign-active .social-links a {
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+    margin: 0;
+    color: #fff;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .redesign-active .social-links a:hover {
+    background: #ffffff;
+    color: #000 !important;
+    transform: translateY(-5px) rotate(8deg);
+    border-color: #ffffff;
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+  }
+
+  .redesign-active .social-links svg {
+    fill: currentColor;
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Payments & Shipping */
+  .redesign-active .footer-payments-shipping-logos {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 40px;
+    margin-top: 50px;
+    filter: none !important;
+    /* Volver a colores originales */
+    opacity: 1 !important;
+    transition: opacity 0.3s ease;
+  }
+
+  .redesign-active .footer-payments-shipping-logos:hover {
+    opacity: 1;
+  }
+
+  .redesign-active .footer-payments-shipping-logos img {
+    height: 25px;
+    width: auto;
+    margin: 5px 10px;
+  }
+
+  /* Footer Legal */
+  .redesign-active .footer-legal {
+    background-color: #050505;
+    padding: 40px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: 200;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .redesign-active .footer-legal a {
+    display: inline !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+  }
+
+  .redesign-active .footer-legal a:hover {
+    color: #ffffff !important;
+  }
+
+  .redesign-active footer hr {
+    display: none;
+  }
+
+  /* 16. SOCIAL EXPERIENCE SECTION (Instagram & TikTok) */
+  .redesign-active .redesign-social-feed {
+    padding: 80px 0;
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  /* Header stack matching user preference (Centered Title over Subtitle) */
+  .redesign-active .social-header-split {
+    display: flex;
+    flex-direction: column;
+    /* Apilado vertical */
+    align-items: center;
+    /* Centrado horizontal */
+    text-align: center;
+    max-width: 1300px;
+    margin: 0 auto 50px;
+    gap: 10px;
+    /* Espacio entre titulo y subtitulo */
+  }
+
+  .redesign-active .social-brand-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 32px;
+    /* Mas grande para Oswald centrado */
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #111;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .redesign-active .social-label-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    /* Un poco mas grande para legibilidad */
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+  }
+
   .redesign-active .social-grid {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    max-width: 1350px;
+    /* Incrementado para dar más presencia */
+    margin: 0 auto;
+    padding: 0 5%;
   }
-  
-  .redesign-active .social-title {
-    font-size: 42px;
+
+  .redesign-active .social-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    /* Incrementado */
+    border-radius: 30px;
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    text-align: left;
   }
-  
-  .redesign-active .social-subtitle {
+
+  .redesign-active .social-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .redesign-active .social-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    /* Reducido */
+    position: relative;
+  }
+
+  .redesign-active .profile-pic-container {
+    width: 60px;
+    /* Un poco más grande para compensar el crop */
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    overflow: hidden;
+    /* CLAVE: Recorta el borde negro de la imagen */
+    border: none !important;
+  }
+
+  .redesign-active .profile-pic {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    /* Cambiado a cover para que el zoom funcione bien */
+    transform: scale(1.4);
+    /* ZOOM: Oculta el anillo negro periférico del logo */
+    border: none !important;
+  }
+
+  .redesign-active .profile-info-text {
+    flex: 1;
+  }
+
+  .redesign-active .profile-username {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .redesign-active .verified-badge {
+    width: 16px;
+    height: 16px;
+  }
+
+  .redesign-active .profile-full-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    color: #666;
+    font-weight: 400;
+  }
+
+  .redesign-active .social-platform-icon {
+    position: absolute;
+    top: 25px;
+    /* Más abajo para que no choque con el borde */
+    right: 25px;
+    transition: all 0.4s ease;
+    z-index: 5;
+  }
+
+  .redesign-active .social-platform-icon svg {
+    width: 28px;
+    /* Más grandes */
+    height: 28px;
+    opacity: 0.8;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  }
+
+  .redesign-active .instagram-profile-card .social-platform-icon svg {
+    fill: #E1306C;
+  }
+
+  .redesign-active .tiktok-profile-card .social-platform-icon svg {
+    fill: #ff0050 !important;
+  }
+
+  .redesign-active .social-card:hover .social-platform-icon {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+
+  /* Stats */
+  .redesign-active .profile-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    /* Reducido */
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 10px;
+    /* Reducido */
+  }
+
+  .redesign-active .stat-item {
+    text-align: center;
+    flex: 1;
+  }
+
+  .redesign-active .stat-item strong {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
     font-size: 18px;
+    /* Aumentado */
+    font-weight: 800;
+    color: #000;
   }
-}
+
+  .redesign-active .stat-item span {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px;
+    color: #999;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Bio */
+  .redesign-active .profile-bio {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    /* Aumentado */
+    line-height: 1.5;
+    color: #333;
+    margin-bottom: 20px;
+    /* Incrementado */
+  }
+
+  .redesign-active .profile-bio p {
+    margin: 0;
+    margin-bottom: 4px;
+  }
+
+  /* Photo Grid */
+  .redesign-active .social-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    margin-bottom: 15px;
+    /* Reducido */
+  }
+
+  .redesign-active .grid-img {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #f5f5f5;
+    position: relative;
+  }
+
+  .redesign-active .grid-img img,
+  .redesign-active .grid-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .redesign-active .grid-img:hover img,
+  .redesign-active .grid-img:hover .grid-video {
+    transform: scale(1.1);
+  }
+
+  .redesign-active .video-align-top {
+    object-position: top !important;
+  }
+
+  .redesign-active .social-actions-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .redesign-active .social-link-btn {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border: none !important;
+    border-radius: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    /* Aumentado */
+    font-weight: 700;
+    color: #fff !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .redesign-active .btn-ig {
+    background-color: #0095f6 !important;
+    /* Celeste Instagram */
+  }
+
+  .redesign-active .btn-tk {
+    background-color: #ff0050 !important;
+    /* Rojo/Rosa TikTok */
+  }
+
+  .redesign-active .social-share-btn {
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50% !important;
+    /* Forzado a circular */
+    background-color: #f0f0f0 !important;
+    /* Forzado a gris claro */
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+    overflow: hidden;
+  }
+
+
+  .redesign-active .social-share-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: #000 !important;
+    /* Icono negro sólido */
+  }
+
+  .redesign-active .social-link-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .redesign-active .social-share-btn:hover {
+    background-color: #e5e5e5;
+    transform: translateY(-2px);
+  }
+
+  /* ============================================================
+     17. GLOBAL SCROLL ANIMATIONS (Sub-elementos)
+     ============================================================ */
+  /* El estado is-visible gatillado por JS para elementos individuales 
+     ya está manejado por la clase .redesign-animate-fadeUp en los keyframes */
+
+
+  @media (max-width: 991px) {
+    .redesign-active .social-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .redesign-active .social-title {
+      font-size: 42px;
+    }
+
+    .redesign-active .social-subtitle {
+      font-size: 18px;
+    }
+  }

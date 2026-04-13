@@ -93,14 +93,14 @@
         <div class="redesign-hero-overlay"></div>
         
         <div class="redesign-hero-content-box">
-            <h1 class="redesign-hero-title">TEMP'26</h1>
-            <p class="redesign-hero-subtitle">
+            <h1 class="redesign-hero-title" data-redesign-animate="fadeUp" data-redesign-delay="200">TEMP'26</h1>
+            <p class="redesign-hero-subtitle" data-redesign-animate="fadeUp" data-redesign-delay="400">
                 <span class="redesign-text-rotator">
                     <span class="active">LOS MEJORES PRECIOS</span>
                     <span>LA MEJOR CALIDAD</span>
                 </span>
             </p>
-            <a href="/productos" class="redesign-btn-primary">
+            <a href="/productos" class="redesign-btn-primary" data-redesign-animate="fadeUp" data-redesign-delay="600">
                 VER COLECCIÓN
             </a>
             
@@ -121,12 +121,80 @@
         </div>
     </section>
 
+    <!-- 1.5 CATEGORÍAS SECTION -->
+    <section class="redesign-categorias">
+        <!-- Header -->
+        <div class="categorias-header" data-redesign-animate="fadeUp">
+            <span class="categorias-header-left">SIGNOS INDUMENTARIA TEMP' 26</span>
+            <span class="categorias-header-right">LO MAS VENDIDO</span>
+        </div>
+
+        <!-- Grid de Categorías -->
+        <div class="categorias-grid">
+            <!-- Card 1: CAMPERAS -->
+            <a href="/camperas" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="0">
+                <img src="{{ 'images/Gemini_Generated_Image_88smk788smk788sm.png' | static_url }}" alt="Camperas" class="categoria-bg-img">
+                <div class="categoria-overlay"></div>
+                <span class="categoria-sub">ABRIGO PREMIUM</span>
+                <span class="categoria-name">CAMPERAS</span>
+                <span class="categoria-cta">Ver colección →</span>
+            </a>
+
+            <!-- Card 2: SWEATERS -->
+            <a href="/sweaters" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="150">
+                <img src="{{ 'images/sweater-custom.jpg' | static_url }}" alt="Sweaters" class="categoria-bg-img">
+                <div class="categoria-overlay"></div>
+                <span class="categoria-sub">TEJIDO & PUNTO</span>
+                <span class="categoria-name">SWEATERS</span>
+                <span class="categoria-cta">Ver colección →</span>
+            </a>
+
+            <!-- Card 3: BUZOS -->
+            <a href="/buzos" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="300">
+                <img src="{{ 'images/buzos-custom.jpg' | static_url }}" alt="Buzos" class="categoria-bg-img">
+                <div class="categoria-overlay"></div>
+                <span class="categoria-sub">ESSENTIALS</span>
+                <span class="categoria-name">BUZOS</span>
+                <span class="categoria-cta">Ver colección →</span>
+            </a>
+
+            <!-- Card 4: JEANS -->
+            <a href="/jeans" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="450">
+                <img src="{{ 'images/jeans-custom.jpg' | static_url }}" alt="Jeans" class="categoria-bg-img">
+                <div class="categoria-overlay"></div>
+                <span class="categoria-sub">DENIM & MÁS</span>
+                <span class="categoria-name">JEANS</span>
+                <span class="categoria-cta">Ver colección →</span>
+            </a>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="categorias-footer" data-redesign-animate="fadeUp">
+            <span class="categorias-footer-left">SIGNOS INDUMENTARIA — BAHÍA BLANCA</span>
+            <div class="categorias-footer-center">
+                <div class="mouse-scroll-icon">
+                    <span class="mouse-wheel"></span>
+                </div>
+            </div>
+            <a href="/productos" class="categorias-btn-vertodo" style="display:none;">VER TODO</a>
+        </div>
+    </section>
+
     <!-- 2. NOVEDADES SECTION -->
     <section class="redesign-novedades">
+        <!-- Header added for consistency -->
+        <div class="novedades-header" data-redesign-animate="fadeUp">
+            <span class="novedades-header-title">NOVEDADES</span>
+        </div>
+        
         <div class="novedades-container">
             <!-- Columna Izquierda: Imagen / Carrusel -->
             <!-- Columna Izquierda: Carrusel Automático -->
             <div class="novedades-media">
+                <a href="/productos" class="novedades-global-overlay">
+                    <span class="redesign-btn-ghost">VER DETALLES</span>
+                </a>
                 <div class="novedades-carousel" data-redesign-animate="fadeIn" data-redesign-delay="0">
                     <!-- Slides de a 2 imágenes -->
                     <div class="novedades-carousel-track">
@@ -178,69 +246,90 @@
         </div>
     </section>
 
-    <!-- 3. OFFERS SECTION (Grilla Estática 4 Fotos con Urgencia) -->
+    <!-- 3. OFFERS SECTION (Editorial Style) -->
     <section class="redesign-offers">
         <div class="container-wide">
-            <div class="offers-header" data-redesign-animate="fadeUp">
-                <h2 class="offers-section-title">OFERTAS Y DESCUENTOS</h2>
-                <p class="offers-urgency-text">STOCK LIMITADO — ¡ESTAS PRENDAS SE TERMINAN HOY!</p>
+            <!-- Header matching Categories style -->
+            <div class="offers-header-split" data-redesign-animate="fadeUp">
+                <span class="offers-brand-name">OFERTAS Y DESCUENTOS</span>
+                <span class="offers-label-name">PROMOCIONES DE TEMPORADA</span>
             </div>
             
-            <div class="offers-carousel-wrapper">
-                <div class="offers-track">
-                    <!-- Item 1 -->
-                    <div class="offer-item" data-redesign-animate="fadeUp" data-redesign-delay="100">
-                        <div class="offer-img-box">
-                            <span class="offer-badge">-50% OFF</span>
-                            <img src="{{ 'images/WhatsApp Image 2026-04-08 at 23.43.30 (1).jpeg' | static_url }}" alt="Oferta 1">
-                        </div>
-                        <div class="offer-info">
-                            <h4>NUEVA COLECCIÓN I</h4>
-                            <p class="price-box"><span class="old-price">$45.000</span> <span class="new-price">$22.500</span></p>
-                            <p class="offer-installments">6 cuotas sin interés de <strong>$3.750</strong></p>
-                        </div>
+            <div class="offers-grid-premium">
+                <!-- Item 1 -->
+                <a href="/buzos" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="100">
+                    <img src="{{ 'images/buzos-new.png' | static_url }}" alt="Buzos" class="offer-bg-img">
+                    <div class="offer-gradient-overlay"></div>
+                    <span class="offer-badge-subtle">-50% OFF</span>
+                    <div class="offer-info-minimal">
+                        <h4 class="offer-title-minimal">BUZO BURZACO</h4>
+                        <p class="offer-price-minimal">
+                            <span class="old-price">$45.000</span>
+                            <span class="new-price">$22.500</span>
+                        </p>
+                        <span class="offer-installments">3 CUOTAS SIN INTERÉS DE $7.500</span>
+                        <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                     </div>
-                    <!-- Item 2 -->
-                    <div class="offer-item" data-redesign-animate="fadeUp" data-redesign-delay="200">
-                        <div class="offer-img-box">
-                            <span class="offer-badge">-40% OFF</span>
-                            <img src="{{ 'images/WhatsApp Image 2026-04-08 at 23.43.30 (2).jpeg' | static_url }}" alt="Oferta 2">
-                        </div>
-                        <div class="offer-info">
-                            <h4>NUEVA COLECCIÓN II</h4>
-                            <p class="price-box"><span class="old-price">$38.000</span> <span class="new-price">$22.800</span></p>
-                            <p class="offer-installments">6 cuotas sin interés de <strong>$3.800</strong></p>
-                        </div>
+                </a>
+
+                <!-- Item 2 -->
+                <a href="/jeans" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="200">
+                    <img src="{{ 'images/jeans-new.png' | static_url }}" alt="Jeans" class="offer-bg-img">
+                    <div class="offer-gradient-overlay"></div>
+                    <span class="offer-badge-subtle">-40% OFF</span>
+                    <div class="offer-info-minimal">
+                        <h4 class="offer-title-minimal">JEAN PIPPEN</h4>
+                        <p class="offer-price-minimal">
+                            <span class="old-price">$38.000</span>
+                            <span class="new-price">$22.800</span>
+                        </p>
+                        <span class="offer-installments">3 CUOTAS SIN INTERÉS DE $7.600</span>
+                        <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                     </div>
-                    <!-- Item 3 -->
-                    <div class="offer-item" data-redesign-animate="fadeUp" data-redesign-delay="300">
-                        <div class="offer-img-box">
-                            <span class="offer-badge">-30% OFF</span>
-                            <img src="{{ 'images/WhatsApp Image 2026-04-08 at 23.43.30 (3).jpeg' | static_url }}" alt="Oferta 3">
-                        </div>
-                        <div class="offer-info">
-                            <h4>NUEVA COLECCIÓN III</h4>
-                            <p class="price-box"><span class="old-price">$18.000</span> <span class="new-price">$12.600</span></p>
-                            <p class="offer-installments">6 cuotas sin interés de <strong>$2.100</strong></p>
-                        </div>
+                </a>
+
+                <!-- Item 3 -->
+                <a href="/sweaters" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="300">
+                    <img src="{{ 'images/sweater-new.png' | static_url }}" alt="Sweater" class="offer-bg-img">
+                    <div class="offer-gradient-overlay"></div>
+                    <span class="offer-badge-subtle">-30% OFF</span>
+                    <div class="offer-info-minimal">
+                        <h4 class="offer-title-minimal">SWEATER HILO</h4>
+                        <p class="offer-price-minimal">
+                            <span class="old-price">$18.000</span>
+                            <span class="new-price">$12.600</span>
+                        </p>
+                        <span class="offer-installments">3 CUOTAS SIN INTERÉS DE $4.200</span>
+                        <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                     </div>
-                    <!-- Item 4 -->
-                    <div class="offer-item" data-redesign-animate="fadeUp" data-redesign-delay="400">
-                        <div class="offer-img-box">
-                            <span class="offer-badge">-35% OFF</span>
-                            <img src="{{ 'images/WhatsApp Image 2026-04-08 at 23.43.30.jpeg' | static_url }}" alt="Oferta 4">
-                        </div>
-                        <div class="offer-info">
-                            <h4>NUEVA COLECCIÓN IV</h4>
-                            <p class="price-box"><span class="old-price">$52.000</span> <span class="new-price">$33.800</span></p>
-                            <p class="offer-installments">6 cuotas sin interés de <strong>$5.633</strong></p>
-                        </div>
+                </a>
+
+                <!-- Item 4 -->
+                <a href="/camperas" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="400">
+                    <img src="{{ 'images/camperas-new.png' | static_url }}" alt="Camperas" class="offer-bg-img">
+                    <div class="offer-gradient-overlay"></div>
+                    <span class="offer-badge-subtle">-35% OFF</span>
+                    <div class="offer-info-minimal">
+                        <h4 class="offer-title-minimal">CAMPERA LILLARD</h4>
+                        <p class="offer-price-minimal">
+                            <span class="old-price">$52.000</span>
+                            <span class="new-price">$33.800</span>
+                        </p>
+                        <span class="offer-installments">3 CUOTAS SIN INTERÉS DE $11.267</span>
+                        <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                     </div>
+                </a>
+            </div>
+            
+            <div class="offers-footer-minimal" data-redesign-animate="fadeUp">
+                <div class="offers-cta-container">
+                    <div class="offers-arrow-indicator">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <a href="/promociones" class="redesign-btn-verofertas">Aprovechar ofertas</a>
                 </div>
-            </div>
-            
-            <div class="offers-footer" data-redesign-animate="fadeUp">
-                <a href="/promociones" class="redesign-btn-gold">Aprovechar ofertas</a>
             </div>
         </div>
     </section>
@@ -248,9 +337,9 @@
     <!-- 4. SOCIAL EXPERIENCE SECTION (Instagram & TikTok) -->
     <section class="redesign-social-feed">
         <div class="container-wide">
-            <div class="social-header" data-redesign-animate="fadeUp">
-                <h2 class="social-title">SEGUINOS EN REDES SOCIALES</h2>
-                <p class="social-subtitle">Conectá con nuestra comunidad</p>
+            <div class="social-header-split" data-redesign-animate="fadeUp">
+                <span class="social-brand-name">SEGUINOS EN REDES SOCIALES</span>
+                <span class="social-label-name">Conectá con nuestra comunidad</span>
             </div>
             
             <div class="social-grid">
