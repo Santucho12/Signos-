@@ -9,7 +9,7 @@
 #}
 
 {% set slide_item = slide_item | default(false) %}
-{% set columns_desktop = template == 'home' ? section_columns_desktop : settings.grid_columns_desktop %}
+{% set columns_desktop = template == 'home' ? section_columns_desktop : 3 %}
 {% set columns_mobile = template == 'home' ? section_columns_mobile : settings.grid_columns_mobile %}
 {% set theme_editor = params.preview %}
 {% set appear_transition = appear_transition ?? true %}

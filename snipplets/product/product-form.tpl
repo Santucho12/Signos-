@@ -116,6 +116,14 @@
         {% include "snipplets/product/product-variants.tpl" with {show_size_guide: show_size_guide} %}
     {% endif %}
 
+    {# BOTON PROBADOR VIRTUAL REDISEÑO #}
+    <div class="redesign-active mt-2 mb-4" style="display: none;">
+        <a href="#probador-modal" data-toggle="modal" class="js-probador-btn">
+             Probador Virtual
+        </a>
+        {% include 'snipplets/product/probador-virtual.tpl' %}
+    </div>
+
     {% set show_product_quantity = product_available and settings.quantity_input %}
 
     {% if settings.last_product and show_product_quantity %}

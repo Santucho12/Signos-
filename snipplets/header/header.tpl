@@ -106,24 +106,7 @@
                 </div>
             {% endif %}
 
-            {# Search: Icon or box #}
-
-            <div class="col-auto col-utility {{ hide_mobile_on_tabnav_active }} {% if settings.search_big_mobile %}d-none d-md-inline-block{% endif %}">
-                {% set use_big_search_val = false %}
-                {% if settings.search_big_desktop %}
-                    {% set use_big_search_val = true %}
-                {% endif %}
-                {% if settings.search_big_desktop and not settings.search_big_mobile %}
-                    <span class="d-none d-md-block">
-                {% endif %}
-                        {% include "snipplets/header/header-search.tpl" with {use_big_search: use_big_search_val} %}
-                {% if settings.search_big_desktop and not settings.search_big_mobile %}
-                    </span>
-                    <span class="d-inline-block d-md-none">
-                        {% include "snipplets/header/header-search.tpl" %}
-                    </span>
-                {% endif %}
-            </div>
+            {# Search moved to the right #}
 
             {# Logo #}
 
@@ -153,6 +136,24 @@
                     {% include "snipplets/header/header-utilities.tpl" with {use_languages: true} %}
                 </div>
             {% endif %}
+
+            {# Search: Icon or box (Moved here) #}
+            <div class="col-auto col-utility {{ hide_mobile_on_tabnav_active }} {% if settings.search_big_mobile %}d-none d-md-inline-block{% endif %}">
+                {% set use_big_search_val = false %}
+                {% if settings.search_big_desktop %}
+                    {% set use_big_search_val = true %}
+                {% endif %}
+                {% if settings.search_big_desktop and not settings.search_big_mobile %}
+                    <span class="d-none d-md-block">
+                {% endif %}
+                        {% include "snipplets/header/header-search.tpl" with {use_big_search: use_big_search_val} %}
+                {% if settings.search_big_desktop and not settings.search_big_mobile %}
+                    </span>
+                    <span class="d-inline-block d-md-none">
+                        {% include "snipplets/header/header-search.tpl" %}
+                    </span>
+                {% endif %}
+            </div>
 
             {# Account #}
 

@@ -243,6 +243,9 @@
 
             if (!document.documentElement.classList.contains('redesign-active')) return;
 
+            // El rediseño está activo a nivel global.
+            // En el CSS (style-redesign.scss) usaremos body:not(.template-home) para aplicar el header blanco a todas las demás secciones.
+
             // ── Inyectar CSS y SEO metadata (solo en preview) ────────────────
             var meta = document.createElement('meta');
             meta.name = 'robots';

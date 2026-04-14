@@ -143,26 +143,6 @@
       handleParallax();
     },
 
-    /** Header scroll */
-    initHeaderScroll: function () {
-      var header = document.querySelector('.head-main, [data-store="header"]');
-      if (!header) return;
-
-      var lastScroll = 0;
-      var handleScroll = function () {
-        var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Sincronizado con las clases de style-redesign.scss (.scrolled)
-        header.classList.toggle('scrolled', currentScroll > 80);
-        header.classList.toggle('redesign-header-hidden', currentScroll > lastScroll && currentScroll > 200);
-        
-        lastScroll = currentScroll;
-      };
-
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      handleScroll(); // Ejecutar inmediatamente para detectar posición inicial
-    },
-
     /** Init */
     init: function () {
       var self = this;
@@ -170,9 +150,14 @@
         self.initElementReveals();
         self.initNovedadesCarousel();
         self.initCardEffects();
-        self.initParallax(); // <--- Agregado
+        self.initParallax(); 
         self.initHeaderScroll();
         
+        // Mostrar elementos de rediseño que estén ocultos por defecto
+        $$('.redesign-active').forEach(function(el) {
+            el.style.setProperty('display', 'block', 'important');
+        });
+
         // Backup: Reveal forzado si el usuario scrollea mucho o pasa tiempo
         setTimeout(function() {
             $$('.redesign-categorias, .redesign-novedades, .redesign-offers, .redesign-social-feed').forEach(function(s) {
