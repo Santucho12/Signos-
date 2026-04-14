@@ -113,17 +113,17 @@
 
 .redesign-active .template-home .head-main.scrolled,
 .redesign-active .template-home [data-store="header"].scrolled {
-  position: fixed !important;
-  background: rgba(255, 255, 255, 0.98) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
+  position: absolute !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
 }
 
-/* Auto-hide: Esconde el navbar al bajar, lo muestra al subir */
+/* Auto-hide: Deshabilitado en Home por pedido del usuario */
 .redesign-active .template-home .head-main.redesign-header-hidden,
 .redesign-active .template-home [data-store="header"].redesign-header-hidden {
-  transform: translateY(-100%) !important;
+  transform: none !important;
 }
 
 /* Estilo para los links del NAV (Global Base) */
@@ -239,12 +239,32 @@
 /* Anulamos cualquier fondo blanco de los contenedores internos nativos de TiendaNube */
 .redesign-active .desktop-dropdown ul,
 .redesign-active .desktop-list-subitems,
-.redesign-active .list-subitems,
-.redesign-active .nav-list-panel {
+.redesign-active .desktop-dropdown .list-subitems,
+.redesign-active .desktop-dropdown .nav-list-panel {
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
   border: none !important;
+}
+
+/* Fix mobile sidebar overlapping (Sub-panels must be solid) */
+@media (max-width: 768px) {
+  .redesign-active .nav-list-panel {
+    background-color: #ffffff !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 100 !important;
+    padding-top: 20px !important;
+  }
+
+  .redesign-active .nav-list-panel .modal-header {
+    border-bottom: 1px solid #f0f0f0 !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 15px !important;
+  }
 }
 
 /* Layout de cajas FLEX para evitar jerarquías rotas */
@@ -769,7 +789,12 @@
 
 @media (max-width: 768px) {
   .redesign-active .redesign-hero {
-    height: 70vh;
+    height: 100vh;
+    margin-top: 0 !important;
+  }
+  
+  .redesign-active .categorias-footer-center {
+    display: none !important;
   }
 
   .redesign-active .redesign-hero-title {
@@ -779,6 +804,77 @@
   .redesign-active .redesign-hero-subtitle {
     font-size: 16px;
   }
+
+  /* Bajar buscador 4px */
+  .redesign-active .js-search-form {
+    margin-top: 4px !important;
+  }
+
+  /* Barra de búsqueda transparente en mobile (específico para el Home con video) */
+  .redesign-active .template-home .search-input {
+    background-color: transparent !important;
+    background: transparent !important;
+    color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    border-radius: 4px;
+  }
+
+  .redesign-active .template-home .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .redesign-active .template-home .search-input-submit {
+    background-color: transparent !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .redesign-active .template-home .search-input-submit .icon-inline {
+    fill: #fff !important;
+    color: #fff !important;
+  }
+
+  .redesign-active body:not(.template-home) .search-input {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Menú lateral mobile: Texto negro y sin flechas */
+  .redesign-active .nav-primary .nav-list-link,
+  .redesign-active .nav-list-panel .nav-list-link {
+    color: #000 !important;
+    text-shadow: none !important;
+    font-weight: 600 !important;
+  }
+
+  .redesign-active .nav-list-arrow {
+    display: none !important;
+  }
+}
+
+/* --- Botón Probador Virtual --- */
+.redesign-active .js-probador-btn {
+  display: inline-block;
+  background: #000;
+  color: #fff !important;
+  padding: 12px 30px;
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.redesign-active .js-probador-btn:hover {
+  background: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 
@@ -1046,7 +1142,7 @@
 
 .redesign-categorias {
   background: #fff;
-  padding: 60px 5% 50px;
+  padding: 100px 5% 80px;
   color: #111;
   position: relative;
 }
@@ -1387,7 +1483,7 @@
     }
 
     .redesign-categorias {
-      padding: 40px 4% 35px;
+      padding: 80px 4% 60px;
     }
   }
 
@@ -1396,7 +1492,7 @@
    ============================================================ */
   .redesign-novedades {
     background-color: #ffffff;
-    padding: 55px 5% 100px;
+    padding: 100px 5% 100px;
     color: #000000;
     position: relative;
   }
@@ -1904,7 +2000,7 @@
     }
 
     .novedades-title {
-      font-size: 42px;
+      display: none !important;
     }
 
     .novedades-description {
@@ -1917,7 +2013,7 @@
    ============================================================ */
   .redesign-offers {
     width: 100%;
-    padding: 80px 0;
+    padding: 120px 0;
     background-color: #ffffff;
   }
 
@@ -2490,7 +2586,7 @@
 
   /* 16. SOCIAL EXPERIENCE SECTION (Instagram & TikTok) */
   .redesign-active .redesign-social-feed {
-    padding: 80px 0;
+    padding: 120px 0;
     background-color: #ffffff;
     color: #000000;
   }

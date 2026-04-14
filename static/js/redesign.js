@@ -141,6 +141,44 @@
 
       window.addEventListener('scroll', handleParallax, { passive: true });
       handleParallax();
+    /** Lógica de Scroll para el Header (Sticky + Auto-hide) */
+    initHeaderScroll: function () {
+      var header = document.querySelector('.head-main') || document.querySelector('[data-store="header"]');
+      if (!header) return;
+
+      var lastScrollY = window.pageYOffset;
+      var threshold = 80;
+
+      // Detectar si estamos en Home para aplicar o no la lógica
+      var isHome = document.body.classList.contains('template-home');
+
+      window.addEventListener('scroll', function () {
+        var currentScrollY = window.pageYOffset;
+
+        // Si es Home y el usuario no quiere que "baje" (sticky), limpiamos clases y salimos
+        if (isHome) {
+          header.classList.remove('scrolled', 'redesign-header-hidden');
+          return;
+        }
+
+        // Lógica para el resto de las páginas
+        if (currentScrollY > threshold) {
+          header.classList.add('scrolled');
+
+          // Auto-hide al bajar (después de 400px), show al subir
+          if (currentScrollY > lastScrollY && currentScrollY > 400) {
+            header.classList.add('redesign-header-hidden');
+          } else {
+            header.classList.remove('redesign-header-hidden');
+          }
+        } else {
+          header.classList.remove('scrolled', 'redesign-header-hidden');
+        }
+
+        lastScrollY = currentScrollY;
+      }, {
+        passive: true
+      });
     },
 
     /** Init */
