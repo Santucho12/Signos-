@@ -805,9 +805,9 @@
     font-size: 16px;
   }
 
-  /* Bajar buscador 4px */
+  /* Bajar buscador 10px más abajo */
   .redesign-active .js-search-form {
-    margin-top: 4px !important;
+    margin-top: 14px !important;
   }
 
   /* Barra de búsqueda transparente en mobile (específico para el Home con video) */
@@ -1028,17 +1028,26 @@
   }
 }
 
-/* Clases de animación (aplicadas por JS) */
-.redesign-active .redesign-animate-fadeUp {
-  animation: redesign-fadeUp .7s ease both;
+/* Clases de animación (aplicadas por JS) con alta especificidad para ganar a ocultaciones ad-hoc */
+.redesign-active .redesign-animate-fadeUp,
+.redesign-active [data-redesign-animate].redesign-animate-fadeUp {
+  animation: redesign-fadeUp .7s ease both !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
-.redesign-active .redesign-animate-fadeIn {
-  animation: redesign-fadeIn .5s ease both;
+.redesign-active .redesign-animate-fadeIn,
+.redesign-active [data-redesign-animate].redesign-animate-fadeIn {
+  animation: redesign-fadeIn .5s ease both !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
-.redesign-active .redesign-animate-slideLeft {
-  animation: redesign-slideLeft .6s ease both;
+.redesign-active .redesign-animate-slideLeft,
+.redesign-active [data-redesign-animate].redesign-animate-slideLeft {
+  animation: redesign-slideLeft .6s ease both !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 /* Delay helpers */
@@ -1142,7 +1151,7 @@
 
 .redesign-categorias {
   background: #fff;
-  padding: 100px 5% 80px;
+  padding: 50px 5% 40px;
   color: #111;
   position: relative;
 }
@@ -1483,7 +1492,7 @@
     }
 
     .redesign-categorias {
-      padding: 80px 4% 60px;
+      padding: 40px 4% 30px;
     }
   }
 
@@ -1492,7 +1501,7 @@
    ============================================================ */
   .redesign-novedades {
     background-color: #ffffff;
-    padding: 100px 5% 100px;
+    padding: 50px 5% 50px;
     color: #000000;
     position: relative;
   }
@@ -1950,19 +1959,22 @@
     animation-delay: 1.0s;
   }
 
-  /* Clases legacy del IntersectionObserver — las dejamos para no romper otras secciones */
-  .redesign-animate-fadeUp {
-    opacity: 1;
-    transform: translateY(0);
+  /* Clases legacy/fallbacks del IntersectionObserver para asegurar visibilidad */
+  .redesign-active .redesign-animate-fadeUp {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    visibility: visible !important;
   }
 
-  .redesign-animate-slideLeft {
-    opacity: 1;
-    transform: translateX(0);
+  .redesign-active .redesign-animate-slideLeft {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+    visibility: visible !important;
   }
 
-  .redesign-animate-fadeIn {
-    opacity: 1;
+  .redesign-active .redesign-animate-fadeIn {
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   .novedades-cta-wrapper {
@@ -1975,7 +1987,7 @@
   @media (max-width: 1024px) {
     .redesign-novedades {
       height: auto;
-      padding: 120px 5%;
+      padding: 60px 5%;
     }
 
     .novedades-container {
@@ -2013,7 +2025,7 @@
    ============================================================ */
   .redesign-offers {
     width: 100%;
-    padding: 120px 0;
+    padding: 60px 0;
     background-color: #ffffff;
   }
 
@@ -2586,7 +2598,7 @@
 
   /* 16. SOCIAL EXPERIENCE SECTION (Instagram & TikTok) */
   .redesign-active .redesign-social-feed {
-    padding: 120px 0;
+    padding: 60px 0;
     background-color: #ffffff;
     color: #000000;
   }

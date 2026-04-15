@@ -76,10 +76,6 @@
     .redesign-active .redesign-home-content {
         display: block !important;
     }
-    /* Ocultar elementos para evitar que parpadeen antes de que carguen las animaciones */
-    .redesign-hero-title, .redesign-hero-subtitle, .redesign-btn-primary {
-        opacity: 0;
-    }
 </style>
 <div class="redesign-home-content">
     

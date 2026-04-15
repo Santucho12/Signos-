@@ -1,217 +1,96 @@
-/**
- * redesign.js 
- * ═══════════════════════════════════════════════════════════════════════════
- * JS del nuevo diseño. Solo carga cuando estás en modo preview.
- * ═══════════════════════════════════════════════════════════════════════════
- */
+/* REDESIGN.JS V3 - CACHE BUSTED */
+console.log("Redesign JS V3: Loading...");
 
-(function () {
-  'use strict';
-
-  var isRedesign = document.documentElement.classList.contains('redesign-active');
-  if (!isRedesign) return; 
-
-  /* ─── Helpers ─────────────────────────────────────────────────────────── */
-
-  function $$(selector, context) {
-    return Array.prototype.slice.call((context || document).querySelectorAll(selector));
-  }
-
-  function addClassAnimated(el, className, delay) {
-    if (!el) return;
-    setTimeout(function() {
-      requestAnimationFrame(function() {
-        el.classList.add(className);
-      });
-    }, delay || 0);
-  }
-
-  /** Intersection Observer robusto con detección de visibilidad inicial */
-  function onVisible(elements, callback, options) {
-    if (!elements || elements.length === 0) return;
-    
-    var observerOptions = {
-        root: null, // viewport
-        rootMargin: '0px 0px -10% 0px', // Gatilla cuando entra un 10% del viewport
-        threshold: [0, 0.1]
-    };
-
-    if (options && typeof options === 'object') {
-        for (var key in options) { observerOptions[key] = options[key]; }
-    }
-
-    if (!window.IntersectionObserver) {
-      elements.forEach(function (el, index) { callback(el, index); });
-      return;
-    }
-
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        // isIntersecting es verdadero si CUALQUIER parte del elemento es visible
-        if (entry.isIntersecting || entry.intersectionRatio > 0) {
-          var index = elements.indexOf(entry.target);
-          callback(entry.target, index);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    elements.forEach(function (el) { 
-      observer.observe(el); 
-      
-      // Verificación manual inmediata con un pequeño delay para dejar que el layout asiente
-      setTimeout(function() {
-          var rect = el.getBoundingClientRect();
-          var windowHeight = window.innerHeight || document.documentElement.clientHeight;
-          // Si el tope del elemento ya pasó el 90% de la pantalla (ya entró)
-          if (rect.top < windowHeight * 0.9) {
-             var index = elements.indexOf(el);
-             callback(el, index);
-             observer.unobserve(el);
-          }
-      }, 100);
-    });
-  }
-
-  /* ─── Módulo principal ────────────────────────────────────────────────── */
-
-  var Redesign = {
-
-    /** Reveal de elementos individuales */
-    initElementReveals: function () {
-      var items = $$('[data-redesign-animate]');
-      onVisible(items, function (el, index) {
-        var type = el.dataset.redesignAnimate || 'fadeUp';
-        var delay = parseInt(el.dataset.redesignDelay || 0, 10);
-        addClassAnimated(el, 'redesign-animate-' + type, delay);
-      });
+var Redesign = {
+    $$: function(selector, context) {
+        return Array.prototype.slice.call((context || document).querySelectorAll(selector));
     },
-
-    /** Carrusel Novedades */
-    initNovedadesCarousel: function () {
-      var dots = $$('.novedades-dot');
-      if (!dots.length) return;
-      var current = 0;
-      setInterval(function () {
-        dots[current].classList.remove('active');
-        current = (current + 1) % dots.length;
-        dots[current].classList.add('active');
-      }, 5000);
-    },
-
-
-    /** Efecto hover imágenes y CTA */
-    initCardEffects: function () {
-      $$('.redesign-active .item, .redesign-active .categoria-card, .redesign-active .offer-card-premium').forEach(function (item) {
-        var img = item.querySelector('.categoria-bg-img, .offer-bg-img, img');
-        if (!img) return;
-        
-        // El CSS ahora maneja la mayoría de los efectos de hover,
-        // pero podemos agregar refinamientos aquí si es necesario.
-      });
-    },
-
-    /** Parallax suave para categorías */
-    initParallax: function () {
-      var cards = $$('.categoria-card');
-      if (!cards.length) return;
-
-      var handleParallax = function () {
-        var windowHeight = window.innerHeight;
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        cards.forEach(function (card) {
-          var img = card.querySelector('.categoria-bg-img');
-          if (!img) return;
-
-          var rect = card.getBoundingClientRect();
-          var cardCenter = rect.top + rect.height / 2;
-          var viewCenter = windowHeight / 2;
-          
-          // Calculamos el desplazamiento relativo al centro de la pantalla
-          var diff = (cardCenter - viewCenter) / windowHeight;
-          var move = diff * 35; // Intensidad del efecto (en px o %)
-          
-          // Aplicamos el movimiento (solo si es visible para performance)
-          if (rect.top < windowHeight && rect.bottom > 0) {
-            img.style.transform = 'translate3d(0, ' + move + 'px, 0) scale(1.1)';
-          }
-        });
-      };
-
-      window.addEventListener('scroll', handleParallax, { passive: true });
-      handleParallax();
-    /** Lógica de Scroll para el Header (Sticky + Auto-hide) */
-    initHeaderScroll: function () {
-      var header = document.querySelector('.head-main') || document.querySelector('[data-store="header"]');
-      if (!header) return;
-
-      var lastScrollY = window.pageYOffset;
-      var threshold = 80;
-
-      // Detectar si estamos en Home para aplicar o no la lógica
-      var isHome = document.body.classList.contains('template-home');
-
-      window.addEventListener('scroll', function () {
-        var currentScrollY = window.pageYOffset;
-
-        // Si es Home y el usuario no quiere que "baje" (sticky), limpiamos clases y salimos
-        if (isHome) {
-          header.classList.remove('scrolled', 'redesign-header-hidden');
-          return;
-        }
-
-        // Lógica para el resto de las páginas
-        if (currentScrollY > threshold) {
-          header.classList.add('scrolled');
-
-          // Auto-hide al bajar (después de 400px), show al subir
-          if (currentScrollY > lastScrollY && currentScrollY > 400) {
-            header.classList.add('redesign-header-hidden');
-          } else {
-            header.classList.remove('redesign-header-hidden');
-          }
-        } else {
-          header.classList.remove('scrolled', 'redesign-header-hidden');
-        }
-
-        lastScrollY = currentScrollY;
-      }, {
-        passive: true
-      });
-    },
-
-    /** Init */
-    init: function () {
-      var self = this;
-      function run() {
-        self.initElementReveals();
-        self.initNovedadesCarousel();
-        self.initCardEffects();
-        self.initParallax(); 
-        self.initHeaderScroll();
-        
-        // Mostrar elementos de rediseño que estén ocultos por defecto
-        $$('.redesign-active').forEach(function(el) {
-            el.style.setProperty('display', 'block', 'important');
-        });
-
-        // Backup: Reveal forzado si el usuario scrollea mucho o pasa tiempo
+    addClass: function(el, className, delay) {
+        if (!el) return;
         setTimeout(function() {
-            $$('.redesign-categorias, .redesign-novedades, .redesign-offers, .redesign-social-feed').forEach(function(s) {
-                s.classList.add('is-visible');
+            requestAnimationFrame(function() {
+                el.classList.add(className);
             });
+        }, delay || 0);
+    },
+    onVisible: function(elements, callback) {
+        if (!elements || elements.length === 0) return;
+        if (!window.IntersectionObserver) {
+            elements.forEach(function(el, i) { callback(el, i); });
+            return;
+        }
+        var obs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    callback(entry.target, elements.indexOf(entry.target));
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '0px 0px -10% 0px' });
+        elements.forEach(function(el) { obs.observe(el); });
+    },
+    initElements: function() {
+        var items = this.$$('[data-redesign-animate]');
+        var self = this;
+        this.onVisible(items, function(el) {
+            var type = el.getAttribute('data-redesign-animate') || 'fadeUp';
+            var delay = parseInt(el.getAttribute('data-redesign-delay') || 0, 10);
+            self.addClass(el, 'redesign-animate-' + type, delay);
+        });
+    },
+    initCarousel: function() {
+        var dots = this.$$('.novedades-dot');
+        if (!dots.length) return;
+        var cur = 0;
+        setInterval(function() {
+            dots[cur].classList.remove('active');
+            cur = (cur + 1) % dots.length;
+            dots[cur].classList.add('active');
         }, 5000);
-      }
+    },
+    initParallax: function() {
+        var cards = this.$$('.categoria-card');
+        if (!cards.length) return;
+        var handle = function() {
+            var h = window.innerHeight;
+            cards.forEach(function(c) {
+                var img = c.querySelector('.categoria-bg-img');
+                if (!img) return;
+                var r = c.getBoundingClientRect();
+                if (r.top < h && r.bottom > 0) {
+                    var move = ((r.top + r.height/2 - h/2) / h) * 35;
+                    img.style.transform = 'translate3d(0, ' + move + 'px, 0) scale(1.1)';
+                }
+            });
+        };
+        window.addEventListener('scroll', handle, { passive: true });
+        handle();
+    },
+    init: function() {
+        console.log("Redesign JS V3: Initializing...");
+        if (!document.documentElement.classList.contains('redesign-active')) return;
+        
+        this.initElements();
+        this.initCarousel();
+        this.initParallax();
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-      } else {
-        run();
-      }
+        // Safety Reveal: Si algo falla, mostrar todo en 3 segundos
+        var self = this;
+        setTimeout(function() {
+            var all = self.$$('[data-redesign-animate]');
+            all.forEach(function(el) {
+                var type = el.getAttribute('data-redesign-animate') || 'fadeUp';
+                el.classList.add('redesign-animate-' + type);
+            });
+            console.log("Redesign JS V3: Safety Reveal triggered.");
+        }, 3000);
     }
-  };
+};
 
-  Redesign.init();
+// Auto-start
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    Redesign.init();
+} else {
+    document.addEventListener('DOMContentLoaded', function() { Redesign.init(); });
+}
 
-})();

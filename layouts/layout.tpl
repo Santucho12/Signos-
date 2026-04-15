@@ -257,9 +257,9 @@
             link.href = CSS_URL;
             document.head.appendChild(link);
 
-            // ── Cargar redesign.js ────────────────────────────────────────────
+            // ── Cargar redesign.js con cache-buster ──────────────────────────
             var script = document.createElement('script');
-            script.src = JS_URL;
+            script.src = JS_URL + '?v=' + new Date().getTime();
             document.body.appendChild(script);
 
             // ── Badge de preview ──────────────────────────────────────────────
