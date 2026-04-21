@@ -96,7 +96,7 @@
                     <span>LA MEJOR CALIDAD</span>
                 </span>
             </p>
-            <a href="/productos" class="redesign-btn-primary" data-redesign-animate="fadeUp" data-redesign-delay="600">
+            <a href="/productos" class="redesign-btn-primary">
                 VER COLECCIÓN
             </a>
             

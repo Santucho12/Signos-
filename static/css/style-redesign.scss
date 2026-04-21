@@ -490,14 +490,14 @@
   padding: 16px 40px;
   font-size: 14px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  /* <--- Más elegante */
   text-transform: uppercase;
-  border-radius: 30px;
-  /* <--- Más redondo */
+  border-radius: 100px;
+  /* <--- Forma Pill Premium Garantizada */
   transition: all 0.3s ease;
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
-  /* Reducida sutilmente */
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
 }
 
 .redesign-active .redesign-btn-primary:hover {
@@ -516,9 +516,9 @@
 
 .redesign-active .redesign-btn-primary {
   opacity: 0;
-  /* Espera 1.2s para subir, luego de que aparezca el subtítulo */
+  /* Empieza a titilar casi de inmediato después de aparecer */
   animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.2s,
-    btnNeonPulse 1s infinite alternate 3s !important;
+    btnNeonPulse 1.5s infinite alternate 2s !important;
 }
 
 .redesign-active .redesign-hero-title {
@@ -544,14 +544,21 @@
 /* --- Animación moderada para llamar atención (TITILA suave) --- */
 @keyframes btnNeonPulse {
   0% {
-    transform: scale(1) translateY(0);
-    box-shadow: 0 0 5px rgba(255, 215, 0, 0.1);
+    transform: scale(1);
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
+    filter: brightness(1);
+  }
+
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 0 50px rgba(255, 215, 0, 0.5);
+    filter: brightness(1.15);
   }
 
   100% {
-    transform: scale(1.05) translateY(0);
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.7), 0 0 25px rgba(255, 215, 0, 0.5);
-    /* Sombra 15% más sutil */
+    transform: scale(1);
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
+    filter: brightness(1);
   }
 }
 
@@ -1884,7 +1891,8 @@
     color: #000000 !important;
     background-color: #FFD700 !important;
     padding: 16px 45px;
-    border-radius: 35px;
+    border-radius: 100px;
+    /* Pill Style Garantizado */
     text-decoration: none;
     transition: all 0.3s ease;
     position: relative;
@@ -2246,24 +2254,22 @@
   .redesign-btn-verofertas {
     font-family: 'Montserrat', sans-serif;
     font-size: 13px;
-    /* Reducido de 14px */
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     color: #000 !important;
-    background: #facc00 !important;
-    /* Amarillo intenso forzado */
+    background: #FFD700 !important;
+    /* Dorado SIGNOS */
     padding: 16px 45px;
-    /* Reducido un 10-15% */
-    border-radius: 50px;
+    border-radius: 100px;
+    /* Pill Style Garantizado */
     text-decoration: none !important;
     border: none;
-    box-shadow: 0 8px 30px rgba(250, 204, 0, 0.7);
-    /* Sombra amarilla mas intensa */
-    animation: buttonFlicker 2.5s infinite ease-in-out;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
+    animation: btnNeonPulse 1.5s infinite alternate !important;
+    /* Glow y Titileo */
     display: inline-block;
-    transition: none !important;
-    /* Evita cualquier transicion en hover */
+    transition: all 0.3s ease;
   }
 
   /* Forzamos que en hover NO pase nada, manteniendo el estado de la animacion */
