@@ -18,7 +18,7 @@
                 </div>
             </div>
             <iframe 
-                src="https://perfect-fit-app.vercel.app/" 
+                src="https://probador-virtual-signosindumentaria.vercel.app/" 
                 style="width: 100%; height: 100%; border: none;"
                 onload="this.previousElementSibling.style.display='none';"
                 allow="camera;microphone"
