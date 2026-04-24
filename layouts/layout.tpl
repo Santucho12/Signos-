@@ -10,6 +10,47 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="{% for language in languages %}{% if language.active %}{{ language.lang }}{% endif %}{% endfor %}">
     <head>
+        {# 0. Detección inmediata de Rediseño (Crucial para carga prioritaria) #}
+        <script>
+            (function(){
+                var KEY = '{{ _redesign_key }}';
+                var COOKIE = 'redesign_preview';
+                var CSS_URL = '{{ "css/style-redesign.scss" | static_url }}';
+                var isActive = false;
+                var urlParam = new URLSearchParams(window.location.search).get('redesign');
+                if (urlParam === KEY) {
+                    document.cookie = COOKIE + '=1;path=/;SameSite=Lax';
+                    document.documentElement.classList.add('redesign-active');
+                    isActive = true;
+                } else if (urlParam === 'off') {
+                    document.cookie = COOKIE + '=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+                    document.documentElement.classList.remove('redesign-active');
+                } else if (document.cookie.indexOf(COOKIE + '=1') !== -1) {
+                    document.documentElement.classList.add('redesign-active');
+                    isActive = true;
+                }
+
+                // Fix preventivo para scroll lateral y recortes en mobile
+                if (isActive && window.innerWidth < 768) {
+                    document.documentElement.style.overflowX = 'hidden';
+                    document.body.style.overflowX = 'hidden';
+                }
+
+                // Inyectar CSS del redesign usando document.write() para que sea RENDER-BLOCKING.
+                // Un <link> creado con createElement() es async y NO bloquea el render.
+                // document.write() durante el parsing del <head> SÍ bloquea el render,
+                // garantizando que el navegador NO pinte nada hasta tener los estilos listos.
+                if (isActive) {
+                    document.write('<link rel="stylesheet" href="' + CSS_URL + '">');
+                }
+            })();
+        </script>
+
+        {# Optimización de Video Hero (Carga Prioritaria Máxima) #}
+        {% if template == 'home' %}
+            <link rel="preload" href="{{ 'recortado-7026828-uhd_4096_2160_25fps.mp4' | static_url }}" as="video" type="video/mp4" fetchpriority="high">
+        {% endif %}
+
         <link rel="preconnect" href="{{ store_resource_hints }}" />
         <link rel="dns-prefetch" href="{{ store_resource_hints }}" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -220,42 +261,17 @@
         {# Redesign Preview: JS + badge + cookie management #}
         <script>
         (function(){
-            var KEY      = '{{ _redesign_key }}';
-            var COOKIE   = 'redesign_preview';
-            var CSS_URL  = '{{ "css/style-redesign.scss" | static_url }}';
             var JS_URL   = '{{ "js/redesign.js" | static_url }}';
-            var urlParam = new URLSearchParams(window.location.search).get('redesign');
-
-            // Activar via URL → guardar cookie
-            if (urlParam === KEY) {
-                document.cookie = COOKIE + '=1;path=/;SameSite=Lax';
-                document.documentElement.classList.add('redesign-active');
-            }
-            // Desactivar via URL → borrar cookie y clase
-            else if (urlParam === 'off') {
-                document.cookie = COOKIE + '=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-                document.documentElement.classList.remove('redesign-active');
-            }
-            // Persistir via cookie al navegar
-            else if (document.cookie.indexOf(COOKIE + '=1') !== -1) {
-                document.documentElement.classList.add('redesign-active');
-            }
 
             if (!document.documentElement.classList.contains('redesign-active')) return;
 
-            // El rediseño está activo a nivel global.
-            // En el CSS (style-redesign.scss) usaremos body:not(.template-home) para aplicar el header blanco a todas las demás secciones.
+            // CSS del redesign ya se carga en el <head> para evitar FOUC
 
-            // ── Inyectar CSS y SEO metadata (solo en preview) ────────────────
+            // ── Inyectar SEO metadata (solo en preview) ────────────────
             var meta = document.createElement('meta');
             meta.name = 'robots';
             meta.content = 'noindex, nofollow';
             document.head.appendChild(meta);
-
-            var link = document.createElement('link');
-            link.rel  = 'stylesheet';
-            link.href = CSS_URL;
-            document.head.appendChild(link);
 
             // ── Cargar redesign.js con cache-buster ──────────────────────────
             var script = document.createElement('script');
@@ -300,6 +316,90 @@
             exitBtn.onclick = function(){
                 window.location.href = window.location.pathname + '?redesign=off';
             };
+
+            // ── #6: Botón "Volver Arriba" flotante (Solo en Productos/Categorías) ──────────────────────────
+            if (document.body.classList.contains('template-category') || document.body.classList.contains('template-product')) {
+                var scrollBtn = document.createElement('button');
+                scrollBtn.className = 'redesign-scroll-top-btn';
+                scrollBtn.innerHTML = '&#8593;';
+                scrollBtn.setAttribute('aria-label', 'Volver arriba');
+                document.body.appendChild(scrollBtn);
+
+                scrollBtn.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 400) {
+                        scrollBtn.classList.add('visible');
+                    } else {
+                        scrollBtn.classList.remove('visible');
+                    }
+                });
+            }
+
+            // ── Probador Virtual Modal ──────────────────────────────────────
+            var MODAL_ID = 'redesign-probador-modal';
+            var IFRAME_URL = 'https://probador-virtual-signosindumentaria.vercel.app/';
+
+            if (!document.getElementById(MODAL_ID)) {
+                var modal = document.createElement('div');
+                modal.id = MODAL_ID;
+
+                var container = document.createElement('div');
+                container.className = 'probador-container';
+
+                var closeBtn = document.createElement('button');
+                closeBtn.className = 'close-btn';
+                closeBtn.innerHTML = '&#10005;';
+
+                var iframe = document.createElement('iframe');
+
+                container.appendChild(closeBtn);
+                container.appendChild(iframe);
+                modal.appendChild(container);
+                document.body.appendChild(modal);
+
+                var openModal = function() {
+                    iframe.src = IFRAME_URL;
+                    modal.classList.add('is-open');
+                    document.body.style.overflow = 'hidden';
+                };
+
+                var closeModal = function() {
+                    modal.classList.remove('is-open');
+                    document.body.style.overflow = '';
+                    setTimeout(function() {
+                        if (!modal.classList.contains('is-open')) {
+                            iframe.src = 'about:blank';
+                        }
+                    }, 400);
+                };
+
+                closeBtn.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeModal();
+                };
+                modal.onclick = function(e) { 
+                    if(e.target === modal) {
+                        e.preventDefault();
+                        closeModal(); 
+                    }
+                };
+
+                document.addEventListener('click', function(e) {
+                    var btn = e.target.closest('.js-probador-btn');
+                    if (btn) {
+                        e.preventDefault();
+                        if (modal.classList.contains('is-open')) {
+                            closeModal();
+                        } else {
+                            openModal();
+                        }
+                    }
+                });
+            }
         })();
         </script>
     </body>

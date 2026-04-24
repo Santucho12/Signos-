@@ -228,7 +228,7 @@
   /* Bajamos un poco la línea para que quede igual de pegada pero del span */
   left: 5%;
   /* Comienza 5% desde la izquierda para que al crecer al 90% quede centrado */
-  background-color: #fff200 !important;
+  background-color: #fff !important;
   transition: width 0.3s ease;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   /* Para que resalte igual que el texto */
@@ -267,7 +267,7 @@
 
 .redesign-active .utilities-container a:hover .utilities-icon,
 .redesign-active .cart-summary a:hover .utilities-icon {
-  transform: scale(1.2);
+  transform: scale(1.5);
 }
 
 /* Cuando baja, las letras vuelven a negro */
@@ -292,14 +292,47 @@
 
 .redesign-active .nav-dropdown-content,
 .redesign-active .desktop-dropdown {
-  background-color: rgba(20, 20, 20, 0.5) !important;
-  backdrop-filter: blur(5px);
-  /* Un poco menos desenfoque, más nítido */
-  -webkit-backdrop-filter: blur(5px);
-  border-top: 1px solid rgba(255, 215, 0, 0.5) !important;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7) !important;
-  padding: 15px 30px 15px 30px !important;
-  /* -10% de espacio superior e inferior extraído */
+  background-color: rgba(25, 25, 25, 0.65) !important; /* Un poco menos oscuro para un efecto glassmorphism más ligero */
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  border-top: none !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
+  padding: 30px !important;
+}
+
+/* Forzar que todos los textos dentro del desplegable sean blancos */
+.redesign-active .desktop-dropdown .nav-list-link,
+.redesign-active .desktop-dropdown .nav-item-text-wrapper,
+.redesign-active .desktop-dropdown .nav-list-subitem-link,
+.redesign-active .desktop-dropdown .js-item-name {
+  color: #fff !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
+  font-family: 'Outfit', sans-serif !important;
+}
+
+/* Estilo para los títulos de categoría (JEANS, REMERAS, etc) en el mega menú */
+.redesign-active .desktop-dropdown .nav-item-desktop > .nav-list-link {
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.5px !important;
+  font-size: 13px !important;
+  margin-bottom: 10px !important;
+  display: block !important;
+}
+
+/* Estilo para las subcategorías */
+.redesign-active .desktop-dropdown .nav-list-subitem-link {
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  opacity: 0.8 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  transition: all 0.3s ease !important;
+}
+
+.redesign-active .desktop-dropdown .nav-list-subitem-link:hover {
+  opacity: 1 !important;
+  padding-left: 5px !important;
 }
 
 /* Anulamos cualquier fondo blanco de los contenedores internos nativos de TiendaNube */
@@ -422,7 +455,7 @@
 
   /* Cuando estás dentro de una subcategoría, el primer ítem ("Ver todo") resaltado */
   .redesign-active .nav-list-panel .nav-item:first-child .nav-list-link {
-    color: #fff200 !important;
+    color: #fff !important;
     font-weight: 700 !important;
     background: #fffdf0;
     /* Fondo sutil para destacar el "Ver todo" */
@@ -496,7 +529,7 @@
   /* A la izquierda y oculta */
   top: 50%;
   transform: translateY(-50%);
-  color: #fff200;
+  color: #fff;
   font-size: 16px;
   opacity: 0;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -504,7 +537,7 @@
 
 /* Hover de cada item: pasa a dorado, sube al 100% de opacidad y se mueve suavemente a la derecha */
 .redesign-active .desktop-dropdown .nav-item>.nav-list-link:hover {
-  color: #fff200 !important;
+  color: #fff !important;
   opacity: 1;
   transform: translateX(12px) !important;
   /* Más translación para acomodar la flecha */
@@ -572,9 +605,51 @@
   text-align: center;
   /* Levantarlo un poquito a la fuerza por si queda algún margen perdido de Tiendanube */
   margin-top: -40px;
+  background-color: #000; /* Fondo negro base mientras carga */
 }
 
-.redesign-active .redesign-hero-video {
+/* Estado de carga del video */
+.redesign-hero.video-loading .redesign-hero-content-box,
+.redesign-hero.video-loading .redesign-hero-overlay,
+.redesign-hero.video-loading .redesign-hero-benefits,
+.redesign-hero.video-loading .redesign-hero-video,
+.redesign-hero.video-loading .redesign-hero-logo {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Spinner de carga Premium */
+.redesign-hero::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: redesign-spin 0.8s linear infinite;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 100;
+}
+
+.redesign-hero.video-loading::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+@keyframes redesign-spin {
+  to { transform: rotate(360deg); }
+}
+
+.redesign-hero-video {
+  transition: opacity 1s ease-in-out !important;
+}
+.redesign-hero-video {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -646,9 +721,9 @@
 .redesign-active .redesign-btn-primary {
   font-family: 'Montserrat', sans-serif;
   display: inline-block;
-  background: #fff200;
+  background: #000;
   /* Dorado SIGNOS */
-  color: #000;
+  color: #fff;
   padding: 16px 40px;
   font-size: 14px;
   font-weight: 700;
@@ -657,15 +732,16 @@
   text-transform: uppercase;
   border-radius: 100px;
   /* <--- Forma Pill Premium Garantizada */
-  transition: all 0.3s ease;
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), background 0.3s ease, color 0.3s ease;
+  transform: scale(1);
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+  /* box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3); */
 }
 
 .redesign-active .redesign-btn-primary:hover {
-  background: #fff200 !important;
-  color: #000 !important;
-  /* Ningún efecto en el hover, se mantiene idéntico */
+  transform: scale(1.06) !important;
+  color: #fff !important;
+  text-decoration: none !important;
 }
 
 /* --- Animaciones de entrada elegantes --- */
@@ -676,11 +752,14 @@
   animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.redesign-active .redesign-btn-primary {
+.redesign-active .redesign-hero-btn-wrapper {
   opacity: 0;
-  /* Empieza a titilar casi de inmediato después de aparecer */
-  animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.2s,
-    btnNeonPulse 1.5s infinite alternate 2s !important;
+  display: inline-block;
+  animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.2s;
+}
+
+.redesign-active .redesign-btn-primary {
+  /* Se eliminó la animación directa para que el transition: transform funcione suavemente */
 }
 
 .redesign-active .redesign-hero-title {
@@ -960,6 +1039,21 @@
   display: none !important;
 }
 
+@media (max-width: 767px) {
+  .redesign-hero {
+    height: 90vh;
+  }
+
+  .redesign-active .redesign-hero-video {
+    animation: none !important; /* Desactivamos el zoom lento en mobile para evitar saltos */
+    transform: translate(-50%, -50%) scale(1.1); /* Lo dejamos fijo y centrado */
+  }
+
+  .redesign-hero-title {
+    font-size: 60px;
+  }
+}
+
 @media (max-width: 768px) {
   .redesign-active .redesign-hero {
     height: 100vh;
@@ -1021,8 +1115,36 @@
     font-weight: 600 !important;
   }
 
-  .redesign-active .nav-list-arrow {
+.redesign-active .nav-list-arrow {
     display: none !important;
+  }
+
+  /* Fix global para evitar que las cards se corten o haya scroll lateral */
+  .redesign-active,
+  .redesign-active body,
+  .redesign-active #page-content,
+  .redesign-active .page-wrapper {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  .redesign-active .container,
+  .redesign-active .container-fluid {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .redesign-active .row {
+    margin-left: -5px !important;
+    margin-right: -5px !important;
+  }
+
+  .redesign-active [class*="col-"] {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
   }
 }
 
@@ -1050,6 +1172,84 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
+
+/* --- Estética de Carrito y Pop-up --- */
+.redesign-active #ajax-cart-details,
+.redesign-active .js-ajax-cart-container,
+.redesign-active .js-cart-sidebar {
+  font-family: 'Outfit', sans-serif !important;
+}
+
+/* Botones del Carrito y Pop-up (Pill shape - SOLO BOTONES) */
+.redesign-active #ajax-cart-details .btn-primary,
+.redesign-active .js-ajax-cart-container .btn-primary,
+.redesign-active .js-cart-sidebar .btn-primary,
+.redesign-active .js-cart-sidebar .js-cart-checkout-btn,
+.redesign-active .js-cart-sidebar [data-options="checkout-button"],
+.redesign-active .js-ajax-cart-submit {
+  border-radius: 100px !important; /* Forma Pill Premium */
+  padding: 16px 30px !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  background-color: #000 !important;
+  color: #fff !important;
+  border: none !important;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+  display: block !important;
+  width: 100% !important;
+  font-size: 13px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+  text-align: center !important;
+}
+
+/* Asegurar que el fondo del carrito sea blanco y el texto negro */
+.redesign-active .js-cart-sidebar,
+.redesign-active #ajax-cart-details,
+.redesign-active .js-ajax-cart-container,
+.redesign-active .js-ajax-cart-list {
+  background-color: #fff !important;
+  color: #000 !important;
+  border-radius: 0 !important; /* Quitar redondeado gigante si se aplicó por error */
+}
+
+.redesign-active .js-cart-sidebar .cart-item,
+.redesign-active .js-cart-sidebar .cart-subtotal,
+.redesign-active .js-cart-sidebar .cart-total {
+  color: #000 !important;
+}
+
+
+.redesign-active #ajax-cart-details .btn-primary:hover,
+.redesign-active .js-cart-sidebar .btn-primary:hover,
+.redesign-active .js-cart-sidebar .js-cart-checkout-btn:hover {
+  background-color: #222 !important;
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2) !important;
+  color: #fff !important;
+}
+
+/* Ajustes de Pop-up (Caja) */
+.redesign-active #ajax-cart-details,
+.redesign-active .js-ajax-cart-container {
+  border-radius: 15px !important;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.15) !important;
+  border: 1px solid rgba(0,0,0,0.05) !important;
+  padding: 25px !important;
+}
+
+/* Ajustes de Sidebar Carrito */
+.redesign-active .js-cart-sidebar {
+  border-left: 1px solid #f0f0f0 !important;
+}
+
+.redesign-active .js-cart-sidebar .cart-title {
+  font-family: 'Oswald', sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  font-weight: 700 !important;
+}
 
 /* Sección de productos destacados */
 .redesign-active .section-featured-home {
@@ -1326,8 +1526,8 @@
   .redesign-active [data-store="whatsapp-button"],
   .redesign-active .btn-whatsapp-with-tabnav,
   .redesign-active .whatsapp-button {
-    bottom: 55px !important;
-    /* 25px base + 30px extra pedido por el usuario */
+    bottom: 40px !important;
+    /* Bajado 15px extra pedido por el usuario (55px -> 40px) */
   }
 }
 
@@ -1347,9 +1547,9 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  max-width: 1300px;
+  max-width: 1400px; /* Sincronizado con la grid */
   margin: 0 auto 35px;
-  padding-bottom: 18px;
+  padding: 0 20px 18px; /* Agregado padding para evitar que toque los bordes */
   border-bottom: 1px solid #e0e0e0;
 }
 
@@ -1504,8 +1704,8 @@
   font-family: 'Outfit', sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #fff200;
-  /* Amarillo SIGNOS */
+  color: #fff;
+  /* Blanco SIGNOS */
   text-transform: uppercase;
   letter-spacing: 1.5px;
   z-index: 3;
@@ -1517,6 +1717,13 @@
   display: inline-block;
 }
 
+@media (max-width: 767px) {
+  .categoria-cta {
+    font-size: 11px; /* Más pequeño para que entre la flecha */
+    letter-spacing: 1px;
+  }
+}
+
 .categoria-card:hover .categoria-name {
   transform: translateY(-5px);
 }
@@ -1524,6 +1731,11 @@
 .categoria-card:hover .categoria-cta {
   opacity: 1;
   transform: translateY(0);
+}
+
+.categoria-cta:hover {
+  transform: translateY(0) scale(1.1);
+  color: #fff !important;
 }
 
 /* Optimizar para Parallax */
@@ -1689,7 +1901,24 @@
   }
 
   .redesign-categorias {
-    padding: 40px 4% 30px;
+    padding: 40px 15px 30px !important; /* Padding fijo para evitar desbordamientos */
+    overflow: hidden;
+    box-sizing: border-box !important;
+  }
+
+  .categorias-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    height: auto;
+    gap: 12px !important; /* Más espacio entre tarjetas */
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .categoria-card {
+    min-height: 220px;
+    padding: 20px 15px;
+    box-sizing: border-box !important;
   }
 }
 
@@ -2081,23 +2310,24 @@
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #000000 !important;
-  background-color: #fff200 !important;
+  color: #ffffff !important;
+  background-color: #000000 !important;
   padding: 16px 45px;
   border-radius: 100px;
   /* Pill Style Garantizado */
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), background 0.3s ease, color 0.3s ease;
+  transform: scale(1);
   position: relative;
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
-  animation: btnNeonPulse 1s infinite alternate !important;
+  /* box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
+  animation: btnNeonPulse 1s infinite alternate !important; */
   /* Titila suavemente */
 }
 
 .redesign-btn-gold:hover {
-  /* No hace nada adicional en hover, mantiene su estado animado */
+  transform: scale(1.06) !important;
+  color: #ffffff !important;
   text-decoration: none !important;
-  color: #000000 !important;
 }
 
 /* --- Keyframe base --- */
@@ -2188,7 +2418,7 @@
 @media (max-width: 1024px) {
   .redesign-novedades {
     height: auto;
-    padding: 60px 5%;
+    padding: 72px 5%; /* Aumentado 20% pedido por el usuario (60px -> 72px) */
   }
 
   .novedades-container {
@@ -2228,6 +2458,12 @@
   width: 100%;
   padding: 60px 0;
   background-color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+  .redesign-offers {
+    padding: 72px 0; /* Aumentado 20% pedido por el usuario (60px -> 72px) */
+  }
 }
 
 /* Header split matching Section 2 */
@@ -2388,8 +2624,8 @@
   font-family: 'Montserrat', sans-serif;
   font-size: 11px;
   font-weight: 700;
-  color: #fff200;
-  /* Mismo color que el botón Aprovechar ofertas */
+  color: #fff;
+  /* Blanco SIGNOS */
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -2451,28 +2687,27 @@
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #000 !important;
-  background: #fff200 !important;
+  color: #fff !important;
+  background: #000 !important;
   /* Dorado SIGNOS */
   padding: 16px 45px;
   border-radius: 100px;
   /* Pill Style Garantizado */
   text-decoration: none !important;
   border: none;
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
-  animation: btnNeonPulse 1.5s infinite alternate !important;
+  /* box-shadow: 0 4px 12px rgba(255, 215, 0, 0.25);
+  animation: btnNeonPulse 1.5s infinite alternate !important; */
   /* Glow y Titileo */
   display: inline-block;
-  transition: all 0.3s ease;
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), background 0.3s ease, color 0.3s ease;
+  transform: scale(1);
 }
 
 /* Forzamos que en hover NO pase nada, manteniendo el estado de la animacion */
 .redesign-btn-verofertas:hover {
-  background: #fff200 !important;
-  color: #000 !important;
-  transform: none;
-  /* Nota: esto podria pausar la animacion en algunos navegadores, pero es lo que pide el usuario */
-  box-shadow: 0 8px 30px rgba(250, 204, 0, 0.7) !important;
+  transform: scale(1.06) !important;
+  color: #fff !important;
+  /* box-shadow: 0 8px 30px rgba(250, 204, 0, 0.7) !important; */
 }
 
 /* Animación de titileo (flicker) y pulso (agrande/achique) */
@@ -2508,9 +2743,8 @@
 }
 
 .redesign-btn-verofertas:hover {
-  background: #fff200;
-  color: #000;
-  transform: none;
+  transform: scale(1.06);
+  color: #fff;
 }
 
 @media (max-width: 991px) {
@@ -2734,11 +2968,12 @@
 }
 
 .redesign-active .social-links a:hover {
-  background: #ffffff;
-  color: #000 !important;
-  transform: translateY(-5px) rotate(8deg);
-  border-color: #ffffff;
-  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+  background: #444;
+  /* Gris oscuro elegante */
+  color: #ffffff !important;
+  transform: none;
+  border-color: #555;
+  box-shadow: none;
 }
 
 .redesign-active .social-links svg {
@@ -3172,6 +3407,60 @@
   line-height: 1.1;
 }
 
+@media (max-width: 768px) {
+  .redesign-active .template-category .page-header {
+    text-align: left !important;
+  }
+  
+  .redesign-active .template-category .page-header h1,
+  .redesign-active .template-category .page-header h2 {
+    font-size: 26px !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    line-height: 1.1 !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    transform: translateX(-15px) !important; /* Force visual shift left */
+    display: block !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+  
+  .redesign-active .category-controls .row {
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    margin: 0 !important;
+    flex-wrap: nowrap !important;
+  }
+  
+  /* Permite que el título ocupe el espacio sin aplastar el botón */
+  .redesign-active .category-controls .row > div:first-child {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    padding-right: 15px !important;
+  }
+  
+  /* Protege el tamaño del botón de filtros y lo empuja a la derecha */
+  .redesign-active .category-controls .row > div:last-child {
+    flex: 0 0 auto !important;
+    margin-right: -7px !important; /* Push 7px right */
+  }
+  
+  .redesign-active .category-controls .row::before,
+  .redesign-active .category-controls .row::after {
+    display: none !important;
+  }
+  
+  .redesign-active .category-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
 /* La tarjeta de producto individual */
 @media (min-width: 768px) {
   .redesign-active .template-category .item-product {
@@ -3183,9 +3472,10 @@
 .redesign-active .template-category .item-product {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease !important;
   border-radius: 0px;
-  padding: 10px;
+  padding: 12px; /* #7: Más espacio interno entre cards */
   background: #fff;
   border: 1px solid transparent;
+  height: 100% !important;
 }
 
 .redesign-active .template-category .item-product:hover {
@@ -3194,9 +3484,27 @@
   border-color: rgba(0, 0, 0, 0.03) !important;
 }
 
+/* Forzar aspecto 1:1 en contenedores de imagen para igualar alturas de manera segura */
 .redesign-active .template-category .item-image {
   border-radius: 4px;
   overflow: hidden;
+  position: relative;
+  background: #fff;
+}
+
+/* Apuntar específicamente al espaciador nativo de Tiendanube */
+.redesign-active .template-category .item-image .position-relative.d-block {
+  padding-bottom: 100% !important; /* Fuerza una proporción 1:1 (Cuadrado) en todos los productos */
+}
+
+.redesign-active .template-category .item-image img {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transform: none !important;
 }
 
 /* Textos de la tarjeta de producto */
@@ -3209,6 +3517,12 @@
   color: #444 !important;
   margin-top: 15px !important;
   opacity: 0.9;
+  min-height: 32px; /* Force 2 lines height approx */
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .redesign-active .template-category .item-product:hover .item-name {
@@ -3235,7 +3549,7 @@
   font-family: 'Outfit', sans-serif !important;
   font-size: 10px !important;
   font-weight: 700 !important;
-  color: #fff200 !important;
+  color: #000 !important;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   margin-top: 5px;
@@ -3603,4 +3917,866 @@
   height: 18px !important;
   vertical-align: middle !important;
   display: inline-block !important;
+}
+
+/* ============================================================
+   16. PRODUCT GRID REFINEMENTS (Boutique Aesthetics)
+   ============================================================ */
+
+/* Nombres de Producto: Outfit Semilight */
+.redesign-active .item-name {
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 300 !important;
+  font-size: 15px !important;
+  color: #111 !important;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px !important;
+  text-transform: none; /* Mantener naturalidad */
+}
+
+/* Precios: Montserrat Bold sin distracciones */
+.redesign-active .item-price {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 18px !important;
+  color: #000 !important;
+  display: inline-block;
+}
+
+/* Intento de limpiar decimales si el tema los separa (basado en estructura común) */
+.redesign-active .item-price .price-decimals {
+    display: none !important;
+}
+
+/* Etiqueta de Cuotas Premium (Cápsula Gris Claro) */
+.redesign-active .item-installments {
+  display: inline-block !important;
+  background-color: #f5f5f5 !important;
+  color: #000 !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px !important;
+  padding: 4px 10px !important;
+  border-radius: 100px !important;
+  margin-top: 8px !important;
+  margin-left: 0 !important; /* Force left alignment */
+  margin-right: auto !important;
+  border: none !important;
+  text-align: left !important; /* Left alignment to match title and price */
+  line-height: 1.2 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+}
+
+.redesign-active .item-installments * {
+  display: inline !important;
+  background-color: transparent !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: inherit !important;
+  font-weight: 500 !important;
+  letter-spacing: inherit !important;
+}
+
+@media (max-width: 768px) {
+  .redesign-active .item-installments {
+    /* Los navegadores bloquean letras menores a ~8px. Usamos 'transform' para saltar ese límite y achicarlo real. */
+    font-size: 9px !important;
+    transform: scale(0.75) !important; /* Achica un 25% el tamaño real visualizado */
+    transform-origin: left center !important; /* Lo mantiene pegado a la izquierda */
+    padding: 3px 6px !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap !important;
+    width: max-content !important; /* Evita que la cápsula se deforme al escalar */
+    max-width: none !important; /* Permite que el fondo gris cubra el 100% del texto aunque desborde antes de escalar */
+    margin-bottom: -5px !important; /* Compensa el espacio sobrante tras escalar */
+  }
+}
+
+/* Rediseño de Botones de Compra en Cards */
+.redesign-active .template-category .item-actions .btn,
+.redesign-active .template-category .js-prod-submit-form {
+  border-radius: 100px !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 10px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  padding: 8px 20px !important;
+}
+
+/* Filtros y Ordenamiento: Pill Style Minimalist */
+.redesign-active .btn-default.btn-medium.form-select,
+.redesign-active .js-modal-open.btn-default,
+.redesign-active .sort-by .btn-default {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: 1px solid #eee !important;
+  border-radius: 100px !important;
+  color: #000 !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.5px !important;
+  padding: 10px 25px !important;
+  height: auto !important;
+  line-height: normal !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  white-space: nowrap !important;
+  width: auto !important;
+  max-width: none !important;
+  text-overflow: clip !important;
+}
+
+@media (max-width: 768px) {
+  .redesign-active .btn-default.btn-medium.form-select,
+  .redesign-active .js-modal-open.btn-default,
+  .redesign-active .sort-by .btn-default {
+    font-size: 8px !important;
+    padding: 6px 14px !important;
+    letter-spacing: 0.5px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+}
+
+/* Fix internal structure of the filter button to avoid Bootstrap grid side-effects */
+.redesign-active .js-modal-open.btn-default .row {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  margin: 0 !important;
+  width: auto !important;
+}
+.redesign-active .js-modal-open.btn-default .col {
+  padding: 0 !important;
+  flex: none !important;
+  width: auto !important;
+}
+
+/* Ensure the button container pushes to the right on mobile without affecting the title */
+.redesign-active .category-controls > .row > .col-auto:last-child {
+  margin-left: auto !important;
+}
+
+.redesign-active .btn-default.form-select:hover,
+.redesign-active .js-modal-open.btn-default:hover,
+.redesign-active .sort-by .btn-default:hover {
+  border-color: #000 !important;
+  background: #000 !important;
+  color: #fff !important;
+}
+
+/* Corregir iconos dentro de los pills (SVG) */
+.redesign-active .btn-default .icon-inline {
+  width: 14px !important;
+  height: 14px !important;
+  margin-left: 8px;
+  fill: currentColor !important;
+  transition: all 0.3s ease;
+}
+
+/* Forzar color blanco en la flecha durante el hover */
+.redesign-active .btn-default:hover .icon-inline,
+.redesign-active .sort-by .btn-default:hover .icon-inline {
+  fill: #fff !important;
+  stroke: #fff !important;
+}
+
+/* Estilizar el desplegable nativo (options) para quitar el aspecto por defecto del SO */
+.redesign-active select.btn-default option,
+.redesign-active .sort-by select option {
+  background-color: #fff !important;
+  color: #000 !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  padding: 12px !important;
+}
+
+/* Ajuste de contenedor de controles para que respiren */
+.redesign-active .category-controls {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    border-bottom: 1px solid #f8f8f8;
+    margin-bottom: 30px !important;
+    position: relative !important;
+    top: auto !important;
+}
+
+/* Evitar que el contenedor padre de controles sea sticky en mobile */
+.redesign-active .js-category-controls,
+.redesign-active .js-category-controls-container,
+.redesign-active .page-header {
+    position: relative !important;
+    top: auto !important;
+}
+
+.redesign-active .category-breadcrumbs-container {
+    margin-bottom: 10px;
+}
+
+.redesign-active .category-breadcrumbs-container .breadcrumb-item,
+.redesign-active .category-breadcrumbs-container .breadcrumb-item a {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999 !important;
+}
+
+/* Fix: Ocultar caja de búsqueda si el input se borra y queda vacío */
+.redesign-active .js-search-form:has(.js-search-input:placeholder-shown) + .js-search-suggest,
+.redesign-active .js-search-form:has(.js-search-input:placeholder-shown) ~ .js-search-suggest {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    /* Ocultar breadcrumbs en mobile */
+    .redesign-active .breadcrumbs {
+        display: none !important;
+    }
+
+    /* Reducir letra de productos (nombres) un 20% en mobile */
+    .redesign-active .template-category .item-name {
+        font-size: 9px !important;
+        letter-spacing: 0.5px !important;
+        min-height: 26px;
+    }
+
+    /* Ocultar botón COMPRAR hasta que se pase el dedo (hover/active) */
+    .redesign-active .template-category .item-actions {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: opacity 0.3s ease, visibility 0.3s ease !important;
+    }
+    
+    .redesign-active .template-category .item-product:hover .item-actions,
+    .redesign-active .template-category .item-product:active .item-actions,
+    .redesign-active .template-category .item-product:focus .item-actions {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* #7: Mayor espacio entre tarjetas en mobile */
+    .redesign-active .template-category .js-product-table .col-6 {
+        padding: 6px !important;
+    }
+
+    /* Quitar la línea blanca de hover en la sidebar/nav mobile */
+    .redesign-active .nav-item-text-wrapper::after,
+    .redesign-active .js-item-name::after {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+}
+
+
+
+/* ============================================================
+   #6: Botón "Volver Arriba" flotante
+   ============================================================ */
+.redesign-scroll-top-btn {
+  position: fixed !important;
+  bottom: 90px !important;
+  left: 20px !important;
+  z-index: 999 !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: #111 !important;
+  color: #fff !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+
+.redesign-scroll-top-btn.visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.redesign-scroll-top-btn:hover {
+  background: #333 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ============================================================
+   Rediseño Quick Shop (Pop-up de Compra Rápida)
+   ============================================================ */
+
+@keyframes redesignQuickshopSlide {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.redesign-active #quickshop-modal {
+  border-radius: 20px 20px 0 0 !important;
+  overflow: hidden !important;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15) !important;
+  background-color: #fff !important;
+  border: none !important;
+  animation: redesignQuickshopSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Header del modal (botón cerrar) */
+.redesign-active #quickshop-modal .modal-header {
+  border: none !important;
+  padding: 15px 20px 0 !important;
+}
+
+.redesign-active #quickshop-modal .modal-close svg {
+  width: 24px !important;
+  height: 24px !important;
+  fill: #000 !important;
+}
+
+/* Cuerpo del modal */
+.redesign-active #quickshop-modal .modal-body {
+  padding: 10px 25px 30px !important;
+}
+
+/* Título del producto en Quickshop */
+.redesign-active #quickshop-modal .js-item-name {
+  font-family: 'Oswald', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  color: #000 !important;
+  line-height: 1.2 !important;
+  margin-bottom: 8px !important;
+}
+
+/* Precios en Quickshop */
+.redesign-active #quickshop-modal .js-price-display {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: #000 !important;
+}
+
+.redesign-active #quickshop-modal .js-compare-price-display {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 14px !important;
+  color: #999 !important;
+  text-decoration: line-through !important;
+  margin-right: 8px !important;
+}
+
+/* Texto de transferencia/descuentos */
+.redesign-active #quickshop-modal [class*="payment-discount-price"] {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 12px !important;
+  color: #666 !important;
+  margin-top: 4px !important;
+}
+
+/* Variantes (Talles) en Quickshop */
+.redesign-active #quickshop-modal .form-label {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  color: #999 !important;
+  margin-bottom: 10px !important;
+}
+
+.redesign-active #quickshop-modal .btn-variant {
+  border-radius: 6px !important;
+  border: 1px solid #e0e0e0 !important;
+  background: #fff !important;
+  padding: 8px 14px !important;
+  margin: 0 8px 8px 0 !important;
+  min-width: 45px !important;
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+.redesign-active #quickshop-modal .btn-variant-content {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #333 !important;
+}
+
+.redesign-active #quickshop-modal .btn-variant.selected {
+  background: #000 !important;
+  border-color: #000 !important;
+}
+
+.redesign-active #quickshop-modal .btn-variant.selected .btn-variant-content {
+  color: #fff !important;
+}
+
+/* Botón de Agregar al Carrito en Quickshop */
+.redesign-active #quickshop-modal .js-add-to-cart {
+  width: 100% !important;
+  background: #000 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 100px !important;
+  padding: 16px !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  margin-top: 20px !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+}
+
+.redesign-active #quickshop-modal .js-add-to-cart:hover {
+  background: #222 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Ajustes específicos para el modal de Quickshop en Mobile */
+@media (max-width: 768px) {
+  .redesign-active #quickshop-modal {
+    max-height: 85vh !important;
+  }
+  
+  .redesign-active #quickshop-modal .js-price-display {
+    font-size: 18px !important;
+  }
+}
+
+/* ============================================================
+   Rediseño Página de Detalle de Producto
+   ============================================================ */
+
+.redesign-active .template-product {
+  padding-top: 20px !important;
+}
+
+/* Título del producto */
+.redesign-active .template-product .js-product-container h1,
+.redesign-active .template-product .js-item-name {
+  font-family: 'Oswald', sans-serif !important;
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  margin-bottom: 15px !important;
+  line-height: 1.2 !important;
+}
+
+/* Precios */
+.redesign-active .template-product .js-price-display {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #000 !important;
+}
+
+.redesign-active .template-product .js-compare-price-display {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 16px !important;
+  color: #999 !important;
+  margin-right: 10px !important;
+}
+
+/* Cápsula de cuotas en detalle (Igual que en cards pero un poco más grande) */
+.redesign-active .template-product .item-installments {
+  display: inline-block !important;
+  background: #f4f4f4 !important;
+  color: #000 !important;
+  padding: 4px 10px !important;
+  border-radius: 4px !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  margin-top: 5px !important;
+}
+
+/* Variantes (Talles) */
+.redesign-active .template-product .js-product-variants-group .form-label {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  color: #999 !important;
+  margin-bottom: 12px !important;
+}
+
+.redesign-active .template-product .btn-variant {
+  border-radius: 8px !important;
+  border: 1px solid #ddd !important;
+  background: #fff !important;
+  padding: 10px 16px !important;
+  min-width: 50px !important;
+  height: 44px !important;
+  transition: all 0.2s ease !important;
+}
+
+.redesign-active .template-product .btn-variant.selected {
+  background: #000 !important;
+  border-color: #000 !important;
+}
+
+.redesign-active .template-product .btn-variant.selected .btn-variant-content {
+  color: #fff !important;
+}
+
+/* Botones Principales (Probador y Carrito) */
+.redesign-active .template-product .js-probador-btn,
+.redesign-active .template-product .js-addtocart:not(.js-addtocart-placeholder) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 52px !important;
+  border-radius: 100px !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border: none !important;
+}
+
+/* Botón Probador Virtual */
+.redesign-active .template-product .js-probador-btn {
+  background: #fff !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+  margin-bottom: 12px !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+
+/* Botón Agregar al Carrito */
+.redesign-active .template-product .js-addtocart:not(.js-addtocart-placeholder) {
+  background: #000 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.redesign-active .template-product .js-probador-btn:hover {
+  background: #000 !important;
+  color: #fff !important;
+  transform: translateY(-2px) !important;
+}
+
+.redesign-active .template-product .js-addtocart:not(.js-addtocart-placeholder):hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2) !important;
+  background: #222 !important;
+}
+
+/* Accordions (Medios de pago / Envío) */
+.redesign-active .template-product .js-accordion-container {
+  border-top: 1px solid #eee !important;
+  padding: 15px 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.redesign-active .template-product .js-accordion-toggle {
+  text-decoration: none !important;
+  color: #000 !important;
+}
+
+.redesign-active .template-product .js-accordion-toggle .subtitle {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  color: #000 !important;
+}
+
+.redesign-active .template-product .js-accordion-toggle svg {
+  width: 18px !important;
+  height: 18px !important;
+  fill: #000 !important;
+}
+
+/* Breadcrumbs (Migas de pan) */
+.redesign-active .template-product .breadcrumbs,
+.redesign-active .template-product .breadcrumb {
+  display: none !important;
+}
+
+.redesign-active .template-product .breadcrumb-item,
+.redesign-active .template-product .breadcrumb-item a {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  color: #999 !important;
+  text-decoration: none !important;
+}
+
+/* Similar Products */
+.redesign-active .template-product .section-products-related {
+  padding-top: 80px !important;
+  border-top: 1px solid #eee !important;
+  margin-top: 60px !important;
+  background-color: #fafafa !important; /* Fondo sutil para separar secciones */
+  padding-bottom: 60px !important;
+}
+
+.redesign-active .template-product .section-products-related h2 {
+  font-family: 'Oswald', sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 5px !important;
+  text-align: center !important;
+  margin-bottom: 60px !important;
+  color: #000 !important;
+  position: relative !important;
+}
+
+.redesign-active .template-product .section-products-related h2::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: -15px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 40px !important;
+  height: 2px !important;
+  background: #000 !important;
+}
+
+/* Flechas de navegación del carrusel */
+.redesign-active .section-products-related .swiper-button-prev,
+.redesign-active .section-products-related .swiper-button-next {
+  background-color: #fff !important;
+  color: #000 !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+  border: 1px solid #eee !important;
+  transition: all 0.3s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  top: 50% !important;
+}
+
+.redesign-active .section-products-related .swiper-button-prev::after,
+.redesign-active .section-products-related .swiper-button-next::after {
+  display: none !important; /* Ocultamos el icono por defecto si existe */
+}
+
+
+.redesign-active .section-products-related .swiper-button-prev:hover,
+.redesign-active .section-products-related .swiper-button-next:hover {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #000 !important;
+}
+
+.redesign-active .section-products-related .swiper-button-prev svg,
+.redesign-active .section-products-related .swiper-button-next svg {
+  width: 12px !important;
+  height: 12px !important;
+  fill: currentColor !important;
+}
+
+/* Efecto en las tarjetas de productos similares */
+.redesign-active .section-products-related .js-item-product {
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+  background: #fff !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.redesign-active .section-products-related .js-item-product:hover {
+  transform: translateY(-10px) !important;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+}
+
+
+@media (max-width: 768px) {
+  .redesign-active .template-product .js-product-container h1 {
+    font-size: 22px !important;
+  }
+  
+  .redesign-active .template-product .js-price-display {
+    font-size: 20px !important;
+  }
+
+  /* Reducir tamaño de talles para que entren en una fila */
+  .redesign-active #quickshop-modal .btn-variant,
+  .redesign-active .template-product .btn-variant {
+    min-width: 38px !important;
+    height: 36px !important;
+    padding: 4px 8px !important;
+    margin-right: 4px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .redesign-active #quickshop-modal .btn-variant-content,
+  .redesign-active .template-product .btn-variant-content {
+    font-size: 11px !important;
+  }
+
+  /* Reducir tamaño de títulos en productos similares para mobile */
+  .redesign-active .section-products-related .item-name {
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 8px !important;
+  }
+}
+
+
+/* Ocultar precio sin impuestos */
+.redesign-active .js-price-without-taxes,
+.redesign-active [class*="price-without-taxes"] {
+  display: none !important;
+}
+
+/* Reducir tamaño de foto de producto en Desktop */
+@media (min-width: 769px) {
+  .redesign-active .template-product .section-single-product > div:first-child {
+    flex: 0 0 55% !important;
+    max-width: 55% !important;
+    padding-right: 40px !important;
+  }
+  
+  .redesign-active .template-product .section-single-product > div:last-child {
+    flex: 0 0 45% !important;
+    max-width: 45% !important;
+  }
+
+  /* Alinear Probador Virtual a la derecha de los talles */
+  .redesign-active .template-product .js-product-variants {
+    display: inline-flex !important;
+    width: auto !important;
+    max-width: calc(100% - 210px) !important;
+    vertical-align: middle !important;
+    margin-bottom: 0 !important;
+  }
+
+  .redesign-active .template-product .js-product-form > .redesign-active {
+    display: inline-flex !important;
+    width: 200px !important;
+    vertical-align: middle !important;
+    margin-top: 0 !important; /* Reset margin top */
+    margin-bottom: 0 !important;
+    position: relative !important;
+    top: -17px !important; /* Subido 2px más (total -17px) */
+  }
+
+  .redesign-active .template-product .js-probador-btn {
+    height: 44px !important;
+    font-size: 10px !important; /* Reducido para que entre en una fila */
+    white-space: nowrap !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+/* Quitar líneas del footer */
+.redesign-active footer.js-footer .row > [class*="col-"],
+.redesign-active footer.js-footer hr,
+.redesign-active footer.js-footer .divider {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+/* Modal del Probador Virtual Rediseñado */
+#redesign-probador-modal {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  z-index: 100000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#redesign-probador-modal.is-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+#redesign-probador-modal .probador-container {
+  position: relative !important;
+  width: 95% !important;
+  max-width: 450px !important;
+  height: 90vh !important;
+  max-height: 750px !important;
+  background: #fff !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  transform: scale(0.9) !important;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+#redesign-probador-modal.is-open .probador-container {
+  transform: scale(1) !important;
+}
+
+#redesign-probador-modal .close-btn {
+  position: absolute !important;
+  top: 20px !important;
+  right: 20px !important;
+  z-index: 10 !important;
+  background: #000 !important;
+  color: #fff !important;
+  border: none !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.2s ease !important;
+}
+
+#redesign-probador-modal .close-btn:hover {
+  transform: scale(1.1) !important;
+  background: #333 !important;
+}
+
+#redesign-probador-modal iframe {
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
 }

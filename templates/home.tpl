@@ -80,11 +80,36 @@
 <div class="redesign-home-content">
     
     <!-- 1. HERO VIDEO -->
-    <section class="redesign-hero">
+    <section class="redesign-hero video-loading">
         <!-- Video de fondo cargado desde el FTP -->
-        <video autoplay muted loop playsinline class="redesign-hero-video">
+        <video autoplay muted loop playsinline preload="auto" class="redesign-hero-video">
             <source src="{{ 'recortado-7026828-uhd_4096_2160_25fps.mp4' | static_url }}" type="video/mp4">
         </video>
+        <script>
+            (function() {
+                var videoHero = document.querySelector('.redesign-hero-video');
+                var heroSection = document.querySelector('.redesign-hero');
+                
+                if (videoHero && heroSection) {
+                    var onVideoReady = function() {
+                        heroSection.classList.remove('video-loading');
+                        videoHero.play();
+                    };
+
+                    // Si el video ya está listo (caché)
+                    if (videoHero.readyState >= 3) {
+                        onVideoReady();
+                    } else {
+                        videoHero.addEventListener('canplay', onVideoReady);
+                        // Timeout de seguridad: si tarda más de 5s mostramos igual
+                        setTimeout(onVideoReady, 5000);
+                    }
+
+                    // Forzar en mobile si el navegador lo bloquea inicialmente
+                    document.addEventListener('touchstart', function() { videoHero.play(); }, {once:true});
+                }
+            })();
+        </script>
         
         <div class="redesign-hero-overlay"></div>
 
@@ -101,9 +126,11 @@
                     <span>LA MEJOR CALIDAD</span>
                 </span>
             </p>
-            <a href="/productos" class="redesign-btn-primary">
-                VER COLECCIÓN
-            </a>
+            <div class="redesign-hero-btn-wrapper">
+                <a href="/productos" class="redesign-btn-primary">
+                    VER COLECCIÓN
+                </a>
+            </div>
             
             <div class="redesign-scroll-indicator">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

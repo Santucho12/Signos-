@@ -118,10 +118,9 @@
 
     {# BOTON PROBADOR VIRTUAL REDISEÑO #}
     <div class="redesign-active mt-2 mb-4" style="display: none;">
-        <a href="#probador-modal" data-toggle="modal" class="js-probador-btn">
-             Probador Virtual
+        <a href="javascript:void(0)" class="js-probador-btn">
+             PROBADOR VIRTUAL
         </a>
-        {% include 'snipplets/product/probador-virtual.tpl' %}
     </div>
 
     {% set show_product_quantity = product_available and settings.quantity_input %}
