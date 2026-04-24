@@ -126,7 +126,7 @@
 .redesign-active body:not(.template-home) [data-store="header"] {
   position: relative !important;
   width: 100% !important;
-  z-index: 20000 !important; /* Aumentado drásticamente */
+  z-index: 1500 !important; /* Ajustado para estar debajo de los modales y overlay (10000+) */
   background: #fff !important;
   border-bottom: 1px solid #f0f0f0 !important;
   padding-top: 12px !important;
@@ -137,7 +137,7 @@
 .redesign-active .template-home .head-main.scrolled,
 .redesign-active .template-home [data-store="header"].scrolled {
   position: absolute !important;
-  z-index: 20000 !important; /* Aseguramos que en el home también esté arriba */
+  z-index: 1500 !important; /* Aseguramos consistencia con el header de otras páginas */
   background: transparent !important;
   box-shadow: none !important;
   padding-top: 15px !important;
@@ -1186,11 +1186,12 @@
 .redesign-active .js-cart-sidebar .btn-primary,
 .redesign-active .js-cart-sidebar .js-cart-checkout-btn,
 .redesign-active .js-cart-sidebar [data-options="checkout-button"],
-.redesign-active .js-ajax-cart-submit {
+.redesign-active .js-ajax-cart-submit,
+.redesign-active .notification-cart .btn-primary {
   border-radius: 100px !important; /* Forma Pill Premium */
   padding: 16px 30px !important;
   font-family: 'Montserrat', sans-serif !important;
-  font-weight: 700 !important;
+  font-weight: 900 !important;
   letter-spacing: 1.5px !important;
   text-transform: uppercase !important;
   background-color: #000 !important;
@@ -1199,17 +1200,28 @@
   transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
   display: block !important;
   width: 100% !important;
-  font-size: 13px !important;
+  font-size: 18px !important;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
   text-align: center !important;
 }
+
+/* Hover para botones de notificación */
+.redesign-active .notification-cart .btn-primary:hover {
+  background-color: #222 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
+}
+
 
 /* Asegurar que el fondo del carrito sea blanco y el texto negro */
 .redesign-active .js-cart-sidebar,
 .redesign-active #ajax-cart-details,
 .redesign-active .js-ajax-cart-container,
-.redesign-active .js-ajax-cart-list {
-  background-color: #fff !important;
+.redesign-active .js-ajax-cart-list,
+.redesign-active .notification-cart {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: #000 !important;
   border-radius: 0 !important; /* Quitar redondeado gigante si se aplicó por error */
 }
@@ -1232,16 +1244,204 @@
 
 /* Ajustes de Pop-up (Caja) */
 .redesign-active #ajax-cart-details,
-.redesign-active .js-ajax-cart-container {
+.redesign-active .js-ajax-cart-container,
+.redesign-active .notification-cart {
   border-radius: 15px !important;
   box-shadow: 0 15px 50px rgba(0,0,0,0.15) !important;
   border: 1px solid rgba(0,0,0,0.05) !important;
   padding: 25px !important;
+  overflow: visible !important; 
+}
+
+/* El contenedor externo debe ser invisible para evitar el efecto de doble caja */
+.redesign-active .notification-cart-container {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+
+/* Detalles internos del Pop-up Premium */
+.redesign-active .notification-cart {
+  font-family: 'Outfit', sans-serif !important;
+}
+
+.redesign-active .notification-cart .notification-img img {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.redesign-active .notification-cart .js-cart-notification-item-name {
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  color: #000 !important;
+}
+
+.redesign-active .notification-cart .js-cart-notification-item-price,
+.redesign-active .notification-cart .js-cart-notification-item-quantity {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+}
+
+.redesign-active .notification-cart strong {
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 11px;
+  color: #000;
+  display: block;
+  margin-top: 8px;
+}
+
+.redesign-active .notification-cart .divider {
+  border-top: 1px solid rgba(0,0,0,0.06) !important;
+  margin: 15px 0 !important;
+}
+
+.redesign-active .notification-cart .js-cart-total {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.5px;
+}
+
+.redesign-active .notification-cart .h6 {
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 400 !important;
+  font-size: 13px !important;
+  color: #666;
+  margin-bottom: 20px !important;
+}
+
+.redesign-active .notification-cart .notification-close {
+  opacity: 0.4;
+  transition: all 0.3s ease;
+  top: 15px !important;
+  right: 15px !important;
+}
+
+.redesign-active .notification-cart .notification-close:hover {
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+/* Animación de entrada para el Pop-up */
+.redesign-active .notification-cart-container.notification-visible {
+  animation: redesign-popup-in 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) both !important;
+}
+
+@keyframes redesign-popup-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* AJUSTE AGRESIVO: Notificación Mobile Centrada (Para que no quede arriba) */
+@media (max-width: 767px) {
+  /* Target directo sin scope para máxima prioridad */
+  .notification-cart-container,
+  .notification-fixed,
+  .js-alert-added-to-cart,
+  .notification-floating {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translate(-50%, -50%) !important;
+    width: 90% !important;
+    max-width: 320px !important;
+    margin: 0 !important;
+    z-index: 1000000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+  }
+
+  /* Aseguramos que sea visible cuando el sistema lo activa */
+  .notification-cart-container.notification-visible,
+  .notification-fixed.notification-visible,
+  .js-alert-added-to-cart.notification-visible {
+    pointer-events: auto !important;
+    display: flex !important;
+  }
+
+  .notification-cart {
+    width: 100% !important;
+    background: #fff !important;
+    border-radius: 20px !important;
+    padding: 20px !important;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.4) !important;
+    border: 1px solid rgba(0,0,0,0.1) !important;
+    opacity: 0;
+    transform: scale(0.7);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  }
+
+  .notification-visible .notification-cart {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+  }
+
+  /* Ajustes internos para que quepa bien en el centro */
+  .notification-cart .notification-img {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  .notification-cart .js-cart-notification-item-name {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+  }
+  .notification-cart .btn-primary {
+    padding: 12px !important;
+    font-size: 14px !important;
+    border-radius: 100px !important;
+    margin-top: 10px !important;
+  }
 }
 
 /* Ajustes de Sidebar Carrito */
 .redesign-active .js-cart-sidebar {
   border-left: 1px solid #f0f0f0 !important;
+  background-color: #fff !important;
+}
+
+/* Tipografía de Items y Totales en Sidebar */
+.redesign-active .js-cart-sidebar .cart-item-name,
+.redesign-active .js-cart-sidebar .js-cart-item-name {
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  color: #000 !important;
+  text-decoration: none !important;
+}
+
+.redesign-active .js-cart-sidebar .cart-item-price,
+.redesign-active .js-cart-sidebar .js-cart-item-unit-price {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+}
+
+.redesign-active .js-cart-sidebar .form-quantity {
+  border-radius: 4px !important;
+  border: 1px solid #eee !important;
+  overflow: hidden;
+}
+
+.redesign-active .js-cart-sidebar .form-quantity-input {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 600 !important;
 }
 
 .redesign-active .js-cart-sidebar .cart-title {
@@ -1249,6 +1449,50 @@
   text-transform: uppercase !important;
   letter-spacing: 2px !important;
   font-weight: 700 !important;
+}
+
+/* Fix alineación Totales y Botones en Carrito Sidebar */
+.redesign-active .js-cart-sidebar .row,
+.redesign-active #ajax-cart-details .row,
+.redesign-active .js-ajax-cart-container .row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.redesign-active .js-cart-sidebar .container-fluid,
+.redesign-active #ajax-cart-details .container-fluid,
+.redesign-active .js-ajax-cart-container .container-fluid {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.redesign-active .js-cart-sidebar .col,
+.redesign-active .js-cart-sidebar [class*="col-"] {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Enlace "Ver más productos" */
+.redesign-active .btn-link {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.5px !important;
+  color: #666 !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease;
+  display: inline-block;
+  margin-top: 10px;
+  @media (min-width: 768px) {
+    position: relative;
+    left: -10px;
+  }
+}
+
+.redesign-active .btn-link:hover {
+  color: #000 !important;
+  letter-spacing: 2px !important;
 }
 
 /* Sección de productos destacados */

@@ -1372,6 +1372,191 @@ a {
 
 {# /* // Max width 0px */ #}
 
+
+{#/*============================================================================
+  REDESIGN 2026: CHECKOUT PREMIUM (Boutique/Editorial)
+==============================================================================*/#}
+
+body, 
+.form-control, 
+.btn, 
+.title, 
+.summary-title, 
+.panel-header,
+.breadcrumb-step,
+.input-label,
+.alert {
+  font-family: 'Outfit', sans-serif !important;
+}
+
+.price, 
+.summary-total, 
+.table-footer, 
+.js-cart-total, 
+.summary-price, 
+.form-options-content, 
+.headbar-continue,
+.payment-item-discount,
+.shipping-option-price {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 600 !important;
+}
+
+/* 2. Botones Premium (Pill Shape) */
+.btn-primary, 
+.btn-secondary, 
+.js-apply-coupon, 
+.js-goto-checkout,
+.btn-block {
+  border-radius: 100px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.5px !important;
+  font-weight: 700 !important;
+  padding: 16px 30px !important;
+  font-size: 13px !important;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+}
+
+.btn-primary {
+  background-color: #000 !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+
+.btn-primary:hover {
+  background-color: #222 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+}
+
+/* 3. Inputs y Formularios */
+.form-control {
+  border-radius: 8px !important;
+  border: 1px solid rgba(0,0,0,0.1) !important;
+  padding: 14px 18px !important;
+  font-size: 14px !important;
+  background: #fff !important;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #000 !important;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.05) !important;
+}
+
+/* Floating labels adjustment */
+.has-float-label label {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #999 !important;
+  left: 12px !important;
+}
+
+/* 4. Breadcrumb (Pasos de Compra) */
+.breadcrumb li .breadcrumb-step {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  color: #999 !important;
+  background: none !important;
+}
+
+.breadcrumb li .breadcrumb-step.active {
+  color: #000 !important;
+  font-weight: 800 !important;
+  border-bottom: 2px solid #000;
+  padding-bottom: 2px;
+}
+
+.breadcrumb li .breadcrumb-step.visited {
+  color: #444 !important;
+}
+
+/* 5. Resumen de Compra (Sidebar) */
+.summary {
+  background: #fdfdfd !important;
+}
+
+.summary-container {
+  border-radius: 12px !important;
+  border: 1px solid #eee !important;
+  padding: 24px !important;
+  background: #fff !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03) !important;
+}
+
+.summary-img img {
+  border-radius: 6px !important;
+  border: 1px solid #f5f5f5;
+}
+
+.summary-title {
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  color: #000 !important;
+}
+
+.summary-total {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  color: #000 !important;
+  letter-spacing: -0.5px;
+}
+
+/* 6. Paneles de Información */
+.panel {
+  border: none !important;
+  background: transparent !important;
+  margin-bottom: 40px !important;
+}
+
+.panel-header {
+  font-family: 'Oswald', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 18px !important;
+  color: #000 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  border-bottom: 2px solid #000 !important;
+  display: inline-block !important;
+  padding-bottom: 4px !important;
+  margin-bottom: 30px !important;
+  width: auto !important;
+}
+
+/* 7. Opciones de Envío y Pago */
+.form-options-content {
+  border-radius: 10px !important;
+  border: 1px solid #eee !important;
+  padding: 15px !important;
+  transition: all 0.2s ease;
+}
+
+.shipping-option.active .form-options-content,
+.radio-group-accordion .radio.active {
+  border-color: #000 !important;
+  background: #f9f9f9 !important;
+}
+
+.shipping-option-price {
+  font-weight: 700 !important;
+  color: #000 !important;
+}
+
+/* Badge de Compra Segura */
+.security-seal {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 11px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase;
+}
+
+}
+
 @media (max-width: $xs) {
 
   .modal-xs {
