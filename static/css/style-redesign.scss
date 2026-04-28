@@ -21,6 +21,17 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Oswald:wght@300;400;500;700&display=swap');
 
+@font-face {
+  font-family: 'Blunt Semiconit';
+  src: url('Fontspring-DEMO-blunt-semiconit.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.redesign-active h1 {
+  font-family: 'Blunt Semiconit', sans-serif !important;
+}
+
 /*============================================================================
   Instrucciones de uso
   
@@ -184,7 +195,7 @@
 /* Estilo para los links del NAV (Global Base) */
 .redesign-active .nav-list-link,
 .redesign-active .js-item-name {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 700 !important;
   letter-spacing: 1px !important;
   text-transform: uppercase !important;
@@ -292,12 +303,12 @@
 
 .redesign-active .nav-dropdown-content,
 .redesign-active .desktop-dropdown {
-  background-color: rgba(25, 25, 25, 0.65) !important; /* Un poco menos oscuro para un efecto glassmorphism más ligero */
-  backdrop-filter: blur(6px) !important;
-  -webkit-backdrop-filter: blur(6px) !important;
+  background-color: rgba(15, 15, 15, 0.48) !important; /* Un poco más oscuro */
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
   border-top: none !important;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
-  padding: 30px !important;
+  padding: 12px 20px !important;
 }
 
 /* Forzar que todos los textos dentro del desplegable sean blancos */
@@ -307,7 +318,7 @@
 .redesign-active .desktop-dropdown .js-item-name {
   color: #fff !important;
   text-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
 }
 
 /* Estilo para los títulos de categoría (JEANS, REMERAS, etc) en el mega menú */
@@ -315,8 +326,8 @@
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: 1.5px !important;
-  font-size: 13px !important;
-  margin-bottom: 10px !important;
+  font-size: 11px !important;
+  margin-bottom: 4px !important;
   display: block !important;
 }
 
@@ -403,7 +414,7 @@
   /* El botón de volver ("Back") más elegante */
   .redesign-active .js-toggle-menu-back {
     color: #000 !important;
-    font-family: 'Oswald', sans-serif !important;
+    font-family: 'Blunt Semiconit', sans-serif !important;
     font-weight: 700 !important;
     text-transform: uppercase;
     font-size: 16px !important;
@@ -469,19 +480,19 @@
   display: flex !important;
   flex-direction: row !important;
   flex-wrap: wrap !important;
-  gap: 15px 40px !important;
-  /* Apenas 15px de distancia vertical */
+  gap: 5px 28px !important;
+  /* Reducción de gaps para comprimir */
 }
 
 .redesign-active .desktop-dropdown .desktop-list-subitems>.nav-item {
   break-inside: auto;
   page-break-inside: auto;
-  margin-bottom: 10px;
-  /* Reducción al mínimo del margen inferior de cada bloque */
+  margin-bottom: 3px;
+  /* Compresión del margen inferior */
   display: flex;
   flex-direction: column;
-  min-width: 160px;
-  /* Para que todos los títulos midan parejo */
+  min-width: 130px;
+  /* Columnas más angostas */
   flex: 1 1 16%;
   /* Ocupan aprox 5-6 lugares por fila y si hay más, bajan limpios */
 }
@@ -489,13 +500,13 @@
 /* Los links principales (Títulos de categoría: EJ. JEANS, REMERAS) */
 .redesign-active .desktop-dropdown .desktop-list-subitems>.nav-item>.nav-list-link {
   color: #fff !important;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px !important;
+  font-family: 'Blunt Semiconit', sans-serif;
+  font-size: 12px !important;
   font-weight: 700 !important;
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  padding: 4px 10px !important;
+  padding: 1px 8px !important;
   /* Reducido verticalmente al mínimo */
   display: inline-block;
   opacity: 1;
@@ -506,14 +517,14 @@
 /* Los sub-links (Subcategorías adentro de Jeans, etc: Ej MOM, SKINNY) */
 .redesign-active .desktop-dropdown .desktop-list-subitems .list-subitems .nav-list-link {
   color: #fff !important;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13px !important;
+  font-family: 'Blunt Semiconit', sans-serif;
+  font-size: 11px !important;
   font-weight: 400 !important;
   /* Más fino para diferenciarse */
   letter-spacing: 0.5px;
   text-transform: uppercase;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  padding: 4px 10px !important;
+  padding: 1px 8px !important;
   /* Extrema compactación */
   display: inline-block;
   opacity: 0.5;
@@ -694,7 +705,7 @@
 }
 
 .redesign-active .redesign-hero-title {
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 80px;
   /* Mas grande e impactante */
   font-weight: 700;
@@ -710,7 +721,7 @@
 }
 
 .redesign-active .redesign-hero-subtitle {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 22px;
   font-weight: 400;
   margin-bottom: 40px;
@@ -719,7 +730,7 @@
 }
 
 .redesign-active .redesign-btn-primary {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   display: inline-block;
   background: #000;
   /* Dorado SIGNOS */
@@ -964,7 +975,7 @@
 
 .benefit-text {
   color: #ffffff;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 10px;
   /* Tamaño "etiqueta" elegante */
   font-weight: 500;
@@ -1155,7 +1166,7 @@
   color: #fff !important;
   padding: 12px 30px;
   border-radius: 5px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -1177,7 +1188,7 @@
 .redesign-active #ajax-cart-details,
 .redesign-active .js-ajax-cart-container,
 .redesign-active .js-cart-sidebar {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
 }
 
 /* Botones del Carrito y Pop-up (Pill shape - SOLO BOTONES) */
@@ -1190,7 +1201,7 @@
 .redesign-active .notification-cart .btn-primary {
   border-radius: 100px !important; /* Forma Pill Premium */
   padding: 16px 30px !important;
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 900 !important;
   letter-spacing: 1.5px !important;
   text-transform: uppercase !important;
@@ -1263,7 +1274,7 @@
 
 /* Detalles internos del Pop-up Premium */
 .redesign-active .notification-cart {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
 }
 
 .redesign-active .notification-cart .notification-img img {
@@ -1279,7 +1290,7 @@
 
 .redesign-active .notification-cart .js-cart-notification-item-price,
 .redesign-active .notification-cart .js-cart-notification-item-quantity {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 500 !important;
   font-size: 13px !important;
 }
@@ -1300,14 +1311,14 @@
 }
 
 .redesign-active .notification-cart .js-cart-total {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 18px !important;
   font-weight: 700 !important;
   letter-spacing: -0.5px;
 }
 
 .redesign-active .notification-cart .h6 {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 400 !important;
   font-size: 13px !important;
   color: #666;
@@ -1419,7 +1430,7 @@
 /* Tipografía de Items y Totales en Sidebar */
 .redesign-active .js-cart-sidebar .cart-item-name,
 .redesign-active .js-cart-sidebar .js-cart-item-name {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 600 !important;
   font-size: 14px !important;
   color: #000 !important;
@@ -1428,7 +1439,7 @@
 
 .redesign-active .js-cart-sidebar .cart-item-price,
 .redesign-active .js-cart-sidebar .js-cart-item-unit-price {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 500 !important;
   font-size: 13px !important;
 }
@@ -1440,12 +1451,12 @@
 }
 
 .redesign-active .js-cart-sidebar .form-quantity-input {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 600 !important;
 }
 
 .redesign-active .js-cart-sidebar .cart-title {
-  font-family: 'Oswald', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   text-transform: uppercase !important;
   letter-spacing: 2px !important;
   font-weight: 700 !important;
@@ -1474,7 +1485,7 @@
 
 /* Enlace "Ver más productos" */
 .redesign-active .btn-link {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 12px !important;
   text-transform: uppercase !important;
   letter-spacing: 1.5px !important;
@@ -1798,7 +1809,7 @@
 }
 
 .categorias-header-left {
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 24px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -1812,7 +1823,7 @@
 }
 
 .categorias-header-right {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 2px;
@@ -1897,7 +1908,7 @@
   position: absolute;
   top: 22px;
   left: 28px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 1px;
@@ -1909,7 +1920,7 @@
 
 /* --- Subtítulo (categoría sub / Eyebrow) --- */
 .categoria-sub {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 10px;
   font-weight: 300;
   /* Mucho más fino para look boutique */
@@ -1926,7 +1937,7 @@
 
 /* --- Nombre grande --- */
 .categoria-name {
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   /* Cambio a Oswald para un look más Editorial/Boutique */
   font-size: 38px;
   /* Un poco más grande para compensar que es condensada */
@@ -1945,7 +1956,7 @@
 
 /* --- CTA Reveal --- */
 .categoria-cta {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 13px;
   font-weight: 600;
   color: #fff;
@@ -2006,7 +2017,7 @@
 }
 
 .categorias-footer-left {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 2.5px;
@@ -2084,7 +2095,7 @@
 
 
 .categorias-btn-vertodo {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 2.5px;
@@ -2176,24 +2187,36 @@
   position: relative;
 }
 
-.novedades-header {
+.novedades-header-split {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
   max-width: 1300px;
-  margin: 50px auto 10px;
-  padding-bottom: 18px;
+  margin: 50px auto 30px;
+  padding: 0 20px 15px;
   border-bottom: 1px solid #eee;
 }
 
-.novedades-header-title {
-  font-family: 'Oswald', sans-serif;
+.novedades-brand-name {
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 24px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #000;
+  color: #111;
 
   /* Efecto de Atención: Respiración y Brillo sutil */
   animation: titlePulse 4s infinite ease-in-out;
   display: inline-block;
+}
+
+.novedades-label-name {
+  font-family: 'Blunt Semiconit', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #999;
 }
 
 @keyframes titlePulse {
@@ -2345,7 +2368,7 @@
 
 .redesign-btn-ghost {
   display: inline-block;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 12px;
   /* Reducido de 13px a 12px */
   font-weight: 500;
@@ -2475,20 +2498,20 @@
 }
 
 .novedades-eyebrow {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 19px;
   /* Aumentado para mayor presencia */
   font-weight: 500;
   font-style: italic;
   letter-spacing: 1px;
-  text-transform: none;
+  text-transform: uppercase;
   color: #888888;
   /* Un poco más oscuro para legibilidad */
   margin-bottom: 25px;
 }
 
 .novedades-title {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 48px;
   line-height: 1.1;
   font-weight: 700;
@@ -2537,7 +2560,7 @@
 }
 
 .novedades-description {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 18px;
   font-weight: 300;
   line-height: 1.6;
@@ -2549,7 +2572,7 @@
 /* Botón Dorado Redondeado (Pill Style) con Glow y Animación (Igual al Hero) */
 .redesign-btn-gold {
   display: inline-block;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -2665,6 +2688,13 @@
     padding: 72px 5%; /* Aumentado 20% pedido por el usuario (60px -> 72px) */
   }
 
+  .novedades-header-split {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+  }
+
   .novedades-container {
     flex-direction: column;
     gap: 70px;
@@ -2722,7 +2752,7 @@
 }
 
 .offers-brand-name {
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 24px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -2735,7 +2765,7 @@
 }
 
 .offers-label-name {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 2.5px;
@@ -2803,7 +2833,7 @@
   right: 20px;
   background: rgba(255, 255, 255, 0.9);
   color: #000;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 10px;
   font-weight: 700;
   padding: 5px 12px;
@@ -2827,7 +2857,7 @@
 
 .offer-category {
   display: block;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 2px;
@@ -2836,7 +2866,7 @@
 }
 
 .offer-title-minimal {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 20px;
   font-weight: 800;
   margin-bottom: 8px;
@@ -2845,7 +2875,7 @@
 }
 
 .offer-price-minimal {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 16px;
   margin: 0;
 }
@@ -2865,7 +2895,7 @@
 .offer-installments {
   display: block;
   margin-top: 4px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 11px;
   font-weight: 700;
   color: #fff;
@@ -2879,7 +2909,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 10px;
   font-weight: 700;
   color: #fff;
@@ -2926,7 +2956,7 @@
 }
 
 .redesign-btn-verofertas {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -3006,6 +3036,12 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    text-align: center;
+  }
+
+  .offers-brand-name {
+    font-size: 20px;
+    white-space: nowrap;
   }
 }
 
@@ -3039,7 +3075,7 @@
 
 /* Títulos de sección en el footer: Estilo Editorial */
 .redesign-active footer .subtitle {
-  font-family: 'Oswald', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 15px !important;
   font-weight: 700 !important;
   text-transform: uppercase;
@@ -3068,7 +3104,7 @@
 .redesign-active footer .contact-link,
 .redesign-active footer .contact-link a,
 .redesign-active footer .footer-menu-item {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.7) !important;
   text-decoration: none;
@@ -3140,7 +3176,7 @@
   border: none !important;
   color: #ffffff !important;
   /* Texto que escribe el usuario en blanco */
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   padding: 10px 25px !important;
   height: 45px !important;
   box-shadow: none !important;
@@ -3160,7 +3196,7 @@
   background-color: transparent !important;
   color: #ffffff !important;
   border-radius: 50px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
@@ -3252,7 +3288,7 @@
   background-color: #050505;
   padding: 40px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.02);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.3);
   font-weight: 200;
@@ -3297,7 +3333,7 @@
 }
 
 .redesign-active .social-brand-name {
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 32px;
   /* Mas grande para Oswald centrado */
   font-weight: 700;
@@ -3308,7 +3344,7 @@
 }
 
 .redesign-active .social-label-name {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 13px;
   /* Un poco mas grande para legibilidad */
   font-weight: 400;
@@ -3387,7 +3423,7 @@
 }
 
 .redesign-active .profile-username {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 20px;
   font-weight: 700;
   color: #000;
@@ -3402,7 +3438,7 @@
 }
 
 .redesign-active .profile-full-name {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 13px;
   color: #666;
   font-weight: 400;
@@ -3457,7 +3493,7 @@
 
 .redesign-active .stat-item strong {
   display: block;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 18px;
   /* Aumentado */
   font-weight: 800;
@@ -3465,7 +3501,7 @@
 }
 
 .redesign-active .stat-item span {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 10px;
   color: #999;
   letter-spacing: 1px;
@@ -3474,7 +3510,7 @@
 
 /* Bio */
 .redesign-active .profile-bio {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 14px;
   /* Aumentado */
   line-height: 1.5;
@@ -3534,7 +3570,7 @@
   padding: 10px;
   border: none !important;
   border-radius: 12px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Blunt Semiconit', sans-serif;
   font-size: 15px;
   /* Aumentado */
   font-weight: 700;
@@ -3641,7 +3677,7 @@
 /* H1/H2 Título principal de la categoría (ej. REMERAS OVERSIZE) */
 .redesign-active .template-category .page-header h1,
 .redesign-active .template-category .page-header h2 {
-  font-family: 'Oswald', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 38px !important;
   font-weight: 700 !important;
   letter-spacing: 2px !important;
@@ -3753,7 +3789,7 @@
 
 /* Textos de la tarjeta de producto */
 .redesign-active .template-category .item-name {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 11px !important;
   font-weight: 700 !important;
   letter-spacing: 1px !important;
@@ -3775,14 +3811,14 @@
 }
 
 .redesign-active .template-category .item-price {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 15px !important;
   font-weight: 800 !important;
   color: #000 !important;
 }
 
 .redesign-active .template-category .price-compare {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 13px !important;
   color: #999 !important;
   text-decoration: line-through;
@@ -3790,7 +3826,7 @@
 
 /* Cuotas (oscurecidas para q se lean bien en fondo blanco) */
 .redesign-active .template-category .item-installments {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 10px !important;
   font-weight: 700 !important;
   color: #000 !important;
@@ -3805,7 +3841,7 @@
 }
 
 .redesign-active .template-category .nav-list-item a {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 11px !important;
   font-weight: 600 !important;
   letter-spacing: 1px !important;
@@ -3852,7 +3888,7 @@
 .redesign-active .probador-step h2 {
   font-size: 26px !important;
   color: #111 !important;
-  font-family: 'Oswald', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   text-transform: uppercase !important;
   letter-spacing: 2px !important;
   margin-top: 10px !important;
@@ -3918,7 +3954,7 @@
   font-size: 90px !important;
   line-height: 1 !important;
   color: #000 !important;
-  font-family: 'Oswald', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 800 !important;
 }
 
@@ -3933,7 +3969,7 @@
   border-radius: 100px !important;
   /* Bordes ultra redondeados (Full Pill) */
   padding: 16px 45px !important;
-  font-family: 'Oswald', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 13px !important;
   font-weight: 800 !important;
   text-transform: uppercase !important;
@@ -4047,7 +4083,7 @@
 }
 
 .redesign-active .search-suggest-name {
-  font-family: 'Oswald', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 700 !important;
   font-size: 13px !important;
   text-transform: uppercase !important;
@@ -4063,7 +4099,7 @@
 }
 
 .redesign-active .search-suggest-text p:not(.search-suggest-name) {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 11px !important;
   font-weight: 700 !important;
   color: #666 !important;
@@ -4088,7 +4124,7 @@
   padding: 14px !important;
   background: #000 !important;
   color: #fff !important;
-  font-family: 'Oswald', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: 2px !important;
@@ -4118,7 +4154,7 @@
   padding: 12px 50px 12px 25px !important;
   height: 55px !important;
   font-weight: 600 !important;
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 15px !important;
   transition: all 0.3s ease !important;
   background: #fff !important;
@@ -4169,7 +4205,7 @@
 
 /* Nombres de Producto: Outfit Semilight */
 .redesign-active .item-name {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 300 !important;
   font-size: 15px !important;
   color: #111 !important;
@@ -4180,7 +4216,7 @@
 
 /* Precios: Montserrat Bold sin distracciones */
 .redesign-active .item-price {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 700 !important;
   font-size: 18px !important;
   color: #000 !important;
@@ -4197,7 +4233,7 @@
   display: inline-block !important;
   background-color: #f5f5f5 !important;
   color: #000 !important;
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 10px !important;
   font-weight: 500 !important;
   text-transform: uppercase;
@@ -4217,7 +4253,7 @@
 .redesign-active .item-installments * {
   display: inline !important;
   background-color: transparent !important;
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: inherit !important;
   font-weight: 500 !important;
   letter-spacing: inherit !important;
@@ -4242,7 +4278,7 @@
 .redesign-active .template-category .item-actions .btn,
 .redesign-active .template-category .js-prod-submit-form {
   border-radius: 100px !important;
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 10px !important;
   letter-spacing: 1px !important;
   text-transform: uppercase !important;
@@ -4260,7 +4296,7 @@
   border: 1px solid #eee !important;
   border-radius: 100px !important;
   color: #000 !important;
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 11px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
@@ -4340,7 +4376,7 @@
 .redesign-active .sort-by select option {
   background-color: #fff !important;
   color: #000 !important;
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 13px !important;
   font-weight: 400 !important;
   padding: 12px !important;
@@ -4370,7 +4406,7 @@
 
 .redesign-active .category-breadcrumbs-container .breadcrumb-item,
 .redesign-active .category-breadcrumbs-container .breadcrumb-item a {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Blunt Semiconit', sans-serif;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -4500,7 +4536,7 @@
 
 /* Título del producto en Quickshop */
 .redesign-active #quickshop-modal .js-item-name {
-  font-family: 'Oswald', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 18px !important;
   font-weight: 700 !important;
   letter-spacing: 1px !important;
@@ -4512,14 +4548,14 @@
 
 /* Precios en Quickshop */
 .redesign-active #quickshop-modal .js-price-display {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 20px !important;
   font-weight: 700 !important;
   color: #000 !important;
 }
 
 .redesign-active #quickshop-modal .js-compare-price-display {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 14px !important;
   color: #999 !important;
   text-decoration: line-through !important;
@@ -4528,7 +4564,7 @@
 
 /* Texto de transferencia/descuentos */
 .redesign-active #quickshop-modal [class*="payment-discount-price"] {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 12px !important;
   color: #666 !important;
   margin-top: 4px !important;
@@ -4536,7 +4572,7 @@
 
 /* Variantes (Talles) en Quickshop */
 .redesign-active #quickshop-modal .form-label {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 10px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
@@ -4560,7 +4596,7 @@
 }
 
 .redesign-active #quickshop-modal .btn-variant-content {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 12px !important;
   font-weight: 600 !important;
   color: #333 !important;
@@ -4583,7 +4619,7 @@
   border: none !important;
   border-radius: 100px !important;
   padding: 16px !important;
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 13px !important;
   font-weight: 600 !important;
   letter-spacing: 2px !important;
@@ -4621,7 +4657,7 @@
 /* Título del producto */
 .redesign-active .template-product .js-product-container h1,
 .redesign-active .template-product .js-item-name {
-  font-family: 'Oswald', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 26px !important;
   font-weight: 700 !important;
   letter-spacing: 1.5px !important;
@@ -4632,14 +4668,14 @@
 
 /* Precios */
 .redesign-active .template-product .js-price-display {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 24px !important;
   font-weight: 700 !important;
   color: #000 !important;
 }
 
 .redesign-active .template-product .js-compare-price-display {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 16px !important;
   color: #999 !important;
   margin-right: 10px !important;
@@ -4652,7 +4688,7 @@
   color: #000 !important;
   padding: 4px 10px !important;
   border-radius: 4px !important;
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 10px !important;
   font-weight: 700 !important;
   letter-spacing: 0.5px !important;
@@ -4662,7 +4698,7 @@
 
 /* Variantes (Talles) */
 .redesign-active .template-product .js-product-variants-group .form-label {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 11px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
@@ -4699,7 +4735,7 @@
   width: 100% !important;
   height: 52px !important;
   border-radius: 100px !important;
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 14px !important;
   font-weight: 600 !important;
   letter-spacing: 1.5px !important;
@@ -4750,7 +4786,7 @@
 }
 
 .redesign-active .template-product .js-accordion-toggle .subtitle {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 12px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
@@ -4772,7 +4808,7 @@
 
 .redesign-active .template-product .breadcrumb-item,
 .redesign-active .template-product .breadcrumb-item a {
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 10px !important;
   text-transform: uppercase !important;
   letter-spacing: 1px !important;
@@ -4790,7 +4826,7 @@
 }
 
 .redesign-active .template-product .section-products-related h2 {
-  font-family: 'Oswald', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-size: 24px !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;

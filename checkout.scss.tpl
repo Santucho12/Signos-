@@ -1515,7 +1515,7 @@ body,
 }
 
 .panel-header {
-  font-family: 'Oswald', sans-serif !important;
+  font-family: 'Blunt Semiconit', sans-serif !important;
   font-weight: 700 !important;
   font-size: 18px !important;
   color: #000 !important;

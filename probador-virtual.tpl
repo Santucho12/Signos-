@@ -14,7 +14,7 @@
             
             {# STEP 1: Datos #}
             <div id="probador-step-1" class="probador-step active">
-                <h2 class="h3 font-weight-bold mb-1" style="font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 2px;">Probador Virtual</h2>
+                <h2 class="h3 font-weight-bold mb-1" style="font-family: 'Blunt Semiconit', sans-serif; text-transform: uppercase; letter-spacing: 2px;">Probador Virtual</h2>
                 <p class="text-muted mb-5 font-small">Calculá tu talle ideal en segundos</p>
 
                 <div class="category-selection mb-5 d-flex justify-content-center">
@@ -61,9 +61,9 @@
 
             {# STEP 2: Resultado Final (Directo) #}
             <div id="probador-step-3" class="probador-step text-center py-4" style="display: none;">
-                <h2 class="h4 font-weight-bold mb-1" style="font-family: 'Oswald', sans-serif; text-transform: uppercase;">¡Talle Recomendado!</h2>
+                <h2 class="h4 font-weight-bold mb-1" style="font-family: 'Blunt Semiconit', sans-serif; text-transform: uppercase;">¡Talle Recomendado!</h2>
                 <div class="py-5">
-                    <div id="probador-resultado-talle" class="display-2 font-weight-bold text-dark mb-3" style="font-family: 'Oswald', sans-serif;">L</div>
+                    <div id="probador-resultado-talle" class="display-2 font-weight-bold text-dark mb-3" style="font-family: 'Blunt Semiconit', sans-serif;">L</div>
                     <p id="probador-resultado-texto" class="text-muted px-4">Según tus datos, el talle L es el ajuste perfecto para este producto.</p>
                 </div>
                 <button type="button" class="btn btn-outline-dark px-5 py-3 js-modal-close rounded-pill" style="font-weight: 800; font-size: 11px; letter-spacing: 1px;">SELECCIONAR Y CERRAR</button>

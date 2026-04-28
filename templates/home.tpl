@@ -212,8 +212,9 @@
     <!-- 2. NOVEDADES SECTION -->
     <section class="redesign-novedades">
         <!-- Header added for consistency -->
-        <div class="novedades-header" data-redesign-animate="fadeUp">
-            <span class="novedades-header-title">NOVEDADES</span>
+        <div class="novedades-header-split" data-redesign-animate="fadeUp">
+            <span class="novedades-brand-name">NOVEDADES</span>
+            <span class="novedades-label-name">LOS NUEVOS INGRESOS</span>
         </div>
         
         <div class="novedades-container">
