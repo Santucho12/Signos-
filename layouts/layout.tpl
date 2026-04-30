@@ -64,6 +64,16 @@
         {# Fuentes Premium para el Rediseño 2026 #}
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
         
+        <style>
+            @font-face {
+                font-family: 'Blunt Semiconit';
+                src: url('{{ "fonts/Fontspring-DEMO-blunt-semiconit.otf" | static_url }}') format('opentype');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+            }
+        </style>
+        
         <link rel="preload" href="{{ 'css/style-critical.scss' | static_url }}" as="style" />
         <link rel="preload" href="{{ 'css/style-colors.scss' | static_url }}" as="style" />
 

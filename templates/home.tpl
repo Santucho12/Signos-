@@ -119,7 +119,7 @@
         </a>
 
         <div class="redesign-hero-content-box">
-            <h1 class="redesign-hero-title" data-redesign-animate="fadeUp" data-redesign-delay="200">TEMP'26</h1>
+            <h1 class="redesign-hero-title" data-redesign-animate="fadeUp" data-redesign-delay="200">TEMP 26</h1>
             <p class="redesign-hero-subtitle" data-redesign-animate="fadeUp" data-redesign-delay="400">
                 <span class="redesign-text-rotator">
                     <span class="active">LOS MEJORES PRECIOS</span>
@@ -153,7 +153,7 @@
     <section class="redesign-categorias">
         <!-- Header -->
         <div class="categorias-header" data-redesign-animate="fadeUp">
-            <span class="categorias-header-left">SGNS <span>STUDIO</span> <span>TEMP' 26</span></span>
+            <span class="categorias-header-left">SGNS <span>STUDIO</span> <span>TEMP 26</span></span>
             <span class="categorias-header-right">LO MAS VENDIDO</span>
         </div>
 

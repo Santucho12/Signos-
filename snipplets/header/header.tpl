@@ -128,6 +128,15 @@
                         })
                     }}
                 {% endif %}
+
+                {# Redesign: Monograma — visible en todas las páginas excepto Home #}
+                {% if template != 'home' %}
+                <div id="redesign-header-monogram" class="redesign-header-monogram">
+                    <img src="{{ 'images/logo final monograma_Mesa de trabajo 1.png' | static_url }}"
+                         alt="SGNS Studio"
+                         class="redesign-monogram-img">
+                </div>
+                {% endif %}
             </div>
 
             {# Languages #}
