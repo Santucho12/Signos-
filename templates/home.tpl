@@ -389,16 +389,17 @@
                     </div>
                     
                     <div class="profile-stats">
-                        <div class="stat-item"><strong>3.1k</strong><span>POSTS</span></div>
-                        <div class="stat-item"><strong>185k</strong><span>FOLLOWERS</span></div>
-                        <div class="stat-item"><strong>5.4k</strong><span>FOLLOWING</span></div>
+                        <div class="stat-item"><strong>3127</strong><span>POSTS</span></div>
+                        <div class="stat-item"><strong>185K</strong><span>FOLLOWERS</span></div>
+                        <div class="stat-item"><strong>5428</strong><span>FOLLOWING</span></div>
                     </div>
 
                     <div class="profile-bio">
-                        <p>📍 O'HIGGINS 191</p>
+                        <p>📍 OHIGGINS 191</p>
                         <p>📍 VM WASHINGTON 691</p>
                         <p>📍 ZELARRAYAN 2250</p>
-                        <p>📍 HORARIO DE CORRIDO: 09:30 a 20:30</p>
+                        <p>📍 PEATONAL DORREGO 38 (MONTE HERMOSO)</p>
+                        <p>HORARIO DE CORRIDO: 09:30 A 20:30hs</p>
                     </div>
 
                     <div class="social-preview-grid">
@@ -432,8 +433,8 @@
                             <img src="{{ 'images/signoslogovip.png' | static_url }}" alt="Signos TikTok" class="profile-pic">
                         </div>
                         <div class="profile-info-text">
-                            <div class="profile-username">signos.oficial</div>
-                            <div class="profile-full-name">SIGNOS INDUMENTARIA</div>
+                            <div class="profile-username">signosindumentari</div>
+                            <div class="profile-full-name">Signos Indumentaria</div>
                         </div>
                         <div class="social-platform-icon">
                             <svg viewBox="0 0 448 512">
@@ -443,9 +444,9 @@
                     </div>
 
                     <div class="profile-stats">
-                        <div class="stat-item"><strong>12.5k</strong><span>LIKES</span></div>
-                        <div class="stat-item"><strong>42k</strong><span>FOLLOWERS</span></div>
-                        <div class="stat-item"><strong>120</strong><span>FOLLOWING</span></div>
+                        <div class="stat-item"><strong>51.6K</strong><span>LIKES</span></div>
+                        <div class="stat-item"><strong>10.1K</strong><span>FOLLOWERS</span></div>
+                        <div class="stat-item"><strong>13</strong><span>FOLLOWING</span></div>
                     </div>
 
                     <div class="profile-bio">
@@ -462,7 +463,7 @@
                         </div>
                         <div class="grid-img">
                             <video autoplay muted loop playsinline class="grid-video video-align-top">
-                                <source src="{{ 'ig/tiktok/ALGUNAS OPCIONES DE OUTFITS QUE PODES ENCONTRAR EN SIGNOS⚡️.mp4' | static_url }}" type="video/mp4">
+                                <source src="{{ 'ig/tiktok/videotiktok.mp4' | static_url }}" type="video/mp4">
                             </video>
                         </div>
                         <div class="grid-img">

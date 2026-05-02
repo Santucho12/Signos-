@@ -1,50 +1,52 @@
 {#/*============================================================================
   #Preview / Redesign System
-  Access with: ?redesign=CLAVE_SECRETA
-  Disable with: ?redesign=off
-  SESSION is maintained via cookie between pages.
+  - PRODUCCIÓN: El rediseño está ACTIVO en todas las páginas EXCEPTO el Home.
+  - PREVIEW: En el Home, se puede previsualizar con ?redesign=mi_redesign_2026
+  - Desactivar preview: ?redesign=off
 ==============================================================================*/#}
 
 {% set _redesign_key = 'mi_redesign_2026' %}
+{% set _is_redesign_production = (template != 'home') %}
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="{% for language in languages %}{% if language.active %}{{ language.lang }}{% endif %}{% endfor %}">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="{% for language in languages %}{% if language.active %}{{ language.lang }}{% endif %}{% endfor %}" {% if _is_redesign_production %}class="redesign-active"{% endif %}>
     <head>
-        {# 0. Detección inmediata de Rediseño (Crucial para carga prioritaria) #}
+        {# Script Global de Detección de Preview (Evita parpadeos y permite desarrollo seguro) #}
         <script>
             (function(){
                 var KEY = '{{ _redesign_key }}';
                 var COOKIE = 'redesign_preview';
-                var CSS_URL = '{{ "css/style-redesign.scss" | static_url }}';
-                var isActive = false;
                 var urlParam = new URLSearchParams(window.location.search).get('redesign');
+                var isPreview = false;
+
                 if (urlParam === KEY) {
                     document.cookie = COOKIE + '=1;path=/;SameSite=Lax';
-                    document.documentElement.classList.add('redesign-active');
-                    isActive = true;
+                    isPreview = true;
                 } else if (urlParam === 'off') {
                     document.cookie = COOKIE + '=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-                    document.documentElement.classList.remove('redesign-active');
+                    isPreview = false;
                 } else if (document.cookie.indexOf(COOKIE + '=1') !== -1) {
-                    document.documentElement.classList.add('redesign-active');
-                    isActive = true;
+                    isPreview = true;
                 }
 
-                // Fix preventivo para scroll lateral y recortes en mobile
-                if (isActive && window.innerWidth < 768) {
-                    document.documentElement.style.overflowX = 'hidden';
-                    document.body.style.overflowX = 'hidden';
+                if (isPreview) {
+                    document.documentElement.classList.add('redesign-preview');
                 }
 
-                // Inyectar CSS del redesign usando document.write() para que sea RENDER-BLOCKING.
-                // Un <link> creado con createElement() es async y NO bloquea el render.
-                // document.write() durante el parsing del <head> SÍ bloquea el render,
-                // garantizando que el navegador NO pinte nada hasta tener los estilos listos.
-                if (isActive) {
-                    document.write('<link rel="stylesheet" href="' + CSS_URL + '">');
-                }
+                {% if template == 'home' %}
+                    {# En el Home, el diseño completo (redesign-active) solo se activa en Preview #}
+                    if (isPreview) {
+                        document.documentElement.classList.add('redesign-active');
+                        document.write('<link rel="stylesheet" href="{{ "css/style-redesign.scss" | static_url }}">');
+                    }
+                {% endif %}
             })();
         </script>
+
+        {% if _is_redesign_production %}
+            {# PRODUCCIÓN (Categorías/Productos): El diseño base ya es activo para todos #}
+            <link rel="stylesheet" href="{{ 'css/style-redesign.scss' | static_url }}">
+        {% endif %}
 
         {# Optimización de Video Hero (Carga Prioritaria Máxima) #}
         {% if template == 'home' %}
@@ -271,17 +273,18 @@
         {# Redesign Preview: JS + badge + cookie management #}
         <script>
         (function(){
+            var isPreview = document.documentElement.classList.contains('redesign-preview');
             var JS_URL   = '{{ "js/redesign.js" | static_url }}';
 
             if (!document.documentElement.classList.contains('redesign-active')) return;
 
-            // CSS del redesign ya se carga en el <head> para evitar FOUC
-
-            // ── Inyectar SEO metadata (solo en preview) ────────────────
-            var meta = document.createElement('meta');
-            meta.name = 'robots';
-            meta.content = 'noindex, nofollow';
-            document.head.appendChild(meta);
+            // ── Inyectar SEO metadata (solo en preview real) ────────────────
+            if (isPreview) {
+                var meta = document.createElement('meta');
+                meta.name = 'robots';
+                meta.content = 'noindex, nofollow';
+                document.head.appendChild(meta);
+            }
 
             // ── Cargar redesign.js con cache-buster ──────────────────────────
             var script = document.createElement('script');
@@ -289,43 +292,45 @@
             document.body.appendChild(script);
 
             // ── Badge de preview ──────────────────────────────────────────────
-            var badge = document.createElement('div');
-            badge.id = 'redesign-badge';
-            badge.innerHTML = '&#127912; PREVIEW MODE <button id="redesign-exit-btn">&#10005; Salir</button>';
-            badge.style.cssText = [
-                'position:fixed',
-                'bottom:20px',
-                'left:20px',
-                'z-index:99999',
-                'background:linear-gradient(135deg,#e74c3c,#c0392b)',
-                'color:#fff',
-                'padding:10px 18px',
-                'border-radius:10px',
-                'font-family:monospace',
-                'font-size:13px',
-                'font-weight:bold',
-                'box-shadow:0 4px 20px rgba(0,0,0,.4)',
-                'display:flex',
-                'align-items:center',
-                'gap:10px',
-                'letter-spacing:.5px'
-            ].join(';');
-            document.body.appendChild(badge);
+            if (isPreview) {
+                var badge = document.createElement('div');
+                badge.id = 'redesign-badge';
+                badge.innerHTML = '&#127912; PREVIEW MODE <button id="redesign-exit-btn">&#10005; Salir</button>';
+                badge.style.cssText = [
+                    'position:fixed',
+                    'bottom:20px',
+                    'left:20px',
+                    'z-index:99999',
+                    'background:linear-gradient(135deg,#e74c3c,#c0392b)',
+                    'color:#fff',
+                    'padding:10px 18px',
+                    'border-radius:10px',
+                    'font-family:monospace',
+                    'font-size:13px',
+                    'font-weight:bold',
+                    'box-shadow:0 4px 20px rgba(0,0,0,.4)',
+                    'display:flex',
+                    'align-items:center',
+                    'gap:10px',
+                    'letter-spacing:.5px'
+                ].join(';');
+                document.body.appendChild(badge);
 
-            var exitBtn = document.getElementById('redesign-exit-btn');
-            exitBtn.style.cssText = [
-                'background:rgba(255,255,255,.2)',
-                'color:#fff',
-                'border:none',
-                'border-radius:5px',
-                'padding:3px 10px',
-                'cursor:pointer',
-                'font-family:monospace',
-                'font-size:12px'
-            ].join(';');
-            exitBtn.onclick = function(){
-                window.location.href = window.location.pathname + '?redesign=off';
-            };
+                var exitBtn = document.getElementById('redesign-exit-btn');
+                exitBtn.style.cssText = [
+                    'background:rgba(255,255,255,.2)',
+                    'color:#fff',
+                    'border:none',
+                    'border-radius:5px',
+                    'padding:3px 10px',
+                    'cursor:pointer',
+                    'font-family:monospace',
+                    'font-size:12px'
+                ].join(';');
+                exitBtn.onclick = function(){
+                    window.location.href = window.location.pathname + '?redesign=off';
+                };
+            }
 
             // ── #6: Botón "Volver Arriba" flotante (Solo en Productos/Categorías) ──────────────────────────
             if (document.body.classList.contains('template-category') || document.body.classList.contains('template-product')) {

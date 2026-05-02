@@ -21,6 +21,19 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Oswald:wght@300;400;500;700&display=swap');
 
+/* ══════════════════════════════════════════════════════════════
+   FIX: Forzar visibilidad del contenido en páginas con rediseño.
+   Tienda Nube oculta el contenido con .visible-when-content-ready
+   hasta que el CSS async cargue. Esta regla lo hace visible de
+   inmediato para evitar pantallas en blanco.
+   ══════════════════════════════════════════════════════════════ */
+.visible-when-content-ready {
+  visibility: visible !important;
+}
+.display-when-content-ready {
+  display: block !important;
+}
+
 /* ============================================================
    Font Face: Blunt Semiconit (from local server)
    ============================================================ */
