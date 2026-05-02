@@ -171,7 +171,7 @@
 /* Reset de posición para mobile (centrado real) */
 @media (max-width: 767px) {
   .redesign-active .redesign-monogram-img {
-    left: 0 !important;
+    left: 23px !important; /* Movido 23px a la derecha */
     top: -25px !important;
     height: 76px !important; /* +15% de tamaño */
   }
@@ -214,7 +214,7 @@
    ============================================================ */
 .redesign-hero-logo {
   position: absolute;
-  top: 5px; /* Desktop */
+  top: 0px; /* Desktop (5px más arriba) */
   left: 50%;
   transform: translateX(-50%);
   z-index: 100; /* Lo bajamos mucho para que no interfiera */
@@ -233,7 +233,7 @@
 
 @media (max-width: 768px) {
   .redesign-hero-logo {
-    top: -15px !important; /* Mobile: 15px más arriba */
+    top: -20px !important; /* Mobile: 20px más arriba (5px más arriba que antes) */
   }
   .redesign-hero-logo img {
     width: 100px;
@@ -715,6 +715,7 @@
   width: 105vw;
   height: 105vh;
   object-fit: cover;
+  object-position: 50% 30%; /* Ajuste intermedio: ni muy centrado (50) ni muy arriba (10) */
   z-index: 1;
   /* Efecto cinematográfico Ken Burns */
   animation: heroVideoZoom 20s ease-in-out infinite;
@@ -2253,8 +2254,6 @@
   text-transform: uppercase;
   color: #111;
 
-  /* Efecto de Atención: Respiración y Brillo sutil */
-  animation: titlePulse 4s infinite ease-in-out;
   display: inline-block;
 }
 
@@ -2807,8 +2806,6 @@
   color: #111;
   text-transform: uppercase;
 
-  /* Efecto de Atención: Respiración y Brillo */
-  animation: titlePulse 4s infinite ease-in-out;
   display: inline-block;
 }
 

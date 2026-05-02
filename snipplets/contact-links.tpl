@@ -1,5 +1,5 @@
 <ul class="contact-info">
-	{% if store.whatsapp %}
+	{% if store.whatsapp and not hide_whatsapp %}
 		<li class="footer-menu-item"><a href="{{ store.whatsapp }}" class="contact-link">{{ store.whatsapp |trim('https://wa.me/') }}</a></li>
 	{% endif %}
 	{% if store.phone %}

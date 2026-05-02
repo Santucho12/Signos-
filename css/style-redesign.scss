@@ -321,6 +321,28 @@
   transform: scale(1.2);
 }
 
+/* FORZAR Íconos blancos SOLO en el Home (Método Seguro y Nativo) */
+.redesign-active .template-home .head-main {
+  --main-foreground: #ffffff !important;
+  --text-color: #ffffff !important;
+}
+
+.redesign-active .template-home .head-main .utilities-icon,
+.redesign-active .template-home .head-main .svg-icon-text {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.5)) !important;
+}
+
+/* El número del carrito (badge) en el Home: fondo blanco, letra negra para resaltar */
+.redesign-active .template-home .head-main .cart-summary .badge-amount {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  fill: #000000 !important;
+  font-weight: bold !important;
+  border: none !important;
+}
+
 /* Cuando baja, las letras vuelven a negro */
 .redesign-active .js-head-main-scrolled .nav-list-link,
 .redesign-active .head-main.scrolled .nav-list-link {

@@ -100,7 +100,7 @@
 							</a>
 							<div class="js-accordion-content js-accordion-content-mobile">
 						{% endif %}
-								{% include "snipplets/contact-links.tpl" %}
+								{% include "snipplets/contact-links.tpl" with {hide_whatsapp: true} %}
 						{% if settings.footer_menus_toggle   %}
 							</div>
 						{% endif %}

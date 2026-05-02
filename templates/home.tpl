@@ -1,5 +1,29 @@
 {# Detect presence of features that remove empty placeholders #}
 
+<!-- FORZADO DE ESTILOS SOLO PARA EL PREVIEW DEL HOME -->
+<style>
+  /* Fuerza bruta: todos los svg, rutas y usos dentro del header serán blancos solo en preview */
+  .redesign-active .head-main .utilities-container svg,
+  .redesign-active .head-main .utilities-container svg path,
+  .redesign-active .head-main .utilities-container svg use,
+  .redesign-active .head-main .cart-summary svg,
+  .redesign-active .head-main .cart-summary svg path,
+  .redesign-active .head-main .cart-summary svg use,
+  .redesign-active .head-main .utilities-icon {
+      fill: #ffffff !important;
+      stroke: transparent !important;
+      color: #ffffff !important;
+  }
+  
+  /* El número del carrito (badge) debe ser blanco sin fondo */
+  .redesign-active .head-main .cart-summary .badge-amount {
+      background-color: transparent !important;
+      color: #ffffff !important;
+      fill: #ffffff !important;
+      stroke: none !important;
+  }
+</style>
+
 {% set has_main_slider = settings.slider and settings.slider is not empty %}
 {% set has_mobile_slider = settings.toggle_slider_mobile and settings.slider_mobile and settings.slider_mobile is not empty %}
 {% set has_video = settings.video_embed %}
@@ -81,32 +105,47 @@
     
     <!-- 1. HERO VIDEO -->
     <section class="redesign-hero video-loading">
-        <!-- Video de fondo cargado desde el FTP -->
-        <video autoplay muted loop playsinline preload="auto" class="redesign-hero-video">
+        <!-- Video de fondo Desktop -->
+        <video autoplay muted loop playsinline preload="auto" class="redesign-hero-video d-none d-md-block">
             <source src="{{ 'recortado-7026828-uhd_4096_2160_25fps.mp4' | static_url }}" type="video/mp4">
         </video>
+        <!-- Video de fondo Mobile -->
+        <video autoplay muted loop playsinline preload="auto" class="redesign-hero-video d-block d-md-none">
+            <source src="{{ 'videohome-hero.mp4' | static_url }}" type="video/mp4">
+        </video>
+
         <script>
             (function() {
-                var videoHero = document.querySelector('.redesign-hero-video');
+                var videos = document.querySelectorAll('.redesign-hero-video');
                 var heroSection = document.querySelector('.redesign-hero');
                 
-                if (videoHero && heroSection) {
-                    var onVideoReady = function() {
-                        heroSection.classList.remove('video-loading');
-                        videoHero.play();
+                if (videos.length > 0 && heroSection) {
+                    var videosReady = 0;
+                    
+                    var onVideoReady = function(video) {
+                        video.play();
+                        videosReady++;
+                        // Si al menos uno carga, quitamos el loading
+                        if (videosReady > 0) {
+                            heroSection.classList.remove('video-loading');
+                        }
                     };
 
-                    // Si el video ya está listo (caché)
-                    if (videoHero.readyState >= 3) {
-                        onVideoReady();
-                    } else {
-                        videoHero.addEventListener('canplay', onVideoReady);
-                        // Timeout de seguridad: si tarda más de 5s mostramos igual
-                        setTimeout(onVideoReady, 5000);
-                    }
-
+                    videos.forEach(function(video) {
+                        if (video.readyState >= 3) {
+                            onVideoReady(video);
+                        } else {
+                            video.addEventListener('canplay', function() { onVideoReady(video); });
+                        }
+                    });
+                    
+                    // Fallback para quitar loading
+                    setTimeout(function() { heroSection.classList.remove('video-loading'); }, 5000);
+                    
                     // Forzar en mobile si el navegador lo bloquea inicialmente
-                    document.addEventListener('touchstart', function() { videoHero.play(); }, {once:true});
+                    document.addEventListener('touchstart', function() {
+                        videos.forEach(function(video) { video.play(); });
+                    }, {once:true});
                 }
             })();
         </script>
@@ -159,26 +198,8 @@
 
         <!-- Grid de Categorías -->
         <div class="categorias-grid">
-            <!-- Card 1: CAMPERAS -->
-            <a href="/camperas" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="0">
-                <img src="{{ 'images/Gemini_Generated_Image_88smk788smk788sm.png' | static_url }}" alt="Camperas" class="categoria-bg-img">
-                <div class="categoria-overlay"></div>
-                <span class="categoria-sub">ABRIGO PREMIUM</span>
-                <span class="categoria-name">CAMPERAS</span>
-                <span class="categoria-cta">Ver colección →</span>
-            </a>
-
-            <!-- Card 2: SWEATERS -->
-            <a href="/sweaters" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="150">
-                <img src="{{ 'images/sweater-custom.jpg' | static_url }}" alt="Sweaters" class="categoria-bg-img">
-                <div class="categoria-overlay"></div>
-                <span class="categoria-sub">TEJIDO & PUNTO</span>
-                <span class="categoria-name">SWEATERS</span>
-                <span class="categoria-cta">Ver colección →</span>
-            </a>
-
-            <!-- Card 3: BUZOS -->
-            <a href="/buzos" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="300">
+            <!-- Card 1: BUZOS -->
+            <a href="/buzos" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="0">
                 <img src="{{ 'images/buzos-custom.jpg' | static_url }}" alt="Buzos" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">ESSENTIALS</span>
@@ -186,12 +207,30 @@
                 <span class="categoria-cta">Ver colección →</span>
             </a>
 
-            <!-- Card 4: JEANS -->
-            <a href="/jeans" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="450">
+            <!-- Card 2: REMERAS -->
+            <a href="/remeras" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="150">
+                <img src="{{ 'images/sweater-custom.jpg' | static_url }}" alt="Remeras" class="categoria-bg-img">
+                <div class="categoria-overlay"></div>
+                <span class="categoria-sub">BÁSICAS Y ESTAMPADAS</span>
+                <span class="categoria-name">REMERAS</span>
+                <span class="categoria-cta">Ver colección →</span>
+            </a>
+
+            <!-- Card 3: JEANS -->
+            <a href="/jeans" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="300">
                 <img src="{{ 'images/jeans-custom.jpg' | static_url }}" alt="Jeans" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">DENIM & MÁS</span>
                 <span class="categoria-name">JEANS</span>
+                <span class="categoria-cta">Ver colección →</span>
+            </a>
+
+            <!-- Card 4: JOGGINS -->
+            <a href="/joggins" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="450">
+                <img src="{{ 'images/Gemini_Generated_Image_88smk788smk788sm.png' | static_url }}" alt="Joggins" class="categoria-bg-img">
+                <div class="categoria-overlay"></div>
+                <span class="categoria-sub">CONFORT</span>
+                <span class="categoria-name">JOGGINS</span>
                 <span class="categoria-cta">Ver colección →</span>
             </a>
 
