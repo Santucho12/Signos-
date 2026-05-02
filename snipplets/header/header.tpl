@@ -134,7 +134,9 @@
                 <div id="redesign-header-monogram" class="redesign-header-monogram">
                     <img src="{{ 'images/logo final monograma_Mesa de trabajo 1.png' | static_url }}"
                          alt="SGNS Studio"
-                         class="redesign-monogram-img">
+                         class="redesign-monogram-img"
+                         fetchpriority="high"
+                         loading="eager">
                 </div>
                 {% endif %}
             </div>

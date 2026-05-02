@@ -115,7 +115,7 @@
 
         <!-- Logo SGNS Studio sobre el video -->
         <a href="{{ store.url }}" class="redesign-hero-logo">
-            <img src="{{ 'images/sgns-studio-logo.png' | static_url }}" alt="SGNS Studio Logo" />
+            <img src="{{ 'images/sgns-studio-logo.png' | static_url }}" alt="SGNS Studio Logo" fetchpriority="high" loading="eager" />
         </a>
 
         <div class="redesign-hero-content-box">

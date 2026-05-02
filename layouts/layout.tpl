@@ -11,6 +11,35 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="{% for language in languages %}{% if language.active %}{{ language.lang }}{% endif %}{% endfor %}" {% if _is_redesign_production %}class="redesign-active"{% endif %}>
     <head>
+        {# 1. PRE-CARGA DE ACTIVOS CRÍTICOS (Soluciona parpadeos y saltos) #}
+        <link rel="preload" href="{{ 'fonts/Fontspring-DEMO-blunt-semiconit.otf' | static_url }}" as="font" type="font/otf" crossorigin>
+        <link rel="preload" href="{{ 'images/sgns-studio-logo.png' | static_url }}" as="image" fetchpriority="high">
+        <link rel="preload" href="{{ 'images/logo final monograma_Mesa de trabajo 1.png' | static_url }}" as="image" fetchpriority="high">
+
+        {# 2. CSS CRÍTICO DEL REDISEÑO (Inyectado directamente para que sea INSTANTÁNEO) #}
+        <style>
+            /* Reglas base que DEBEN cargar antes de cualquier archivo externo */
+            @font-face {
+                font-family: 'Blunt Semiconit';
+                src: url('{{ "fonts/Fontspring-DEMO-blunt-semiconit.otf" | static_url }}') format('opentype');
+                font-weight: normal;
+                font-style: normal;
+                font-display: block; /* 'block' evita que se vea la fuente vieja antes que la nueva */
+            }
+            .redesign-active body { opacity: 0; } /* Evita parpadeo inicial del diseño viejo */
+            .redesign-active.visible-when-content-ready body { opacity: 1; transition: opacity 0.3s ease; }
+            
+            /* Banner Superior Crítico (Para que no salte) */
+            .redesign-top-banner {
+                background: #000;
+                height: 44px;
+                display: flex;
+                align-items: center;
+                overflow: hidden;
+            }
+            .redesign-top-banner img { height: 100%; width: auto; }
+        </style>
+
         {# Script Global de Detección de Preview (Evita parpadeos y permite desarrollo seguro) #}
         <script>
             (function(){
@@ -32,6 +61,11 @@
                 if (isPreview) {
                     document.documentElement.classList.add('redesign-preview');
                 }
+
+                {# Seguridad de visibilidad: Fuerza la aparición del rediseño apenas el DOM es procesado #}
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.documentElement.classList.add('visible-when-content-ready');
+                });
 
                 {% if template == 'home' %}
                     {# En el Home, el diseño completo (redesign-active) solo se activa en Preview #}
