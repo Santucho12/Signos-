@@ -100,6 +100,10 @@
     .redesign-active .redesign-home-content {
         display: block !important;
     }
+    /* SEGURIDAD: Ocultar contenido original cuando el rediseño está activo */
+    .redesign-active .original-home-content {
+        display: none !important;
+    }
 </style>
 <div class="redesign-home-content">
     
@@ -314,7 +318,8 @@
         </div>
     </section>
 
-    <!-- 3. OFFERS SECTION (Editorial Style) -->
+    <!-- 3. OFFERS SECTION (Editorial Style — Productos reales del catálogo) -->
+    {% if sections.sale.products %}
     <section class="redesign-offers">
         <div class="container-wide">
             <!-- Header matching Categories style -->
@@ -324,69 +329,26 @@
             </div>
             
             <div class="offers-grid-premium">
-                <!-- Item 1 -->
-                <a href="/buzos" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="100">
-                    <img src="{{ 'images/buzos-new.png' | static_url }}" alt="Buzos" class="offer-bg-img">
+                {% for product in sections.sale.products | slice(0, 4) %}
+                <a href="{{ product.url }}" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="{{ loop.index0 * 100 + 100 }}">
+                    <img src="{{ product.featured_image | product_image_url('huge') }}" alt="{{ product.name }}" class="offer-bg-img">
                     <div class="offer-gradient-overlay"></div>
-                    <span class="offer-badge-subtle">-50% OFF</span>
+                    {% if product.compare_at_price %}
+                        {% set discount_percent = (((product.compare_at_price - product.price) / product.compare_at_price) * 100) | round %}
+                        <span class="offer-badge-subtle">-{{ discount_percent }}% OFF</span>
+                    {% endif %}
                     <div class="offer-info-minimal">
-                        <h4 class="offer-title-minimal">BUZO BURZACO</h4>
+                        <h4 class="offer-title-minimal">{{ product.name }}</h4>
                         <p class="offer-price-minimal">
-                            <span class="old-price">$45.000</span>
-                            <span class="new-price">$22.500</span>
+                            {% if product.compare_at_price %}
+                                <span class="old-price">{{ product.compare_at_price | money }}</span>
+                            {% endif %}
+                            <span class="new-price">{{ product.price | money }}</span>
                         </p>
-                        <span class="offer-installments">3 CUOTAS SIN INTERÉS DE $7.500</span>
                         <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                     </div>
                 </a>
-
-                <!-- Item 2 -->
-                <a href="/jeans" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="200">
-                    <img src="{{ 'images/jeans-new.png' | static_url }}" alt="Jeans" class="offer-bg-img">
-                    <div class="offer-gradient-overlay"></div>
-                    <span class="offer-badge-subtle">-40% OFF</span>
-                    <div class="offer-info-minimal">
-                        <h4 class="offer-title-minimal">JEAN PIPPEN</h4>
-                        <p class="offer-price-minimal">
-                            <span class="old-price">$38.000</span>
-                            <span class="new-price">$22.800</span>
-                        </p>
-                        <span class="offer-installments">3 CUOTAS SIN INTERÉS DE $7.600</span>
-                        <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-                    </div>
-                </a>
-
-                <!-- Item 3 -->
-                <a href="/sweaters" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="300">
-                    <img src="{{ 'images/sweater-new.png' | static_url }}" alt="Sweater" class="offer-bg-img">
-                    <div class="offer-gradient-overlay"></div>
-                    <span class="offer-badge-subtle">-30% OFF</span>
-                    <div class="offer-info-minimal">
-                        <h4 class="offer-title-minimal">SWEATER HILO</h4>
-                        <p class="offer-price-minimal">
-                            <span class="old-price">$18.000</span>
-                            <span class="new-price">$12.600</span>
-                        </p>
-                        <span class="offer-installments">3 CUOTAS SIN INTERÉS DE $4.200</span>
-                        <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-                    </div>
-                </a>
-
-                <!-- Item 4 -->
-                <a href="/camperas" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="400">
-                    <img src="{{ 'images/camperas-new.png' | static_url }}" alt="Camperas" class="offer-bg-img">
-                    <div class="offer-gradient-overlay"></div>
-                    <span class="offer-badge-subtle">-35% OFF</span>
-                    <div class="offer-info-minimal">
-                        <h4 class="offer-title-minimal">CAMPERA LILLARD</h4>
-                        <p class="offer-price-minimal">
-                            <span class="old-price">$52.000</span>
-                            <span class="new-price">$33.800</span>
-                        </p>
-                        <span class="offer-installments">3 CUOTAS SIN INTERÉS DE $11.267</span>
-                        <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-                    </div>
-                </a>
+                {% endfor %}
             </div>
             
             <div class="offers-footer-minimal" data-redesign-animate="fadeUp">
@@ -401,6 +363,7 @@
             </div>
         </div>
     </section>
+    {% endif %}
 
     <!-- 4. SOCIAL EXPERIENCE SECTION (Instagram & TikTok) -->
     <section class="redesign-social-feed">
@@ -520,4 +483,5 @@
             </div>
         </div>
     </section>
+
 </div>

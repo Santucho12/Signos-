@@ -164,7 +164,7 @@
   object-fit: contain !important;
   position: relative !important;
   left: 40px !important;
-  top: 0 !important;
+  top: -10px !important;
   margin-bottom: -40px !important;
 }
 
@@ -172,7 +172,7 @@
 @media (max-width: 767px) {
   .redesign-active .redesign-monogram-img {
     left: 23px !important; /* Movido 23px a la derecha */
-    top: -25px !important;
+    top: -35px !important;
     height: 76px !important; /* +15% de tamaño */
   }
 }

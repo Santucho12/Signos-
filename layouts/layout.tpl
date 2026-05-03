@@ -6,7 +6,7 @@
 ==============================================================================*/#}
 
 {% set _redesign_key = 'mi_redesign_2026' %}
-{% set _is_redesign_production = (template != 'home') %}
+{% set _is_redesign_production = (template != 'home') or params.preview %}
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="{% for language in languages %}{% if language.active %}{{ language.lang }}{% endif %}{% endfor %}" {% if _is_redesign_production %}class="redesign-active"{% endif %}>
@@ -78,7 +78,7 @@
         </script>
 
         {% if _is_redesign_production %}
-            {# PRODUCCIÓN (Categorías/Productos): El diseño base ya es activo para todos #}
+            {# PRODUCCIÓN (Categorías/Productos/Preview Admin): El diseño base ya es activo #}
             <link rel="stylesheet" href="{{ 'css/style-redesign.scss' | static_url }}">
         {% endif %}
 
