@@ -59,7 +59,7 @@ var Redesign = {
                 var r = c.getBoundingClientRect();
                 if (r.top < h && r.bottom > 0) {
                     var move = ((r.top + r.height/2 - h/2) / h) * 35;
-                    img.style.transform = 'translate3d(0, ' + move + 'px, 0) scale(1.1)';
+                    img.style.transform = 'translate3d(0, ' + move + 'px, 0)';
                 }
             });
         };

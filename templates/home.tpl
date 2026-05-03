@@ -136,10 +136,10 @@
                     };
 
                     videos.forEach(function(video) {
-                        if (video.readyState >= 3) {
+                        if (video.readyState >= 2) {
                             onVideoReady(video);
                         } else {
-                            video.addEventListener('canplay', function() { onVideoReady(video); });
+                            video.addEventListener('loadeddata', function() { onVideoReady(video); });
                         }
                     });
                     
@@ -253,7 +253,7 @@
     </section>
 
     <!-- 2. NOVEDADES SECTION (Productos reales del catálogo) -->
-    {% if sections.new.products %}
+    {% if sections.primary.products or sections.new.products or sections.featured.products %}
     <section class="redesign-novedades">
         <!-- Header added for consistency -->
         <div class="novedades-header-split" data-redesign-animate="fadeUp">
@@ -264,32 +264,36 @@
         <div class="novedades-container">
             <!-- Columna Izquierda: Carrusel con productos reales -->
             <div class="novedades-media">
-                <a href="/productos" class="novedades-global-overlay">
-                    <span class="redesign-btn-ghost">VER DETALLES</span>
-                </a>
                 <div class="novedades-carousel" data-redesign-animate="fadeIn" data-redesign-delay="0">
-                    <div class="novedades-carousel-track">
-                        {% set new_products_list = sections.new.products %}
-                        {% for pair in new_products_list | batch(2) %}
-                        <div class="novedades-slide">
-                            <div class="novedades-slide-pair">
-                                <a href="{{ pair[0].url }}" class="novedades-media">
-                                    <img src="{{ pair[0].featured_image | product_image_url('huge') }}" alt="{{ pair[0].name }}">
-                                    <div class="novedades-global-overlay">
-                                        <span class="redesign-btn-ghost">VER PRODUCTO</span>
-                                    </div>
-                                </a>
-                                {% if pair[1] %}
-                                <a href="{{ pair[1].url }}" class="novedades-media">
-                                    <img src="{{ pair[1].featured_image | product_image_url('huge') }}" alt="{{ pair[1].name }}">
-                                    <div class="novedades-global-overlay">
-                                        <span class="redesign-btn-ghost">VER PRODUCTO</span>
-                                    </div>
-                                </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        {% endfor %}
+                    <div class="novedades-carousel-track js-infinite-track">
+                        {% set raw_products = sections.new.products | default(sections.primary.products) | default(sections.featured.products) %}
+                        {% if raw_products | length > 0 %}
+                            {% for i in 1..3 %}
+                                {% for product in raw_products %}
+                                    {% if loop.index0 % 2 == 0 %}
+                                        <div class="novedades-slide">
+                                            <div class="novedades-slide-pair">
+                                    {% endif %}
+
+                                    {% set p_img = product.featured_image | default(product.images | first) | default(product.image) %}
+                                    <a href="{{ product.url }}" class="novedades-media-item">
+                                        {% if p_img %}
+                                            <img src="{{ p_img | product_image_url('large') }}" alt="{{ product.name }}">
+                                        {% else %}
+                                            <div class="novedades-image-placeholder"></div>
+                                        {% endif %}
+                                        <div class="novedades-global-overlay">
+                                            <span class="redesign-btn-ghost">VER PRODUCTO</span>
+                                        </div>
+                                    </a>
+
+                                    {% if loop.index0 % 2 == 1 or loop.last %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% endif %}
                     </div>
                     <div class="novedades-progress-container">
                         <div class="novedades-progress-bar"></div>
@@ -500,15 +504,64 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Lógica para la barra de progreso de Novedades
-        const novedadesTrack = document.querySelector('.novedades-carousel-track');
+        const novedadesTrack = document.querySelector('.js-infinite-track');
         const novedadesBar = document.querySelector('.novedades-progress-bar');
 
         if (novedadesTrack && novedadesBar) {
+            // Inicializar en el medio para efecto infinito
+            const setupInfinite = () => {
+                const totalWidth = novedadesTrack.scrollWidth;
+                const oneSetWidth = totalWidth / 3;
+                novedadesTrack.scrollLeft = oneSetWidth;
+            };
+
+            // Ejecutar después de un pequeño delay para asegurar renderizado
+            setTimeout(setupInfinite, 100);
+
             novedadesTrack.addEventListener('scroll', () => {
                 const scrollLeft = novedadesTrack.scrollLeft;
-                const scrollWidth = novedadesTrack.scrollWidth - novedadesTrack.clientWidth;
-                const percentage = (scrollLeft / scrollWidth) * 100;
-                novedadesBar.style.width = `${percentage}%`;
+                const totalWidth = novedadesTrack.scrollWidth;
+                const oneSetWidth = totalWidth / 3;
+
+                // Reposicionamiento infinito (salto instantáneo)
+                if (scrollLeft >= oneSetWidth * 2) {
+                    novedadesTrack.scrollLeft = scrollLeft - oneSetWidth;
+                } else if (scrollLeft <= 0) {
+                    novedadesTrack.scrollLeft = oneSetWidth;
+                }
+
+                // Barra de progreso (basada solo en un set para que no se vea el salto)
+                const relativeScroll = scrollLeft % oneSetWidth;
+                const percentage = (relativeScroll / (oneSetWidth - novedadesTrack.clientWidth)) * 100;
+                novedadesBar.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
+            });
+
+            // Funcionalidad de arrastre para Desktop (Novedades)
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            novedadesTrack.addEventListener('mousedown', (e) => {
+                isDown = true;
+                novedadesTrack.classList.add('active');
+                novedadesTrack.style.scrollSnapType = 'none'; // Desactivar snap durante el drag
+                startX = e.pageX - novedadesTrack.offsetLeft;
+                scrollLeft = novedadesTrack.scrollLeft;
+            });
+            novedadesTrack.addEventListener('mouseleave', () => {
+                isDown = false;
+                novedadesTrack.style.scrollSnapType = 'x mandatory';
+            });
+            novedadesTrack.addEventListener('mouseup', () => {
+                isDown = false;
+                novedadesTrack.style.scrollSnapType = 'x mandatory';
+            });
+            novedadesTrack.addEventListener('mousemove', (e) => {
+                if(!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - novedadesTrack.offsetLeft;
+                const walk = (x - startX) * 2;
+                novedadesTrack.scrollLeft = scrollLeft - walk;
             });
         }
 
