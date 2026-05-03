@@ -2322,49 +2322,18 @@
 
 .novedades-carousel-track {
   display: flex;
-  width: 300%;
+  width: 100%; /* Ajustado para flex dinámico */
   height: 100%;
-  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
 }
 
-/* Animación CSS infinita — Ciclo de 10s (5s por par)
-   A (0-45%) -> B (45-90%) -> A'(90-100% reset) */
-@keyframes novedadesSlide {
-  0% {
-    transform: translateX(0);
-  }
-
-  40% {
-    transform: translateX(0);
-  }
-
-  /* PAUSA EN PAR A */
-  50% {
-    transform: translateX(-33.333%);
-  }
-
-  /* DESLIZA A PAR B */
-  90% {
-    transform: translateX(-33.333%);
-  }
-
-  /* PAUSA EN PAR B */
-  100% {
-    transform: translateX(-66.666%);
-  }
-
-  /* DESLIZA A A'(clon) → reset */
-}
-
-.redesign-active .novedades-carousel-track {
-  animation: novedadesSlide 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-}
-
-/* Cada slide = 1 tercio del track */
 .novedades-slide {
-  flex: 0 0 33.333%;
+  flex: 0 0 100%; /* Cada par ocupa el 100% del contenedor */
   height: 100%;
-  overflow: hidden;
+  scroll-snap-align: center;
 }
 
 /* Par de imágenes dentro de cada slide */
@@ -2486,50 +2455,20 @@
 }
 
 /* Sincronia de dots con el ciclo de 10s (2 pares) */
-@keyframes dot1 {
-
-  0%,
-  40%,
-  90%,
-  100% {
-    background: #000;
-    width: 48px;
-  }
-
-  50%,
-  85% {
-    background: rgba(0, 0, 0, 0.25);
-    width: 28px;
-  }
+.redesign-active .novedades-dot {
+  /* Anulamos animaciones CSS antiguas */
+  animation: none !important;
+  width: 8px;
+  height: 8px;
+  background: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
-@keyframes dot2 {
-
-  0%,
-  40% {
-    background: rgba(0, 0, 0, 0.25);
-    width: 28px;
-  }
-
-  50%,
-  85% {
-    background: #000;
-    width: 48px;
-  }
-
-  90%,
-  100% {
-    background: rgba(0, 0, 0, 0.25);
-    width: 28px;
-  }
-}
-
-.redesign-active .novedades-dot:nth-child(1) {
-  animation: dot1 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-}
-
-.redesign-active .novedades-dot:nth-child(2) {
-  animation: dot2 10s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+.redesign-active .novedades-dot.active {
+  background: #000;
+  width: 24px;
+  border-radius: 4px;
 }
 
 
@@ -2819,20 +2758,125 @@
 }
 
 /* Grilla de 4 */
+/* Carrusel de Ofertas */
 .offers-grid-premium {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 20px;
+  display: flex !important;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 20px;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 20px 40px; 
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .offers-grid-premium {
+    padding: 0 15px 30px !important;
+    gap: 15px; 
+  }
+}
+
+/* Progress Bar Containers */
+.novedades-progress-container,
+.offers-progress-container {
+  width: 180px;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 20px auto 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.novedades-progress-bar,
+.offers-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: #000;
+  transition: width 0.15s ease-out;
+}
+
+/* Swipe Indicator Label - FORZADO */
+.redesign-active .swipe-indicator {
+  position: absolute;
+  right: 30px;
+  bottom: -10px;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 14px !important; /* Mucho más grande */
+  font-weight: 900 !important; /* Extra negrita */
+  letter-spacing: 2.5px !important;
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+  text-transform: uppercase !important;
+  z-index: 20;
+  /* Animación combinada de movimiento y parpadeo */
+  animation: swipeHint 2s infinite ease-in-out, swipePulse 1.5s infinite ease-in-out !important;
+}
+
+@keyframes swipeHint {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(15px); }
+}
+
+@keyframes swipePulse {
+  0%, 100% { 
+    color: #aaaaaa;
+    opacity: 0.3;
+  }
+  50% { 
+    color: #000000;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Forzamos que el contenedor no tenga padding lateral para que la imagen sea edge-to-edge */
+  .redesign-offers .container-wide {
+    padding: 0 !important;
+  }
+  
+  .redesign-active .swipe-indicator {
+    right: 20px;
+    bottom: 25px; /* Subido otros 10px (de 15px a 25px) */
+    font-size: 11px !important;
+    z-index: 30;
+    color: #444 !important;
+  }
+  .novedades-progress-container,
+  .offers-progress-container {
+    width: 250px;
+    margin: 40px auto 10px; /* Aumentamos margen superior para dejar espacio al cartel */
+  }
+  .offers-grid-premium {
+    padding: 0 !important;
+    gap: 0 !important;
+    margin-bottom: 60px; /* Más espacio para los dos elementos apilados */
+  }
+  .offer-card-premium {
+    height: 450px;
+    flex: 0 0 100% !important;
+    padding: 30px 20px;
+    scroll-snap-align: start;
+    border: none;
+  }
 }
 
 /* Card Premium (similar a categorias) */
 .offer-card-premium {
   position: relative;
-  height: 440px;
-  /* Aumentado 15% (de 380px) */
+  height: 400px; 
+  flex: 0 0 calc(25% - 15px); 
+  scroll-snap-align: center;
   background: #000;
   overflow: hidden;
   display: flex;
@@ -2841,6 +2885,16 @@
   padding: 24px;
   text-decoration: none;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 767px) {
+  .offer-card-premium {
+    height: 380px;
+    flex: 0 0 85%;
+    padding: 20px;
+    scroll-snap-align: center;
+  }
 }
 
 .offer-bg-img {

@@ -204,7 +204,7 @@
         <div class="categorias-grid">
             <!-- Card 1: BUZOS -->
             <a href="/buzos" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="0">
-                <img src="{{ 'images/buzos-custom.jpg' | static_url }}" alt="Buzos" class="categoria-bg-img">
+                <img src="{{ 'images/buzo.png' | static_url }}" alt="Buzos" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">ESSENTIALS</span>
                 <span class="categoria-name">BUZOS</span>
@@ -213,7 +213,7 @@
 
             <!-- Card 2: REMERAS -->
             <a href="/remeras" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="150">
-                <img src="{{ 'images/sweater-custom.jpg' | static_url }}" alt="Remeras" class="categoria-bg-img">
+                <img src="{{ 'images/remera.png' | static_url }}" alt="Remeras" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">BÁSICAS Y ESTAMPADAS</span>
                 <span class="categoria-name">REMERAS</span>
@@ -222,7 +222,7 @@
 
             <!-- Card 3: JEANS -->
             <a href="/jeans" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="300">
-                <img src="{{ 'images/jeans-custom.jpg' | static_url }}" alt="Jeans" class="categoria-bg-img">
+                <img src="{{ 'images/jean.png' | static_url }}" alt="Jeans" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">DENIM & MÁS</span>
                 <span class="categoria-name">JEANS</span>
@@ -231,7 +231,7 @@
 
             <!-- Card 4: JOGGINS -->
             <a href="/joggins" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="450">
-                <img src="{{ 'images/Gemini_Generated_Image_88smk788smk788sm.png' | static_url }}" alt="Joggins" class="categoria-bg-img">
+                <img src="{{ 'images/joggin.png' | static_url }}" alt="Joggins" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">CONFORT</span>
                 <span class="categoria-name">JOGGINS</span>
@@ -252,7 +252,8 @@
         </div>
     </section>
 
-    <!-- 2. NOVEDADES SECTION -->
+    <!-- 2. NOVEDADES SECTION (Productos reales del catálogo) -->
+    {% if sections.new.products %}
     <section class="redesign-novedades">
         <!-- Header added for consistency -->
         <div class="novedades-header-split" data-redesign-animate="fadeUp">
@@ -261,41 +262,40 @@
         </div>
         
         <div class="novedades-container">
-            <!-- Columna Izquierda: Imagen / Carrusel -->
-            <!-- Columna Izquierda: Carrusel Automático -->
+            <!-- Columna Izquierda: Carrusel con productos reales -->
             <div class="novedades-media">
                 <a href="/productos" class="novedades-global-overlay">
                     <span class="redesign-btn-ghost">VER DETALLES</span>
                 </a>
                 <div class="novedades-carousel" data-redesign-animate="fadeIn" data-redesign-delay="0">
-                    <!-- Slides de a 2 imágenes -->
                     <div class="novedades-carousel-track">
-                        <!-- Slide 1: Par de imágenes -->
+                        {% set new_products_list = sections.new.products %}
+                        {% for pair in new_products_list | batch(2) %}
                         <div class="novedades-slide">
                             <div class="novedades-slide-pair">
-                                <img src="{{ 'images/Gemini_Generated_Image_bwi1xsbwi1xsbwi1.png' | static_url }}" alt="Signos Editorial 2026 — 1">
-                                <img src="{{ 'images/Gemini_Generated_Image_88smk788smk788sm.png' | static_url }}" alt="Signos Editorial 2026 — 2">
+                                <a href="{{ pair[0].url }}" class="novedades-media">
+                                    <img src="{{ pair[0].featured_image | product_image_url('huge') }}" alt="{{ pair[0].name }}">
+                                    <div class="novedades-global-overlay">
+                                        <span class="redesign-btn-ghost">VER PRODUCTO</span>
+                                    </div>
+                                </a>
+                                {% if pair[1] %}
+                                <a href="{{ pair[1].url }}" class="novedades-media">
+                                    <img src="{{ pair[1].featured_image | product_image_url('huge') }}" alt="{{ pair[1].name }}">
+                                    <div class="novedades-global-overlay">
+                                        <span class="redesign-btn-ghost">VER PRODUCTO</span>
+                                    </div>
+                                </a>
+                                {% endif %}
                             </div>
                         </div>
-                        <!-- Slide 2: Par de imágenes -->
-                        <div class="novedades-slide">
-                            <div class="novedades-slide-pair">
-                                <img src="{{ 'images/Gemini_Generated_Image_pz2dg5pz2dg5pz2d.png' | static_url }}" alt="Signos Editorial 2026 — 3">
-                                <img src="{{ 'images/Gemini_Generated_Image_bwi1xsbwi1xsbwi1.png' | static_url }}" alt="Signos Editorial 2026 — 4">
-                            </div>
-                        </div>
-                        <!-- Clon del Slide 1 para loop infinito -->
-                        <div class="novedades-slide">
-                            <div class="novedades-slide-pair">
-                                <img src="{{ 'images/Gemini_Generated_Image_bwi1xsbwi1xsbwi1.png' | static_url }}" alt="Signos Editorial 2026 — 1 Clone">
-                                <img src="{{ 'images/Gemini_Generated_Image_88smk788smk788sm.png' | static_url }}" alt="Signos Editorial 2026 — 2 Clone">
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                    <!-- Puntos indicadores -->
-                    <div class="novedades-dots">
-                        <span class="novedades-dot active" data-index="0"></span>
-                        <span class="novedades-dot" data-index="1"></span>
+                    <div class="novedades-progress-container">
+                        <div class="novedades-progress-bar"></div>
+                    </div>
+                    <div class="swipe-indicator">
+                        DESLIZÁ PARA VER MÁS <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </div>
                 </div>
             </div>
@@ -317,6 +317,7 @@
             </div>
         </div>
     </section>
+    {% endif %}
 
     <!-- 3. OFFERS SECTION (Editorial Style — Productos reales del catálogo) -->
     {% if sections.sale.products %}
@@ -328,27 +329,37 @@
                 <span class="offers-label-name">PROMOCIONES DE TEMPORADA</span>
             </div>
             
-            <div class="offers-grid-premium">
-                {% for product in sections.sale.products | slice(0, 4) %}
-                <a href="{{ product.url }}" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="{{ loop.index0 * 100 + 100 }}">
-                    <img src="{{ product.featured_image | product_image_url('huge') }}" alt="{{ product.name }}" class="offer-bg-img">
-                    <div class="offer-gradient-overlay"></div>
-                    {% if product.compare_at_price %}
-                        {% set discount_percent = (((product.compare_at_price - product.price) / product.compare_at_price) * 100) | round %}
-                        <span class="offer-badge-subtle">-{{ discount_percent }}% OFF</span>
-                    {% endif %}
-                    <div class="offer-info-minimal">
-                        <h4 class="offer-title-minimal">{{ product.name }}</h4>
-                        <p class="offer-price-minimal">
-                            {% if product.compare_at_price %}
-                                <span class="old-price">{{ product.compare_at_price | money }}</span>
-                            {% endif %}
-                            <span class="new-price">{{ product.price | money }}</span>
-                        </p>
-                        <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-                    </div>
-                </a>
-                {% endfor %}
+            <div class="offers-carousel-wrapper" style="position: relative;">
+                <div class="offers-grid-premium">
+                    {% for product in sections.sale.products %}
+                    <a href="{{ product.url }}" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="{{ loop.index0 * 100 + 100 }}">
+                        <img src="{{ product.featured_image | product_image_url('huge') }}" alt="{{ product.name }}" class="offer-bg-img">
+                        <div class="offer-gradient-overlay"></div>
+                        {% if product.compare_at_price %}
+                            {% set discount_percent = (((product.compare_at_price - product.price) / product.compare_at_price) * 100) | round %}
+                            <span class="offer-badge-subtle">-{{ discount_percent }}% OFF</span>
+                        {% endif %}
+                        <div class="offer-info-minimal">
+                            <h4 class="offer-title-minimal">{{ product.name }}</h4>
+                            <p class="offer-price-minimal">
+                                {% if product.compare_at_price %}
+                                    <span class="old-price">{{ product.compare_at_price | money }}</span>
+                                {% endif %}
+                                <span class="new-price">{{ product.price | money }}</span>
+                            </p>
+                            <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+
+                <div class="offers-progress-container">
+                    <div class="offers-progress-bar"></div>
+                </div>
+
+                <div class="swipe-indicator">
+                    DESLIZÁ PARA VER MÁS <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
             </div>
             
             <div class="offers-footer-minimal" data-redesign-animate="fadeUp">
@@ -485,3 +496,33 @@
     </section>
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lógica para la barra de progreso de Novedades
+        const novedadesTrack = document.querySelector('.novedades-carousel-track');
+        const novedadesBar = document.querySelector('.novedades-progress-bar');
+
+        if (novedadesTrack && novedadesBar) {
+            novedadesTrack.addEventListener('scroll', () => {
+                const scrollLeft = novedadesTrack.scrollLeft;
+                const scrollWidth = novedadesTrack.scrollWidth - novedadesTrack.clientWidth;
+                const percentage = (scrollLeft / scrollWidth) * 100;
+                novedadesBar.style.width = `${percentage}%`;
+            });
+        }
+
+        // Lógica para la barra de progreso de Ofertas
+        const offersTrack = document.querySelector('.offers-grid-premium');
+        const offersBar = document.querySelector('.offers-progress-bar');
+
+        if (offersTrack && offersBar) {
+            offersTrack.addEventListener('scroll', () => {
+                const scrollLeft = offersTrack.scrollLeft;
+                const scrollWidth = offersTrack.scrollWidth - offersTrack.clientWidth;
+                const percentage = (scrollLeft / scrollWidth) * 100;
+                offersBar.style.width = `${percentage}%`;
+            });
+        }
+    });
+</script>
