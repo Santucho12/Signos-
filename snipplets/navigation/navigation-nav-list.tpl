@@ -1,6 +1,7 @@
 {% set megamenu = megamenu | default(false) %}
 {% set hamburger = hamburger | default(false) %}
 {% set subitem = subitem | default(false) %}
+{% set nav_level = nav_level | default(1) %}
 
 {% set hamburger_desktop_subpanels_position = '' %}
 
@@ -26,7 +27,7 @@
 			{% if megamenu %}
 			<div class="nav-item-container">
 			{% endif %}
-				<a class="{% if hamburger %}js-toggle-menu-panel align-items-center{% endif %} nav-list-link position-relative {{ item.current ? 'selected' : '' }}" href="{% if megamenu and item.url %}{{ item.url }}{% else %}#{% endif %}"><span class="nav-item-text-wrapper">{{ item.name }}</span>
+				<a class="{% if hamburger %}js-toggle-menu-panel align-items-center{% endif %} {% if megamenu and nav_level == 2 and item.subitems %}js-megamenu-toggle{% endif %} nav-list-link position-relative {{ item.current ? 'selected' : '' }}" href="{% if item.url %}{{ item.url | setting_url }}{% else %}#{% endif %}"><span class="nav-item-text-wrapper">{{ item.name }}</span>
 					{% if not subitem or hamburger %}
 						<span class="nav-list-arrow ml-1">
 							<svg class="icon-inline svg-icon-text {{ arrow_classes }}"><use xlink:href="#{{ arrow_type }}"/></svg>
@@ -39,7 +40,7 @@
 			{% if megamenu and not subitem %}
 				<div class="js-desktop-dropdown nav-dropdown-content desktop-dropdown">
 			{% endif %}
-					<ul class="{% if megamenu %}{% if not subitem %}desktop-list-subitems{% endif %}{% else %}js-menu-panel nav-list-panel nav-list-panel-right {{ hamburger_desktop_subpanels_position }} {% endif %} list-subitems" {% if hamburger %}style="display:none;"{% endif %}>
+					<ul class="{% if megamenu %}{% if not subitem %}desktop-list-subitems{% endif %}{% else %}js-menu-panel nav-list-panel nav-list-panel-right {{ hamburger_desktop_subpanels_position }} {% endif %} list-subitems {% if megamenu and nav_level == 2 %}js-megamenu-subitems megamenu-subitems-accordion{% endif %}" {% if hamburger %}style="display:none;"{% endif %}>
 						{% if hamburger %}
 							<div class="modal-header">
 								<div class="row">
@@ -65,11 +66,13 @@
 							{% if item.isCategory %}
 								<li class="nav-item">
 									<a class="nav-list-link position-relative {{ item.current ? 'selected' : '' }}" href="{{ item.url }}">
-										{% if item.isRootCategory %}
-											{{ 'Ver todos los productos' | translate }}
-										{% else %}
-											{{ 'Ver todo en' | translate }} {{ item.name }}
-										{% endif %}
+										<span class="nav-item-text-wrapper">
+											{% if item.isRootCategory %}
+												{{ 'Ver todos los productos' | translate }}
+											{% else %}
+												{{ 'Ver todo en' | translate }} {{ item.name }}
+											{% endif %}
+										</span>
 									</a>
 								</li>
 							{% endif %}
@@ -79,7 +82,7 @@
 						{% if hamburger %}
 							{% set hamburger_val = true %}
 						{% endif %}
-						{% include 'snipplets/navigation/navigation-nav-list.tpl' with { 'navigation' : item.subitems, 'subitem' : true, 'hamburger' : hamburger_val  } %}
+						{% include 'snipplets/navigation/navigation-nav-list.tpl' with { 'navigation' : item.subitems, 'subitem' : true, 'hamburger' : hamburger_val, 'nav_level' : nav_level + 1  } %}
 					</ul>
 			{% if megamenu and not subitem %}
 				</div>

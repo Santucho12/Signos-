@@ -111,7 +111,7 @@
     <section class="redesign-hero video-loading">
         <!-- Video de fondo Desktop -->
         <video autoplay muted loop playsinline preload="auto" class="redesign-hero-video d-none d-md-block">
-            <source src="{{ 'herodesktop.mp4' | static_url }}" type="video/mp4">
+            <source src="{{ 'herocomprimidodesktop.mp4' | static_url }}" type="video/mp4">
         </video>
         <!-- Video de fondo Mobile -->
         <video autoplay muted loop playsinline preload="auto" class="redesign-hero-video d-block d-md-none">

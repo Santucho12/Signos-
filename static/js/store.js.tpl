@@ -700,8 +700,15 @@ DOMContentLoaded.addEventOrExecute(() => {
         $top_nav.addClass("move-down").removeClass("move-up");
 
         jQueryNuvem(".js-toggle-menu-panel").click(function (e) {
-            e.preventDefault();
-            jQueryNuvem(this).next(".js-menu-panel").show().addClass("nav-list-panel-show");
+            var $panel = jQueryNuvem(this).next(".js-menu-panel");
+            
+            // Si el panel mobile NO está visible, lo mostramos y prevenimos el link
+            if (!$panel.hasClass("nav-list-panel-show")) {
+                e.preventDefault();
+                $panel.show().addClass("nav-list-panel-show");
+            } else {
+                // Si YA está visible (por ejemplo, si el JS no lo tapó totalmente), permitimos navegar
+            }
         });
 
         jQueryNuvem(".js-toggle-menu-back").click(function (e) {
@@ -769,6 +776,25 @@ DOMContentLoaded.addEventOrExecute(() => {
             setTimeout(function(){
                 self.css("pointer-events" , "initial");
             },1000);
+        });
+
+        {# Toggle subcategories in megamenu accordion (Desktop) #}
+
+        jQueryNuvem(document).on("click", ".js-megamenu-toggle", function(e) {
+            const parent = jQueryNuvem(this).closest(".nav-item");
+            
+            // Si el desplegable NO está abierto, prevenimos la navegación y lo abrimos
+            if (!parent.hasClass("is-open")) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Opcional: Cerrar otros acordeones hermanos si se desea
+                // parent.siblings().removeClass("is-open");
+                
+                parent.addClass("is-open");
+            } else {
+                // Si YA está abierto, permitimos que el click siga su curso (navega al href)
+            }
         });
 
         {# Focus search #}
