@@ -111,7 +111,7 @@
     <section class="redesign-hero video-loading">
         <!-- Video de fondo Desktop -->
         <video autoplay muted loop playsinline preload="auto" class="redesign-hero-video d-none d-md-block">
-            <source src="{{ 'recortado-7026828-uhd_4096_2160_25fps.mp4' | static_url }}" type="video/mp4">
+            <source src="{{ 'herodesktop.mp4' | static_url }}" type="video/mp4">
         </video>
         <!-- Video de fondo Mobile -->
         <video autoplay muted loop playsinline preload="auto" class="redesign-hero-video d-block d-md-none">
@@ -203,8 +203,8 @@
         <!-- Grid de Categorías -->
         <div class="categorias-grid">
             <!-- Card 1: BUZOS -->
-            <a href="/buzos" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="0">
-                <img src="{{ 'images/buzo.png' | static_url }}" alt="Buzos" class="categoria-bg-img">
+            <a href="/buzoss/" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="0">
+                <img src="{{ 'images/IMG_5918.JPG.jpeg' | static_url }}" alt="Buzos" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">ESSENTIALS</span>
                 <span class="categoria-name">BUZOS</span>
@@ -213,7 +213,7 @@
 
             <!-- Card 2: REMERAS -->
             <a href="/remeras" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="150">
-                <img src="{{ 'images/remera.png' | static_url }}" alt="Remeras" class="categoria-bg-img">
+                <img src="{{ 'images/IMG_6085.JPG.jpeg' | static_url }}" alt="Remeras" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">BÁSICAS Y ESTAMPADAS</span>
                 <span class="categoria-name">REMERAS</span>
@@ -222,7 +222,7 @@
 
             <!-- Card 3: JEANS -->
             <a href="/jeans" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="300">
-                <img src="{{ 'images/jean.png' | static_url }}" alt="Jeans" class="categoria-bg-img">
+                <img src="{{ 'images/WhatsApp Image 2026-05-04 at 20.25.38.jpeg' | static_url }}" alt="Jeans" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">DENIM & MÁS</span>
                 <span class="categoria-name">JEANS</span>
@@ -230,11 +230,11 @@
             </a>
 
             <!-- Card 4: JOGGINS -->
-            <a href="/joggins" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="450">
-                <img src="{{ 'images/joggin.png' | static_url }}" alt="Joggins" class="categoria-bg-img">
+            <a href="/joggings/" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="450">
+                <img src="{{ 'images/WhatsApp Image 2026-05-04 at 20.25.39.jpeg' | static_url }}" alt="Joggins" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">CONFORT</span>
-                <span class="categoria-name">JOGGINS</span>
+                <span class="categoria-name">JOGGINGS</span>
                 <span class="categoria-cta">Ver colección →</span>
             </a>
 
@@ -316,7 +316,7 @@
                             <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <a href="/productos" class="redesign-btn-gold">VER NOVEDADES</a>
+                    <a href="/novedades/" class="redesign-btn-gold">VER NOVEDADES</a>
                 </div>
             </div>
         </div>
@@ -373,7 +373,7 @@
                             <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <a href="/promociones" class="redesign-btn-verofertas">Aprovechar ofertas</a>
+                    <a href="/ofertas1/" class="redesign-btn-verofertas">Aprovechar ofertas</a>
                 </div>
             </div>
         </div>

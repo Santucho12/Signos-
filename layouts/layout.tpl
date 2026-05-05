@@ -6,7 +6,7 @@
 ==============================================================================*/#}
 
 {% set _redesign_key = 'mi_redesign_2026' %}
-{% set _is_redesign_production = (template != 'home') or params.preview %}
+{% set _is_redesign_production = true %}
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="{% for language in languages %}{% if language.active %}{{ language.lang }}{% endif %}{% endfor %}" {% if _is_redesign_production %}class="redesign-active"{% endif %}>
@@ -67,13 +67,7 @@
                     document.documentElement.classList.add('visible-when-content-ready');
                 });
 
-                {% if template == 'home' %}
-                    {# En el Home, el diseño completo (redesign-active) solo se activa en Preview #}
-                    if (isPreview) {
-                        document.documentElement.classList.add('redesign-active');
-                        document.write('<link rel="stylesheet" href="{{ "css/style-redesign.scss" | static_url }}">');
-                    }
-                {% endif %}
+                {# Home ya no requiere preview: redesign-active se aplica desde el HTML server-side #}
             })();
         </script>
 
@@ -84,7 +78,7 @@
 
         {# Optimización de Video Hero (Carga Prioritaria Máxima) #}
         {% if template == 'home' %}
-            <link rel="preload" href="{{ 'recortado-7026828-uhd_4096_2160_25fps.mp4' | static_url }}" as="video" type="video/mp4" fetchpriority="high">
+            <link rel="preload" href="{{ 'herodesktop.mp4' | static_url }}" as="video" type="video/mp4" fetchpriority="high">
         {% endif %}
 
         <link rel="preconnect" href="{{ store_resource_hints }}" />
