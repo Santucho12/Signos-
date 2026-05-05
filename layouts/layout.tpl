@@ -29,6 +29,23 @@
             .redesign-active body { opacity: 0; } /* Evita parpadeo inicial del diseño viejo */
             .redesign-active.visible-when-content-ready body { opacity: 1; transition: opacity 0.3s ease; }
             
+            /* Lenis Smooth Scroll Setup */
+            html.lenis {
+              height: auto;
+            }
+            .lenis-smooth {
+              scroll-behavior: auto !important;
+            }
+            .lenis-smooth [data-lenis-prevent] {
+              overscroll-behavior: contain;
+            }
+            .lenis-stopped {
+              overflow: hidden;
+            }
+            .lenis-scrolling iframe {
+              pointer-events: none;
+            }
+
             /* Banner Superior Crítico (Para que no salte) */
             .redesign-top-banner {
                 background: #000;
@@ -444,6 +461,30 @@
                 });
             }
         })();
+        </script>
+        <!-- Lenis Smooth Scroll (Efecto pesado y premium) -->
+        <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/dist/lenis.min.js"></script>
+        <script>
+            if (window.innerWidth > 1024) { // Solo en Desktop para mejor performance
+                const lenis = new Lenis({
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    direction: 'vertical',
+                    gestureDirection: 'vertical',
+                    smooth: true,
+                    mouseMultiplier: 1,
+                    smoothTouch: false,
+                    touchMultiplier: 2,
+                    infinite: false,
+                })
+
+                function raf(time) {
+                    lenis.raf(time)
+                    requestAnimationFrame(raf)
+                }
+
+                requestAnimationFrame(raf)
+            }
         </script>
     </body>
 </html>

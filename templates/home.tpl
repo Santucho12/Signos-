@@ -184,9 +184,9 @@
 
         <!-- Banner de Beneficios en el Video -->
         <div class="redesign-hero-benefits">
-            <span class="benefit-text">15% DE DESCUENTO CON TRANSFERENCIA</span>
+            <span class="benefit-text">20% OFF TRANSFERENCIA</span>
             <span class="benefit-sep">|</span>
-            <span class="benefit-text">ENVIOS A TODO EL PAIS</span>
+            <span class="benefit-text">ENVIOS GRATIS (+80K)</span>
             <span class="benefit-sep">|</span>
             <span class="benefit-text">3 Y 6 CUOTAS SIN INTERES</span>
         </div>
@@ -421,17 +421,17 @@
 
                     <div class="social-preview-grid">
                         <div class="grid-img">
-                            <video autoplay muted loop playsinline class="grid-video video-align-top">
+                            <video muted loop playsinline preload="none" class="grid-video js-lazy-video">
                                 <source src="{{ 'ig/𝗡𝗢𝗦 𝗩𝗜𝗡𝗜𝗠𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗔𝗖𝗔 𝗣𝗔𝗥𝗔 𝗟𝗔𝗥𝗚𝗔𝗥 𝗘𝗦𝗧𝗔 𝗕𝗢𝗠𝗕𝗔𝟯𝘅𝟮 𝗻𝘂𝗲𝘃.mp4' | static_url }}" type="video/mp4">
                             </video>
                         </div>
                         <div class="grid-img">
-                            <video autoplay muted loop playsinline class="grid-video">
+                            <video muted loop playsinline preload="none" class="grid-video js-lazy-video">
                                 <source src="{{ 'ig/Últimos días para hacer tu regalito🎁O elegir tu outfit para estas fiestasBanco provincia hasta .mp4' | static_url }}" type="video/mp4">
                             </video>
                         </div>
                         <div class="grid-img">
-                            <video autoplay muted loop playsinline class="grid-video">
+                            <video muted loop playsinline preload="none" class="grid-video js-lazy-video">
                                 <source src="{{ 'ig/El regalo ideal para las fiestas está en @signos_indumentaria 🎅🌲🔥.mp4' | static_url }}" type="video/mp4">
                             </video>
                         </div>
@@ -474,17 +474,17 @@
 
                     <div class="social-preview-grid">
                         <div class="grid-img">
-                            <video autoplay muted loop playsinline class="grid-video">
+                            <video muted loop playsinline preload="none" class="grid-video js-lazy-video">
                                 <source src="{{ 'ig/tiktok/@signos_indumentaria • 2025-2026 🔥.mp4' | static_url }}" type="video/mp4">
                             </video>
                         </div>
                         <div class="grid-img">
-                            <video autoplay muted loop playsinline class="grid-video video-align-top">
+                            <video muted loop playsinline preload="none" class="grid-video js-lazy-video">
                                 <source src="{{ 'ig/tiktok/videotiktok.mp4' | static_url }}" type="video/mp4">
                             </video>
                         </div>
                         <div class="grid-img">
-                            <video autoplay muted loop playsinline class="grid-video">
+                            <video muted loop playsinline preload="none" class="grid-video js-lazy-video">
                                 <source src="{{ 'ig/tiktok/Nueva PROMO solo hasta este finde! 😮_💨Buzos 2 x $90.000🔥Aprovecha que se viene el frío a llev.mp4' | static_url }}" type="video/mp4">
                             </video>
                         </div>
@@ -578,4 +578,36 @@
             });
         }
     });
+
+    // Lógica de Lazy Loading para videos de redes sociales
+    (function() {
+        var lazyVideos = [].slice.call(document.querySelectorAll('video.js-lazy-video'));
+
+        if ('IntersectionObserver' in window) {
+            var videoObserver = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(function(video) {
+                    if (video.isIntersecting) {
+                        var videoElement = video.target;
+                        videoElement.setAttribute('preload', 'auto');
+                        videoElement.load();
+                        videoElement.play().catch(function(e) {
+                            // Silenciar error de autoplay bloqueado
+                        });
+                        videoObserver.unobserve(videoElement);
+                    }
+                });
+            });
+
+            lazyVideos.forEach(function(video) {
+                videoObserver.observe(video);
+            });
+        } else {
+            // Fallback: cargar todo si no hay IntersectionObserver
+            lazyVideos.forEach(function(video) {
+                video.setAttribute('preload', 'auto');
+                video.load();
+                video.play();
+            });
+        }
+    })();
 </script>
