@@ -331,10 +331,15 @@
                 document.head.appendChild(meta);
             }
 
-            // ── Cargar redesign.js con cache-buster ──────────────────────────
-            var script = document.createElement('script');
-            script.src = JS_URL + '?v=' + new Date().getTime();
-            document.body.appendChild(script);
+            // ── Cargar utilidades de rediseño ──────────────────────────
+            var loadScript = function(url) {
+                var s = document.createElement('script');
+                s.src = url + '?v=' + new Date().getTime();
+                document.body.appendChild(s);
+            };
+
+            loadScript(JS_URL);
+            loadScript('{{ "js/modals-marketing.js" | static_url }}');
 
             // ── Badge de preview ──────────────────────────────────────────────
             if (isPreview) {
@@ -398,128 +403,54 @@
                 });
             }
 
-            // ── Probador Virtual Modal ──────────────────────────────────────
-            var MODAL_ID = 'redesign-probador-modal';
-            var IFRAME_URL = 'https://probador-virtual-signosindumentaria.vercel.app/';
+            // ── Inicialización de Modales de Marketing ──────────────────────
+            window.addEventListener('load', function() {
+                if (typeof MarketingModals !== 'undefined') {
+                    
+                    // 1. Probador Virtual (Manual)
+                    MarketingModals.init({
+                        id: 'redesign-probador-modal',
+                        url: 'https://probador-virtual-signosindumentaria.vercel.app/',
+                        delay: -1, // No automático
+                        containerClass: 'probador-container',
+                        isPreviewOnly: false // Visible para todos
+                    });
 
-            if (!document.getElementById(MODAL_ID)) {
-                var modal = document.createElement('div');
-                modal.id = MODAL_ID;
-
-                var container = document.createElement('div');
-                container.className = 'probador-container';
-
-                var closeBtn = document.createElement('button');
-                closeBtn.className = 'close-btn';
-                closeBtn.innerHTML = '&#10005;';
-
-                var iframe = document.createElement('iframe');
-
-                container.appendChild(closeBtn);
-                container.appendChild(iframe);
-                modal.appendChild(container);
-                document.body.appendChild(modal);
-
-                var openModal = function() {
-                    iframe.src = IFRAME_URL;
-                    modal.classList.add('is-open');
-                    document.body.style.overflow = 'hidden';
-                };
-
-                var closeModal = function() {
-                    modal.classList.remove('is-open');
-                    document.body.style.overflow = '';
-                    setTimeout(function() {
-                        if (!modal.classList.contains('is-open')) {
-                            iframe.src = 'about:blank';
+                    // Trigger para el probador (botón manual)
+                    document.addEventListener('click', function(e) {
+                        var btn = e.target.closest('.js-probador-btn');
+                        if (btn) {
+                            e.preventDefault();
+                            var modal = document.getElementById('redesign-probador-modal');
+                            if (modal && modal.classList.contains('is-open')) {
+                                // El sistema ya maneja el cierre si se clickea afuera o en X, 
+                                // pero aquí podemos forzar apertura si está cerrado.
+                            } else {
+                                // Como init retorna las funciones, podríamos guardarlas, 
+                                // pero el botón simplemente necesita que el modal exista y se le añada la clase.
+                                // Para ser limpios, vamos a disparar el open del modal.
+                                // Nota: En este refactor, el 'open' es interno. 
+                                // Vamos a exponerlo o simplemente usar la clase.
+                                var m = document.getElementById('redesign-probador-modal');
+                                if (m) {
+                                    m.querySelector('iframe').src = 'https://probador-virtual-signosindumentaria.vercel.app/';
+                                    m.classList.add('is-open');
+                                    document.body.style.overflow = 'hidden';
+                                }
+                            }
                         }
-                    }, 400);
-                };
+                    });
 
-                closeBtn.onclick = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeModal();
-                };
-                modal.onclick = function(e) { 
-                    if(e.target === modal) {
-                        e.preventDefault();
-                        closeModal(); 
-                    }
-                };
-
-                document.addEventListener('click', function(e) {
-                    var btn = e.target.closest('.js-probador-btn');
-                    if (btn) {
-                        e.preventDefault();
-                        if (modal.classList.contains('is-open')) {
-                            closeModal();
-                        } else {
-                            openModal();
-                        }
-                    }
-                });
-            }
-
-            // ── Ruleta Modal (Automático a los 3s) ──────────────────────────
-            // Gating: Solo mostrar en modo PREVIEW mientras se soluciona el error 500
-            var RULETA_ID = 'redesign-ruleta-modal';
-            var RULETA_URL = 'https://ruleta-signos.vercel.app/';
-
-            if (!document.getElementById(RULETA_ID) && document.documentElement.classList.contains('redesign-preview')) {
-                var rModal = document.createElement('div');
-                rModal.id = RULETA_ID;
-
-                var rContainer = document.createElement('div');
-                rContainer.className = 'ruleta-container';
-
-                var rCloseBtn = document.createElement('button');
-                rCloseBtn.className = 'close-btn';
-                rCloseBtn.innerHTML = '&#10005;';
-
-                var rIframe = document.createElement('iframe');
-
-                rContainer.appendChild(rCloseBtn);
-                rContainer.appendChild(rIframe);
-                rModal.appendChild(rContainer);
-                document.body.appendChild(rModal);
-
-                var openRuleta = function() {
-                    rIframe.src = RULETA_URL;
-                    rModal.classList.add('is-open');
-                    document.body.style.overflow = 'hidden';
-                };
-
-                var closeRuleta = function() {
-                    rModal.classList.remove('is-open');
-                    document.body.style.overflow = '';
-                    setTimeout(function() {
-                        if (!rModal.classList.contains('is-open')) {
-                            rIframe.src = 'about:blank';
-                        }
-                    }, 400);
-                };
-
-                rCloseBtn.onclick = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeRuleta();
-                };
-                rModal.onclick = function(e) { 
-                    if(e.target === rModal) {
-                        e.preventDefault();
-                        closeRuleta(); 
-                    }
-                };
-
-                // Abrir automáticamente a los 3 segundos (3000ms) - Una vez por visita
-                if (!sessionStorage.getItem('ruleta_visto')) {
-                    setTimeout(function() {
-                        openRuleta();
-                        sessionStorage.setItem('ruleta_visto', 'true');
-                    }, 3000);
+                    // 2. Ruleta Principal (Automática)
+                    MarketingModals.init({
+                        id: 'redesign-ruleta-modal',
+                        url: 'https://ruleta-signos.vercel.app/',
+                        delay: 3000,
+                        sessionKey: 'ruleta_visto',
+                        isPreviewOnly: true
+                    });
                 }
-            }
+            });
         })();
         </script>
         <!-- Lenis Smooth Scroll (Efecto pesado y premium) -->
