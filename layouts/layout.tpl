@@ -460,6 +460,66 @@
                     }
                 });
             }
+
+            // ── Ruleta Modal (Automático a los 3s) ──────────────────────────
+            // Gating: Solo mostrar en modo PREVIEW mientras se soluciona el error 500
+            var RULETA_ID = 'redesign-ruleta-modal';
+            var RULETA_URL = 'https://ruleta-signos.vercel.app/';
+
+            if (!document.getElementById(RULETA_ID) && document.documentElement.classList.contains('redesign-preview')) {
+                var rModal = document.createElement('div');
+                rModal.id = RULETA_ID;
+
+                var rContainer = document.createElement('div');
+                rContainer.className = 'ruleta-container';
+
+                var rCloseBtn = document.createElement('button');
+                rCloseBtn.className = 'close-btn';
+                rCloseBtn.innerHTML = '&#10005;';
+
+                var rIframe = document.createElement('iframe');
+
+                rContainer.appendChild(rCloseBtn);
+                rContainer.appendChild(rIframe);
+                rModal.appendChild(rContainer);
+                document.body.appendChild(rModal);
+
+                var openRuleta = function() {
+                    rIframe.src = RULETA_URL;
+                    rModal.classList.add('is-open');
+                    document.body.style.overflow = 'hidden';
+                };
+
+                var closeRuleta = function() {
+                    rModal.classList.remove('is-open');
+                    document.body.style.overflow = '';
+                    setTimeout(function() {
+                        if (!rModal.classList.contains('is-open')) {
+                            rIframe.src = 'about:blank';
+                        }
+                    }, 400);
+                };
+
+                rCloseBtn.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeRuleta();
+                };
+                rModal.onclick = function(e) { 
+                    if(e.target === rModal) {
+                        e.preventDefault();
+                        closeRuleta(); 
+                    }
+                };
+
+                // Abrir automáticamente a los 3 segundos (3000ms) - Una vez por visita
+                if (!sessionStorage.getItem('ruleta_visto')) {
+                    setTimeout(function() {
+                        openRuleta();
+                        sessionStorage.setItem('ruleta_visto', 'true');
+                    }, 3000);
+                }
+            }
         })();
         </script>
         <!-- Lenis Smooth Scroll (Efecto pesado y premium) -->

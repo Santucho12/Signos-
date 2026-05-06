@@ -5317,6 +5317,82 @@
   border: none !important;
 }
 
+/* Modal de la Ruleta (Popup Automático) */
+#redesign-ruleta-modal {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  z-index: 100001 !important; /* Un nivel arriba del probador si coinciden */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#redesign-ruleta-modal.is-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+#redesign-ruleta-modal .ruleta-container {
+  position: relative !important;
+  width: 95% !important;
+  max-width: 450px !important;
+  height: 80vh !important;
+  max-height: 640px !important;
+  margin: auto !important;
+  background: #fff !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  transform: scale(0.9) !important;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+#redesign-ruleta-modal.is-open .ruleta-container {
+  transform: scale(1) !important;
+}
+
+#redesign-ruleta-modal .close-btn {
+  position: absolute !important;
+  top: 20px !important;
+  right: 20px !important;
+  z-index: 10 !important;
+  background: #000 !important;
+  color: #fff !important;
+  border: none !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.2s ease !important;
+}
+
+#redesign-ruleta-modal .close-btn:hover {
+  transform: scale(1.1) !important;
+  background: #333 !important;
+}
+
+#redesign-ruleta-modal iframe {
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+}
+
 /* ============================================================
    GATING SYSTEM: PREVIEW ONLY CONTENT
    ============================================================ */
