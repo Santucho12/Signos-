@@ -1,0 +1,164 @@
+/**
+ * COUPON COUNTDOWN STYLES
+ */
+
+#coupon-countdown-bar {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000000;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    padding: 10px 10px 10px 20px;
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Outfit', sans-serif;
+    color: #fff;
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    animation: slideUpCountdown 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    max-width: 90vw;
+    width: auto;
+}
+
+@keyframes slideUpCountdown {
+    from { transform: translate(-50%, 100px); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+#coupon-countdown-bar.hide {
+    transform: translate(-50%, 100px);
+    opacity: 0;
+}
+
+.countdown-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.countdown-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+}
+
+.countdown-timer {
+    font-family: 'Blunt Semiconit', monospace;
+    font-size: 18px;
+    font-weight: 400;
+    color: #fff;
+    min-width: 85px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.countdown-timer.urgent {
+    color: #ff4d4d;
+    animation: pulseUrgency 1s infinite alternate;
+}
+
+@keyframes pulseUrgency {
+    from { text-shadow: 0 0 0px rgba(255, 77, 77, 0); }
+    to { text-shadow: 0 0 10px rgba(255, 77, 77, 0.8); }
+}
+
+.countdown-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.countdown-coupon {
+    background: #fff;
+    color: #000;
+    padding: 8px 16px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.countdown-coupon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+    background: #f0f0f0;
+}
+
+.countdown-coupon:active {
+    transform: translateY(0);
+}
+
+.coupon-code {
+    letter-spacing: 0.5px;
+}
+
+.copy-icon {
+    display: flex;
+    align-items: center;
+    opacity: 0.5;
+}
+
+.countdown-close {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.countdown-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    #coupon-countdown-bar {
+        bottom: 20px;
+        padding: 8px 8px 8px 15px;
+        gap: 8px;
+    }
+    
+    .countdown-content {
+        gap: 8px;
+    }
+    
+    .countdown-label {
+        font-size: 8px;
+        letter-spacing: 1px;
+    }
+    
+    .countdown-timer {
+        font-size: 15px;
+        min-width: 70px;
+    }
+    
+    .countdown-coupon {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .countdown-divider {
+        height: 18px;
+    }
+}

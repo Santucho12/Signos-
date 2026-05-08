@@ -58,7 +58,8 @@ window.MarketingModals = {
             console.log(`MarketingModal [${id}]: Opened with URL ${freshUrl}`);
         };
 
-        const close = () => {
+        const close = (reason = 'unknown') => {
+            console.trace(`MarketingModal [${id}]: close() llamado. Razón: ${reason}`);
             modal.classList.remove('is-open');
             document.body.style.overflow = '';
             // No limpiamos el src inmediatamente para evitar parpadeos blancos, 
@@ -85,6 +86,9 @@ window.MarketingModals = {
                 }).catch(err => {
                     console.error('MarketingModals: Error al copiar desde el parent', err);
                 });
+            } else if (event.data && event.data.type === 'close_modal') {
+                // Si el iframe explícitamente pide cerrar
+                close('iframe_postmessage');
             }
         };
         window.addEventListener('message', messageHandler);
@@ -93,13 +97,13 @@ window.MarketingModals = {
         closeBtn.onclick = (e) => {
             e.preventDefault();
             e.stopPropagation();
-            close();
+            close('close_button_clicked');
         };
 
         modal.onclick = (e) => {
             if (e.target === modal) {
                 e.preventDefault();
-                close();
+                close('backdrop_clicked');
             }
         };
 

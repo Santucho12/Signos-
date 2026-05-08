@@ -371,6 +371,7 @@
             loadScript('{{ "js/modals-marketing.js" | static_url }}');
             loadScript('{{ "js/cart-marketing.js" | static_url }}');
             loadScript('{{ "js/cart-notes.js" | static_url }}');
+            loadScript('{{ "js/coupon-countdown.js" | static_url }}');
 
             // ── Pre-calentamiento de Vercel (evita cold-start en los 3 iframes) ──
             var _warmUrls = [
@@ -508,7 +509,7 @@
         <!-- Lenis Smooth Scroll (Efecto pesado y premium) -->
         <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/dist/lenis.min.js"></script>
         <script>
-            if (window.innerWidth > 1024) { // Solo en Desktop para mejor performance
+            if (typeof Lenis !== 'undefined' && window.innerWidth > 1024) { // Solo en Desktop y si cargó bien
                 const lenis = new Lenis({
                     duration: 1.2,
                     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
