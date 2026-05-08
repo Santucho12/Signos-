@@ -33,11 +33,13 @@ window.MarketingModals = {
 
         const closeBtn = document.createElement('button');
         closeBtn.className = 'close-btn';
-        closeBtn.innerHTML = '&#10005;';
+        closeBtn.innerHTML = '&times;';
 
         const iframe = document.createElement('iframe');
         iframe.src = 'about:blank';
         iframe.setAttribute('frameborder', '0');
+        // Permisos extendidos para el portapapeles
+        iframe.setAttribute('allow', 'clipboard-read; clipboard-write');
 
         container.appendChild(closeBtn);
         container.appendChild(iframe);
@@ -46,24 +48,48 @@ window.MarketingModals = {
 
         // 3. Funciones de Control
         const open = () => {
-            iframe.src = url;
+            // Agregar un cache-buster para evitar el error de "respuesta no válida"
+            const separator = url.indexOf('?') !== -1 ? '&' : '?';
+            const freshUrl = `${url}${separator}cb=${new Date().getTime()}`;
+            
+            iframe.src = freshUrl;
             modal.classList.add('is-open');
             document.body.style.overflow = 'hidden';
-            console.log(`MarketingModal [${id}]: Opened`);
+            console.log(`MarketingModal [${id}]: Opened with URL ${freshUrl}`);
         };
 
         const close = () => {
             modal.classList.remove('is-open');
             document.body.style.overflow = '';
+            // No limpiamos el src inmediatamente para evitar parpadeos blancos, 
+            // solo si el modal permanece cerrado.
             setTimeout(() => {
                 if (!modal.classList.contains('is-open')) {
                     iframe.src = 'about:blank';
                 }
-            }, 400);
+            }, 500);
             console.log(`MarketingModal [${id}]: Closed`);
         };
 
-        // 4. Eventos
+        // 5. Comunicación con el Iframe (para copiado de cupones)
+        const messageHandler = (event) => {
+            const allowedOrigins = [
+                'https://ruleta-signos.vercel.app',
+                'https://probador-virtual-signosindumentaria.vercel.app'
+            ];
+            if (!allowedOrigins.includes(event.origin)) return;
+            
+            if (event.data && event.data.type === 'copy' && event.data.text) {
+                navigator.clipboard.writeText(event.data.text).then(() => {
+                    console.log('MarketingModals: Texto copiado desde el parent window');
+                }).catch(err => {
+                    console.error('MarketingModals: Error al copiar desde el parent', err);
+                });
+            }
+        };
+        window.addEventListener('message', messageHandler);
+
+        // 6. Eventos de cierre
         closeBtn.onclick = (e) => {
             e.preventDefault();
             e.stopPropagation();

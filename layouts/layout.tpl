@@ -164,6 +164,46 @@
 
         <link rel="stylesheet" href="{{ 'css/style-async.scss' | static_url }}" media="print" onload="this.media='all'">
 
+        {# Estilos del Rediseño 2026 #}
+        <link rel="stylesheet" href="{{ 'css/style-redesign.css' | static_url }}">
+
+        <style>
+            /* FIX MAESTRO: Notificación de Carrito — Aparece SOLO centrada */
+            .notification-cart-container,
+            .notification-fixed,
+            .js-alert-added-to-cart {
+                position: fixed !important;
+                top: 100px !important;
+                left: 50% !important;
+                right: auto !important;
+                transform: translateX(-50%) !important;
+                width: 92% !important;
+                max-width: 420px !important;
+                margin: 0 auto !important;
+                z-index: 9999999 !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                pointer-events: none !important;
+                transition: none !important; /* Sin transición = sin flash */
+                box-shadow: 0 15px 45px rgba(0,0,0,0.3) !important;
+                background: #fff !important;
+                border-radius: 20px !important;
+            }
+            .notification-cart-container.notification-visible,
+            .notification-fixed.notification-visible,
+            .js-alert-added-to-cart.notification-visible {
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                display: flex !important;
+                animation: fadeInCenter 0.3s ease forwards !important;
+            }
+            @keyframes fadeInCenter {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        </style>
+
         {# Redesign preview: CSS conditionally loaded via JS at the end of the body #}
 
         {# Loads custom CSS added from Advanced Settings on the admin´s theme customization screen #}
@@ -204,7 +244,7 @@
         {{ component('structured-data') }}
 
     </head>
-    <body class="{% if customer %}customer-logged-in{% endif %} template-{{ template | replace('.', '-') }}">
+    <body class="redesign-active {% if customer %}customer-logged-in{% endif %} template-{{ template | replace('.', '-') }}">
 
         {# Theme icons #}
 
@@ -321,6 +361,66 @@
             var isPreview = document.documentElement.classList.contains('redesign-preview');
             var JS_URL   = '{{ "js/redesign.js" | static_url }}';
 
+            // ── Cargar utilidades (SIEMPRE en producción) ───────────────
+            var loadScript = function(url) {
+                var s = document.createElement('script');
+                s.src = url + '?v=' + new Date().getTime();
+                document.body.appendChild(s);
+            };
+
+            loadScript('{{ "js/modals-marketing.js" | static_url }}');
+            loadScript('{{ "js/cart-marketing.js" | static_url }}');
+            loadScript('{{ "js/cart-notes.js" | static_url }}');
+
+            // ── Pre-calentamiento de Vercel (evita cold-start en los 3 iframes) ──
+            var _warmUrls = [
+                'https://ruleta-signos.vercel.app/',
+                'https://ruleta-signos.vercel.app/tiroextra',
+                'https://probador-virtual-signosindumentaria.vercel.app/'
+            ];
+            _warmUrls.forEach(function(url) {
+                fetch(url, { method: 'GET', mode: 'no-cors' }).catch(function(){});
+            });
+
+            // ── Inicialización de Ruleta Principal (PÚBLICO) ──────────────
+            window.addEventListener('load', function() {
+                if (typeof MarketingModals !== 'undefined') {
+                    // 1. Probador Virtual (Manual)
+                    MarketingModals.init({
+                        id: 'redesign-probador-modal',
+                        url: 'https://probador-virtual-signosindumentaria.vercel.app/',
+                        delay: -1,
+                        containerClass: 'probador-container',
+                        isPreviewOnly: false
+                    });
+
+                    // Trigger del Probador: abrir al hacer click en el botón
+                    document.addEventListener('click', function(e) {
+                        var btn = e.target.closest('.js-probador-btn');
+                        if (btn) {
+                            e.preventDefault();
+                            var m = document.getElementById('redesign-probador-modal');
+                            if (m) {
+                                var separator = 'https://probador-virtual-signosindumentaria.vercel.app/'.indexOf('?') !== -1 ? '&' : '?';
+                                m.querySelector('iframe').src = 'https://probador-virtual-signosindumentaria.vercel.app/' + separator + 'cb=' + new Date().getTime();
+                                m.classList.add('is-open');
+                                document.body.style.overflow = 'hidden';
+                            }
+                        }
+                    });
+
+                    // 2. Ruleta Principal (AHORA EN PRODUCCIÓN)
+                    MarketingModals.init({
+                        id: 'redesign-ruleta-modal',
+                        url: 'https://ruleta-signos.vercel.app/',
+                        delay: 1300,
+                        sessionKey: 'ruleta_visto',
+                        isPreviewOnly: false // LIBERADO
+                    });
+                }
+            });
+
+            // ── Filtro de Preview para el resto del sitio ──────────────────
             if (!document.documentElement.classList.contains('redesign-active')) return;
 
             // ── Inyectar SEO metadata (solo en preview real) ────────────────
@@ -332,14 +432,13 @@
             }
 
             // ── Cargar utilidades de rediseño ──────────────────────────
-            var loadScript = function(url) {
+            var loadScriptRedesign = function(url) {
                 var s = document.createElement('script');
                 s.src = url + '?v=' + new Date().getTime();
                 document.body.appendChild(s);
             };
 
-            loadScript(JS_URL);
-            loadScript('{{ "js/modals-marketing.js" | static_url }}');
+            loadScriptRedesign(JS_URL);
 
             // ── Badge de preview ──────────────────────────────────────────────
             if (isPreview) {
@@ -403,54 +502,7 @@
                 });
             }
 
-            // ── Inicialización de Modales de Marketing ──────────────────────
-            window.addEventListener('load', function() {
-                if (typeof MarketingModals !== 'undefined') {
-                    
-                    // 1. Probador Virtual (Manual)
-                    MarketingModals.init({
-                        id: 'redesign-probador-modal',
-                        url: 'https://probador-virtual-signosindumentaria.vercel.app/',
-                        delay: -1, // No automático
-                        containerClass: 'probador-container',
-                        isPreviewOnly: false // Visible para todos
-                    });
-
-                    // Trigger para el probador (botón manual)
-                    document.addEventListener('click', function(e) {
-                        var btn = e.target.closest('.js-probador-btn');
-                        if (btn) {
-                            e.preventDefault();
-                            var modal = document.getElementById('redesign-probador-modal');
-                            if (modal && modal.classList.contains('is-open')) {
-                                // El sistema ya maneja el cierre si se clickea afuera o en X, 
-                                // pero aquí podemos forzar apertura si está cerrado.
-                            } else {
-                                // Como init retorna las funciones, podríamos guardarlas, 
-                                // pero el botón simplemente necesita que el modal exista y se le añada la clase.
-                                // Para ser limpios, vamos a disparar el open del modal.
-                                // Nota: En este refactor, el 'open' es interno. 
-                                // Vamos a exponerlo o simplemente usar la clase.
-                                var m = document.getElementById('redesign-probador-modal');
-                                if (m) {
-                                    m.querySelector('iframe').src = 'https://probador-virtual-signosindumentaria.vercel.app/';
-                                    m.classList.add('is-open');
-                                    document.body.style.overflow = 'hidden';
-                                }
-                            }
-                        }
-                    });
-
-                    // 2. Ruleta Principal (Automática)
-                    MarketingModals.init({
-                        id: 'redesign-ruleta-modal',
-                        url: 'https://ruleta-signos.vercel.app/',
-                        delay: 3000,
-                        sessionKey: 'ruleta_visto',
-                        isPreviewOnly: true
-                    });
-                }
-            });
+            // El bloque de inicialización fue movido arriba para permitir producción.
         })();
         </script>
         <!-- Lenis Smooth Scroll (Efecto pesado y premium) -->
