@@ -73,9 +73,10 @@ const CouponCountdown = (() => {
                 transition: color 0.3s ease !important;
             }
             #coupon-countdown-bar .countdown-timer {
-                font-family: 'Blunt Semiconit', monospace !important;
+                font-family: 'Outfit', sans-serif !important;
+                font-variant-numeric: tabular-nums !important;
                 font-size: 18px !important;
-                font-weight: 400 !important;
+                font-weight: 600 !important;
                 color: #fff !important;
                 min-width: 85px !important;
                 text-align: center !important;
@@ -139,27 +140,36 @@ const CouponCountdown = (() => {
             }
             @media (max-width: 768px) {
                 #coupon-countdown-bar {
-                    bottom: 20px !important;
-                    padding: 8px 8px 8px 15px !important;
-                    gap: 8px !important;
+                    bottom: 15px !important;
+                    padding: 6px 6px 6px 12px !important;
+                    gap: 6px !important;
                 }
                 #coupon-countdown-bar .countdown-content {
-                    gap: 8px !important;
+                    gap: 6px !important;
                 }
                 #coupon-countdown-bar .countdown-label {
-                    font-size: 8px !important;
-                    letter-spacing: 1px !important;
+                    font-size: 6px !important;
+                    letter-spacing: 0.5px !important;
                 }
                 #coupon-countdown-bar .countdown-timer {
-                    font-size: 15px !important;
-                    min-width: 70px !important;
+                    font-size: 12px !important;
+                    min-width: 55px !important;
                 }
                 #coupon-countdown-bar .countdown-coupon {
-                    padding: 6px 12px !important;
-                    font-size: 12px !important;
+                    padding: 4px 10px !important;
+                    font-size: 10px !important;
                 }
                 #coupon-countdown-bar .countdown-divider {
-                    height: 18px !important;
+                    height: 14px !important;
+                }
+                #coupon-countdown-bar .countdown-close {
+                    width: 22px !important;
+                    height: 22px !important;
+                    font-size: 14px !important;
+                }
+                #coupon-countdown-bar .copy-icon svg {
+                    width: 11px !important;
+                    height: 11px !important;
                 }
             }
         `;
