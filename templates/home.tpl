@@ -271,6 +271,23 @@
                     <a href="{{ product.url }}" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="{{ loop.index0 * 100 + 100 }}">
                         <img src="{{ product.featured_image | product_image_url('huge') }}" alt="{{ product.name }}" class="offer-bg-img">
                         <div class="offer-gradient-overlay"></div>
+                        {% if product.compare_at_price and product.compare_at_price > product.price %}
+                            {% set discount_percent = (((product.compare_at_price - product.price) / product.compare_at_price) * 100) | round %}
+                            <span class="offer-badge-subtle">-{{ discount_percent }}% OFF</span>
+                        {% else %}
+                            {% set is_novedad = false %}
+                            {% for category in product.categories %}
+                                {% if 'novedad' in category.name | lower %}
+                                    {% set is_novedad = true %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if product.category and ('novedad' in product.category.name | lower) %}
+                                {% set is_novedad = true %}
+                            {% endif %}
+                            {% if is_novedad %}
+                                <div class="label-novedad-custom">NOVEDAD</div>
+                            {% endif %}
+                        {% endif %}
                         <div class="offer-info-minimal">
                             <h4 class="offer-title-minimal">{{ product.name }}</h4>
                             <p class="offer-price-minimal">
@@ -293,9 +310,22 @@
                     <a href="{{ product.url }}" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="{{ loop.index0 * 100 + 100 }}">
                         <img src="{{ product.featured_image | product_image_url('huge') }}" alt="{{ product.name }}" class="offer-bg-img">
                         <div class="offer-gradient-overlay"></div>
-                        {% if product.compare_at_price %}
+                        {% if product.compare_at_price and product.compare_at_price > product.price %}
                             {% set discount_percent = (((product.compare_at_price - product.price) / product.compare_at_price) * 100) | round %}
                             <span class="offer-badge-subtle">-{{ discount_percent }}% OFF</span>
+                        {% else %}
+                            {% set is_novedad = false %}
+                            {% for category in product.categories %}
+                                {% if 'novedad' in category.name | lower %}
+                                    {% set is_novedad = true %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if product.category and ('novedad' in product.category.name | lower) %}
+                                {% set is_novedad = true %}
+                            {% endif %}
+                            {% if is_novedad %}
+                                <div class="label-novedad-custom">NOVEDAD</div>
+                            {% endif %}
                         {% endif %}
                         <div class="offer-info-minimal">
                             <h4 class="offer-title-minimal">{{ product.name }}</h4>

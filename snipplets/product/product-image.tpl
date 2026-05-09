@@ -47,6 +47,18 @@
 		<div class="product-image-container {% if show_thumbs %}col-12 {% if home_main_product %}col-md{% else %}col-md-10{% endif %}{% else %}col-12{% endif %} p-0">
 			<div class="js-swiper-product{% if settings.scroll_product_images and not home_main_product %} product-detail-slider{% endif %} swiper-container" data-product-images-amount="{{ product.media_count }}">
 				{% include 'snipplets/labels.tpl' with {'product_detail': true} %}
+                {% set is_novedad = false %}
+                {% for category in product.categories %}
+                    {% if 'novedad' in category.name | lower %}
+                        {% set is_novedad = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if product.category and ('novedad' in product.category.name | lower) %}
+                    {% set is_novedad = true %}
+                {% endif %}
+                {% if is_novedad %}
+                    <div class="label-novedad-custom" style="z-index: 9999 !important;">NOVEDAD</div>
+                {% endif %}
 			    <div class="swiper-wrapper">
 					{% for media in product.media %}
 						{% if media.isImage %}

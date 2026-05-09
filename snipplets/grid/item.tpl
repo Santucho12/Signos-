@@ -75,6 +75,20 @@
         {% set data_expand = show_image_slider ? '50' : '-10' %}
 
         {% set floating_elements %}
+            {% set is_novedad = false %}
+            {% for category in product.categories %}
+                {% if 'novedad' in category.name | lower %}
+                    {% set is_novedad = true %}
+                {% endif %}
+            {% endfor %}
+            {% if product.category and ('novedad' in product.category.name | lower) %}
+                {% set is_novedad = true %}
+            {% endif %}
+
+            {% if is_novedad %}
+                <div class="label-novedad-custom">NOVEDAD</div>
+            {% endif %}
+
             {% if not reduced_item %}
                 <div class="item-floating-elements">
                     {% if settings.product_color_variants %}
