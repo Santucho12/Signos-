@@ -123,7 +123,7 @@ const CouponCountdown = (() => {
 
             @media (max-width: 768px) {
                 #coupon-stack-container {
-                    top: 65px !important; /* Bajado para no tapar el menú hamburguesa */
+                    top: 95px !important; /* Bajado extra para despejar totalmente el menú hamburguesa */
                     left: 10px !important;
                     gap: 4px !important;
                 }
