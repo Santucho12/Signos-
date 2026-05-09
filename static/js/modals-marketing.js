@@ -35,6 +35,16 @@ window.MarketingModals = {
         closeBtn.className = 'close-btn';
         closeBtn.innerHTML = '&times;';
 
+        const reloadBtn = document.createElement('button');
+        reloadBtn.className = 'reload-btn';
+        reloadBtn.title = 'Recargar ruleta';
+        reloadBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 4v6h-6"></path>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+        `;
+
         const iframe = document.createElement('iframe');
         iframe.src = 'about:blank';
         iframe.setAttribute('frameborder', '0');
@@ -42,6 +52,7 @@ window.MarketingModals = {
         iframe.setAttribute('allow', 'clipboard-read; clipboard-write');
 
         container.appendChild(closeBtn);
+        container.appendChild(reloadBtn);
         container.appendChild(iframe);
         modal.appendChild(container);
         document.body.appendChild(modal);
@@ -55,7 +66,25 @@ window.MarketingModals = {
             iframe.src = freshUrl;
             modal.classList.add('is-open');
             document.body.style.overflow = 'hidden';
+
+            // Ocultar botón de recarga por defecto y mostrarlo solo si tarda en cargar (6s)
+            reloadBtn.style.opacity = '0';
+            reloadBtn.style.visibility = 'hidden';
+            setTimeout(() => {
+                if (modal.classList.contains('is-open')) {
+                    reloadBtn.style.opacity = '1';
+                    reloadBtn.style.visibility = 'visible';
+                }
+            }, 6000);
+
             console.log(`MarketingModal [${id}]: Opened with URL ${freshUrl}`);
+        };
+
+        const reload = () => {
+            console.log(`MarketingModal [${id}]: Reloading...`);
+            const separator = url.indexOf('?') !== -1 ? '&' : '?';
+            const freshUrl = `${url}${separator}cb=${new Date().getTime()}`;
+            iframe.src = freshUrl;
         };
 
         const close = (reason = 'unknown') => {
@@ -93,11 +122,17 @@ window.MarketingModals = {
         };
         window.addEventListener('message', messageHandler);
 
-        // 6. Eventos de cierre
+        // 6. Eventos de cierre y recarga
         closeBtn.onclick = (e) => {
             e.preventDefault();
             e.stopPropagation();
             close('close_button_clicked');
+        };
+
+        reloadBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            reload();
         };
 
         modal.onclick = (e) => {
@@ -107,7 +142,11 @@ window.MarketingModals = {
             }
         };
 
-        // 5. Lógica de Apertura Automática
+        // 5. Lógica de Apertura Automática y Despertado (Warm-up)
+        // Intentar despertar el servidor apenas se inicializa el script
+        console.log(`MarketingModal [${id}]: Waking up server at ${url}...`);
+        fetch(url, { mode: 'no-cors' }).catch(() => {});
+
         if (delay >= 0) {
             const hasBeenSeen = sessionKey ? sessionStorage.getItem(sessionKey) : false;
             

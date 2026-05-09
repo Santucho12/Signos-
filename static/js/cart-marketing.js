@@ -18,17 +18,16 @@ const CartMarketing = (() => {
     let isUpdating = false;
 
     const init = () => {
-        // Log para depuración en consola
-        console.log('CartMarketing: Iniciando chequeo...');
-
-        // Validar que estemos en MODO PREVIEW para el Tiro Extra
+        // Validar que estemos en MODO PREVIEW para el Tiro Extra y el Banner
         const isPreview = document.documentElement.classList.contains('redesign-preview');
                           
         if (!isPreview) {
-            console.log('CartMarketing: Modo preview no detectado, cancelando Tiro Extra.');
+            console.log('CartMarketing: Modo preview no detectado, cancelando marketing de carrito.');
             return;
         }
 
+        console.log('CartMarketing: Sistema inicializado en modo preview.');
+        
         createBannerElement();
         setupEventListeners();
         checkCartStatus();
@@ -41,12 +40,17 @@ const CartMarketing = (() => {
         bannerElement.id = CONFIG.BANNER_ID;
         bannerElement.className = 'cart-progress-banner';
         bannerElement.innerHTML = `
-            <div class="banner-icon">🎡</div>
-            <div class="banner-text">
-                ¡Te faltan <span class="js-cart-remaining-amount">$0</span> para ganarte un 
-                <strong>TIRO EXTRA en la ruleta!</strong>
+            <div class="banner-content">
+                <div class="banner-icon">🎯</div>
+                <div class="banner-text">
+                    ¡Estás a <span class="js-cart-remaining-amount">$0</span> de desbloquear tu 
+                    <strong>TIRO EXTRA!</strong>
+                </div>
+                <div class="banner-progress-container">
+                    <div class="banner-progress-bar js-cart-progress-bar" style="width: 0%"></div>
+                </div>
             </div>
-            <button class="banner-close">&times;</button>
+            <button class="banner-close" aria-label="Cerrar">&times;</button>
         `;
 
         document.body.appendChild(bannerElement);
@@ -119,7 +123,14 @@ const CartMarketing = (() => {
         if (subtotal > 0) console.log('CartMarketing: Subtotal = $' + subtotal);
 
         // Si el usuario ya jugó → ocultar todo permanentemente
-        const alreadyPlayed = (() => { try { return !!localStorage.getItem(CONFIG.PLAYED_KEY); } catch(e) { return false; } })();
+        const alreadyPlayed = (() => { 
+            try { 
+                const played = localStorage.getItem(CONFIG.PLAYED_KEY);
+                if (played) console.log('CartMarketing: Usuario ya jugó (detectado en LS: ' + played + ')');
+                return !!played; 
+            } catch(e) { return false; } 
+        })();
+
         if (alreadyPlayed) {
             hideBanner();
             return;
@@ -139,10 +150,27 @@ const CartMarketing = (() => {
     };
 
     const showBanner = (remaining) => {
-        if (!bannerElement) return;
+        // Doble chequeo: si ya jugó, nunca mostrar
+        try { if (localStorage.getItem(CONFIG.PLAYED_KEY)) return; } catch(e) {}
+
+        const banner = document.querySelector('.cart-progress-banner');
+        if (!banner) {
+            console.log('CartMarketing: Banner no encontrado, intentando inicializar...');
+            createBannerElement();
+            return;
+        }
+
         isUpdating = true;
+        
+        const subtotal = getCartSubtotal();
+        const progress = ((subtotal - CONFIG.THRESHOLD_PROGRESS) / (CONFIG.THRESHOLD_TIRO_EXTRA - CONFIG.THRESHOLD_PROGRESS)) * 100;
+        
         const amountSpan = bannerElement.querySelector('.js-cart-remaining-amount');
+        const progressBar = bannerElement.querySelector('.js-cart-progress-bar');
+        
         if (amountSpan) amountSpan.textContent = formatMoney(remaining);
+        if (progressBar) progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+        
         bannerElement.classList.add('is-visible');
         setTimeout(() => { isUpdating = false; }, 100);
     };
@@ -166,40 +194,78 @@ const CartMarketing = (() => {
             return;
         }
 
-        console.log('CartMarketing: ¡Umbral alcanzado! Disparando Tiro Extra...');
-        const modalElement = document.getElementById(CONFIG.MODAL_ID);
+        console.log('CartMarketing: ¡Umbral alcanzado! Preparando Tiro Extra en 2.2s...');
         
-        if (!modalElement) {
-            // Primera vez: crear e inicializar el modal
-            window.MarketingModals.init({
-                id: CONFIG.MODAL_ID,
-                url: CONFIG.MODAL_URL,
-                delay: 0,
-                sessionKey: null, // Sin sessionKey → puede reaparecer si vacía carrito y vuelve a llenar
-                isPreviewOnly: true // SOLO PREVIEW PARA ESTE MODAL
-            });
-        } else if (!modalElement.classList.contains('is-open')) {
-            // Modal ya existe pero está cerrado → reabrirlo
-            const iframe = modalElement.querySelector('iframe');
-            if (iframe) {
-                const separator = CONFIG.MODAL_URL.indexOf('?') !== -1 ? '&' : '?';
-                iframe.src = `${CONFIG.MODAL_URL}${separator}cb=${new Date().getTime()}`;
+        setTimeout(() => {
+            // Re-chequeo de sesión: si ya lo vio en esta sesión, no hacer nada
+            try { if (sessionStorage.getItem(CONFIG.SESSION_KEY)) return; } catch(e) {}
+
+            const modalElement = document.getElementById(CONFIG.MODAL_ID);
+            
+            if (!modalElement) {
+                // Primera vez: crear e inicializar el modal
+                window.MarketingModals.init({
+                    id: CONFIG.MODAL_ID,
+                    url: CONFIG.MODAL_URL,
+                    delay: 0,
+                    sessionKey: CONFIG.SESSION_KEY, // Guardar en sesión al abrir
+                    isPreviewOnly: true
+                });
+            } else if (!modalElement.classList.contains('is-open')) {
+                // Re-chequeo de anti-solapamiento justo antes de abrir
+                if (document.querySelector('.marketing-modal.is-open')) return;
+
+                // Modal ya existe pero está cerrado → reabrirlo (si la lógica de sesión lo permite)
+                // Nota: Si queremos que sea ESTRICTAMENTE 1 vez por sesión, 
+                // el return de arriba (sessionStorage.getItem) ya se encargó.
+                
+                const iframe = modalElement.querySelector('iframe');
+                if (iframe) {
+                    const separator = CONFIG.MODAL_URL.indexOf('?') !== -1 ? '&' : '?';
+                    iframe.src = `${CONFIG.MODAL_URL}${separator}cb=${new Date().getTime()}`;
+                }
+                modalElement.classList.add('is-open');
+                document.body.style.overflow = 'hidden';
+                
+                // Marcar como visto en sesión por si acaso no se marcó antes
+                try { sessionStorage.setItem(CONFIG.SESSION_KEY, 'true'); } catch(e) {}
             }
-            modalElement.classList.add('is-open');
-            document.body.style.overflow = 'hidden';
-        }
+        }, 2200);
     };
 
     // Escuchar cuando el usuario juega (postMessage desde el iframe)
     window.addEventListener('message', function(event) {
-        if (event.data && event.data.type === 'tiroextra_played') {
-            console.log('CartMarketing: Usuario jugó el Tiro Extra. Ocultando banner permanentemente.');
-            try { localStorage.setItem(CONFIG.PLAYED_KEY, Date.now().toString()); } catch(e) {}
+        const allowedOrigins = [
+            'https://ruleta-signos.vercel.app',
+            'https://probador-virtual-signosindumentaria.vercel.app'
+        ];
+        if (!allowedOrigins.includes(event.origin)) return;
+
+        // Caso 1: Evento específico de tiro extra
+        const isTiroExtraPlayed = event.data && event.data.type === 'tiroextra_played';
+        
+        // Caso 2: Evento de ruleta genérico pero el modal de tiro extra está abierto
+        const isRuletaResult = event.data && event.data.type === 'ruleta_resultado';
+        const isTiroExtraOpen = document.getElementById(CONFIG.MODAL_ID)?.classList.contains('is-open');
+
+        // 1. Registro de jugada (para ocultar el banner de progreso)
+        if (isTiroExtraPlayed || (isRuletaResult && isTiroExtraOpen)) {
+            console.log('CartMarketing: Tiro Extra registrado como jugado.');
+            try { 
+                localStorage.setItem(CONFIG.PLAYED_KEY, Date.now().toString()); 
+            } catch(e) {}
             hideBanner();
-            // Cerrar el modal suavemente
-            const m = document.getElementById(CONFIG.MODAL_ID);
-            if (m) {
-                setTimeout(() => { m.classList.remove('is-open'); document.body.style.overflow = ''; }, 3000);
+        }
+
+        // 2. Cierre explícito (cuando el usuario cierra el premio en la ruleta)
+        if (event.data && (event.data.type === 'tiroextra_close' || event.data.type === 'close_modal')) {
+            if (isTiroExtraOpen) {
+                console.log('CartMarketing: Cerrando modal por orden del iframe.');
+                const m = document.getElementById(CONFIG.MODAL_ID);
+                if (m) {
+                    m.classList.remove('is-open');
+                    document.body.style.overflow = '';
+                }
             }
         }
     });
