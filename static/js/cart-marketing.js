@@ -17,16 +17,8 @@ const CartMarketing = (() => {
     let bannerElement = null;
     let isUpdating = false;
 
-    const init = () => {
-        // Validar que estemos en MODO PREVIEW para el Tiro Extra y el Banner
-        const isPreview = document.documentElement.classList.contains('redesign-preview');
-                          
-        if (!isPreview) {
-            console.log('CartMarketing: Modo preview no detectado, cancelando marketing de carrito.');
-            return;
-        }
-
-        console.log('CartMarketing: Sistema inicializado en modo preview.');
+        // Activado para todos en Producción
+        console.log('CartMarketing: Sistema inicializado.');
         
         createBannerElement();
         setupEventListeners();
