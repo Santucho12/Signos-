@@ -21,12 +21,11 @@ const CartMarketing = (() => {
         // Log para depuración en consola
         console.log('CartMarketing: Iniciando chequeo...');
 
-        // Validar modo preview (clase en HTML o parámetro en URL)
-        const isPreview = document.documentElement.classList.contains('redesign-preview') || 
-                          window.location.search.indexOf('redesign=') !== -1;
+        // Validar que estemos en MODO PREVIEW para el Tiro Extra
+        const isPreview = document.documentElement.classList.contains('redesign-preview');
                           
         if (!isPreview) {
-            console.log('CartMarketing: No es modo preview, cancelando.');
+            console.log('CartMarketing: Modo preview no detectado, cancelando Tiro Extra.');
             return;
         }
 
@@ -176,8 +175,8 @@ const CartMarketing = (() => {
                 id: CONFIG.MODAL_ID,
                 url: CONFIG.MODAL_URL,
                 delay: 0,
-                sessionKey: null, // Sin sessionKey → puede reaparecer
-                isPreviewOnly: true // Solo en preview
+                sessionKey: null, // Sin sessionKey → puede reaparecer si vacía carrito y vuelve a llenar
+                isPreviewOnly: true // SOLO PREVIEW PARA ESTE MODAL
             });
         } else if (!modalElement.classList.contains('is-open')) {
             // Modal ya existe pero está cerrado → reabrirlo

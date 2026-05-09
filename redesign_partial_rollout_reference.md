@@ -1,6 +1,6 @@
 # Guía de Referencia: Rollout Parcial del Rediseño (SGNS Studio)
 
-Este documento detalla la implementación realizada para activar el rediseño de forma parcial: habilitando los componentes globales (carrito, productos, footer) para todos los clientes, pero manteniendo la Home original como predeterminada.
+Este documento detallla la implementación realizada para activar el rediseño de forma parcial: habilitando los componentes globales (carrito, productos, footer) para todos los clientes, pero manteniendo la Home original como predeterminada.
 
 ## 1. Estrategia de Clases CSS
 Se utilizan dos clases en el elemento `<html>` para controlar el estado:

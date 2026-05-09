@@ -97,11 +97,11 @@
     .redesign-home-content {
         display: none !important;
     }
-    .redesign-active .redesign-home-content {
+    .redesign-preview .redesign-home-content {
         display: block !important;
     }
     /* SEGURIDAD: Ocultar contenido original cuando el rediseño está activo */
-    .redesign-active .original-home-content {
+    .redesign-preview .original-home-content {
         display: none !important;
     }
 </style>
@@ -252,89 +252,41 @@
         </div>
     </section>
 
-    <!-- 2. NOVEDADES SECTION (Productos reales del catálogo) -->
-    {% if sections.primary.products or sections.new.products or sections.featured.products %}
-    <section class="redesign-novedades">
-        <!-- Header added for consistency -->
+    <!-- Combined NOVEDADES Y OFERTAS SECTION -->
+    <section class="redesign-novedades-v2">
+        <!-- Unified Header - OUTSIDE container-wide for extreme positioning -->
         <div class="novedades-header-split" data-redesign-animate="fadeUp">
-            <span class="novedades-brand-name">NOVEDADES</span>
-            <span class="novedades-label-name">LOS NUEVOS INGRESOS</span>
+            <span class="novedades-brand-name">NOVEDADES Y OFERTAS</span>
+            <span class="novedades-label-name">LOS NUEVOS INGRESOS Y PROMOCIONES</span>
         </div>
-        
-        <div class="novedades-container">
-            <!-- Columna Izquierda: Carrusel con productos reales -->
-            <div class="novedades-media">
-                <div class="novedades-carousel" data-redesign-animate="fadeIn" data-redesign-delay="0">
-                    <div class="novedades-carousel-track js-infinite-track">
-                        {% set raw_products = sections.new.products | default(sections.primary.products) | default(sections.featured.products) %}
-                        {% if raw_products | length > 0 %}
-                            {% for i in 1..3 %}
-                                {% for product in raw_products %}
-                                    {% if loop.index0 % 2 == 0 %}
-                                        <div class="novedades-slide">
-                                            <div class="novedades-slide-pair">
-                                    {% endif %}
 
-                                    {% set p_img = product.featured_image | default(product.images | first) | default(product.image) %}
-                                    <a href="{{ product.url }}" class="novedades-media-item">
-                                        {% if p_img %}
-                                            <img src="{{ p_img | product_image_url('large') }}" alt="{{ product.name }}">
-                                        {% else %}
-                                            <div class="novedades-image-placeholder"></div>
-                                        {% endif %}
-                                        <div class="novedades-global-overlay">
-                                            <span class="redesign-btn-ghost">VER PRODUCTO</span>
-                                        </div>
-                                    </a>
-
-                                    {% if loop.index0 % 2 == 1 or loop.last %}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endfor %}
-                        {% endif %}
-                    </div>
-                    <div class="novedades-progress-container">
-                        <div class="novedades-progress-bar"></div>
-                    </div>
-                    <div class="swipe-indicator">
-                        DESLIZÁ PARA VER MÁS <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Columna Derecha: Textos -->
-            <div class="novedades-text-content">
-                <p class="novedades-eyebrow" data-redesign-animate="fadeUp" data-redesign-delay="300">Otoño / Invierno — Colección 2026</p>
-                <h2 class="novedades-title" data-redesign-animate="fadeUp" data-redesign-delay="600">Tu outfit habla antes que vos. <br>Dale algo bueno para contar.</h2>
-                <p class="novedades-description" data-redesign-animate="fadeUp" data-redesign-delay="900">Cada pieza fue seleccionada pensando en vos. <br>Stock limitado, calidad que se nota</p>
-                
-                <div class="novedades-cta-wrapper" data-redesign-animate="fadeUp" data-redesign-delay="1200">
-                    <div class="redesign-scroll-indicator" style="margin: 19px 0 1px 0; opacity: 0.5;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <a href="/novedades/" class="redesign-btn-gold">VER NOVEDADES</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    {% endif %}
-
-    <!-- 3. OFFERS SECTION (Editorial Style — Productos reales del catálogo) -->
-    {% if sections.sale.products %}
-    <section class="redesign-offers">
         <div class="container-wide">
-            <!-- Header matching Categories style -->
-            <div class="offers-header-split" data-redesign-animate="fadeUp">
-                <span class="offers-brand-name">OFERTAS Y DESCUENTOS</span>
-                <span class="offers-label-name">PROMOCIONES DE TEMPORADA</span>
+            <!-- 1. NOVEDADES CAROUSEL -->
+            <div class="novedades-carousel-wrapper" style="position: relative; margin-bottom: 15px;">
+                <div class="novedades-grid-premium js-novedades-grid">
+                    {% set raw_novedades = sections.new.products | default(sections.primary.products) | default(sections.featured.products) %}
+                    {% for product in raw_novedades %}
+                    <a href="{{ product.url }}" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="{{ loop.index0 * 100 + 100 }}">
+                        <img src="{{ product.featured_image | product_image_url('huge') }}" alt="{{ product.name }}" class="offer-bg-img">
+                        <div class="offer-gradient-overlay"></div>
+                        <div class="offer-info-minimal">
+                            <h4 class="offer-title-minimal">{{ product.name }}</h4>
+                            <p class="offer-price-minimal">
+                                <span class="new-price">{{ product.price | money }}</span>
+                            </p>
+                            <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+
+                <!-- Progress bar and Swipe indicator removed -->
             </div>
-            
-            <div class="offers-carousel-wrapper" style="position: relative;">
-                <div class="offers-grid-premium">
+
+            <!-- 2. OFERTAS CAROUSEL -->
+            {% if sections.sale.products %}
+            <div class="novedades-carousel-wrapper" style="position: relative; margin-bottom: 40px;">
+                <div class="novedades-grid-premium js-offers-grid">
                     {% for product in sections.sale.products %}
                     <a href="{{ product.url }}" class="offer-card-premium" data-redesign-animate="fadeUp" data-redesign-delay="{{ loop.index0 * 100 + 100 }}">
                         <img src="{{ product.featured_image | product_image_url('huge') }}" alt="{{ product.name }}" class="offer-bg-img">
@@ -357,28 +309,13 @@
                     {% endfor %}
                 </div>
 
-                <div class="offers-progress-container">
-                    <div class="offers-progress-bar"></div>
-                </div>
-
-                <div class="swipe-indicator">
-                    DESLIZÁ PARA VER MÁS <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </div>
+                <!-- Progress bar and Swipe indicator removed -->
             </div>
-            
-            <div class="offers-footer-minimal" data-redesign-animate="fadeUp">
-                <div class="offers-cta-container">
-                    <div class="offers-arrow-indicator">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <a href="/ofertas1/" class="redesign-btn-verofertas">Aprovechar ofertas</a>
-                </div>
-            </div>
+            {% endif %}
         </div>
     </section>
-    {% endif %}
+
+    <!-- OFFERS SECTION REMOVED BY OWNER REQUEST -->
 
     <!-- 4. SOCIAL EXPERIENCE SECTION (Instagram & TikTok) -->
     <section class="redesign-social-feed">
@@ -421,19 +358,13 @@
 
                     <div class="social-preview-grid">
                         <div class="grid-img">
-                            <video muted loop playsinline preload="none" class="grid-video js-lazy-video">
-                                <source src="{{ 'ig/𝗡𝗢𝗦 𝗩𝗜𝗡𝗜𝗠𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗔𝗖𝗔 𝗣𝗔𝗥𝗔 𝗟𝗔𝗥𝗚𝗔𝗥 𝗘𝗦𝗧𝗔 𝗕𝗢𝗠𝗕𝗔𝟯𝘅𝟮 𝗻𝘂𝗲𝘃.mp4' | static_url }}" type="video/mp4">
-                            </video>
+                            <video muted loop playsinline autoplay data-src="{{ 'ig/𝗡𝗢𝗦 𝗩𝗜𝗡𝗜𝗠𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗔𝗖𝗔 𝗣𝗔𝗥𝗔 𝗟𝗔𝗥𝗚𝗔𝗥 𝗘𝗦𝗧𝗔 𝗕𝗢𝗠𝗕𝗔𝟯𝘅𝟮 𝗻𝘂𝗲𝘃.mp4' | static_url }}" class="grid-video js-lazy-video"></video>
                         </div>
                         <div class="grid-img">
-                            <video muted loop playsinline preload="none" class="grid-video js-lazy-video">
-                                <source src="{{ 'ig/Últimos días para hacer tu regalito🎁O elegir tu outfit para estas fiestasBanco provincia hasta .mp4' | static_url }}" type="video/mp4">
-                            </video>
+                            <video muted loop playsinline autoplay data-src="{{ 'ig/Últimos días para hacer tu regalito🎁O elegir tu outfit para estas fiestasBanco provincia hasta .mp4' | static_url }}" class="grid-video js-lazy-video"></video>
                         </div>
                         <div class="grid-img">
-                            <video muted loop playsinline preload="none" class="grid-video js-lazy-video">
-                                <source src="{{ 'ig/El regalo ideal para las fiestas está en @signos_indumentaria 🎅🌲🔥.mp4' | static_url }}" type="video/mp4">
-                            </video>
+                            <video muted loop playsinline autoplay data-src="{{ 'ig/El regalo ideal para las fiestas está en @signos_indumentaria 🎅🌲🔥.mp4' | static_url }}" class="grid-video js-lazy-video"></video>
                         </div>
                     </div>
 
@@ -474,19 +405,13 @@
 
                     <div class="social-preview-grid">
                         <div class="grid-img">
-                            <video muted loop playsinline preload="none" class="grid-video js-lazy-video">
-                                <source src="{{ 'ig/tiktok/@signos_indumentaria • 2025-2026 🔥.mp4' | static_url }}" type="video/mp4">
-                            </video>
+                            <video muted loop playsinline autoplay data-src="{{ 'ig/tiktok/@signos_indumentaria • 2025-2026 🔥.mp4' | static_url }}" class="grid-video js-lazy-video"></video>
                         </div>
                         <div class="grid-img">
-                            <video muted loop playsinline preload="none" class="grid-video js-lazy-video">
-                                <source src="{{ 'ig/tiktok/videotiktok.mp4' | static_url }}" type="video/mp4">
-                            </video>
+                            <video muted loop playsinline autoplay data-src="{{ 'ig/tiktok/videotiktok.mp4' | static_url }}" class="grid-video js-lazy-video"></video>
                         </div>
                         <div class="grid-img">
-                            <video muted loop playsinline preload="none" class="grid-video js-lazy-video">
-                                <source src="{{ 'ig/tiktok/Nueva PROMO solo hasta este finde! 😮_💨Buzos 2 x $90.000🔥Aprovecha que se viene el frío a llev.mp4' | static_url }}" type="video/mp4">
-                            </video>
+                            <video muted loop playsinline autoplay data-src="{{ 'ig/tiktok/Nueva PROMO solo hasta este finde! 😮_💨Buzos 2 x $90.000🔥Aprovecha que se viene el frío a llev.mp4' | static_url }}" class="grid-video js-lazy-video"></video>
                         </div>
                     </div>
 
@@ -566,8 +491,8 @@
         }
 
         // Lógica para la barra de progreso de Ofertas
-        const offersTrack = document.querySelector('.offers-grid-premium');
-        const offersBar = document.querySelector('.offers-progress-bar');
+        const offersTrack = document.querySelector('.js-offers-grid');
+        const offersBar = document.querySelector('.js-offers-progress-bar');
 
         if (offersTrack && offersBar) {
             offersTrack.addEventListener('scroll', () => {
@@ -579,35 +504,41 @@
         }
     });
 
-    // Lógica de Lazy Loading para videos de redes sociales
-    (function() {
-        var lazyVideos = [].slice.call(document.querySelectorAll('video.js-lazy-video'));
-
-        if ('IntersectionObserver' in window) {
-            var videoObserver = new IntersectionObserver(function(entries, observer) {
-                entries.forEach(function(video) {
-                    if (video.isIntersecting) {
-                        var videoElement = video.target;
-                        videoElement.setAttribute('preload', 'auto');
-                        videoElement.load();
-                        videoElement.play().catch(function(e) {
-                            // Silenciar error de autoplay bloqueado
-                        });
-                        videoObserver.unobserve(videoElement);
+    // Lógica de carga para videos de redes sociales
+    function initSocialVideos() {
+        const videos = document.querySelectorAll('.js-lazy-video');
+        console.log('SocialVideos: Buscando videos para cargar...', videos.length);
+        
+        const videoObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const video = entry.target;
+                    if (video.dataset.src && !video.src) {
+                        video.src = video.dataset.src;
+                        video.load();
+                        video.play().catch(e => console.log('SocialVideos: Autoplay prevenido', e));
                     }
-                });
+                    observer.unobserve(video);
+                }
             });
+        }, { threshold: 0.1 });
 
-            lazyVideos.forEach(function(video) {
-                videoObserver.observe(video);
-            });
-        } else {
-            // Fallback: cargar todo si no hay IntersectionObserver
-            lazyVideos.forEach(function(video) {
-                video.setAttribute('preload', 'auto');
-                video.load();
-                video.play();
-            });
-        }
-    })();
+        videos.forEach(video => {
+            videoObserver.observe(video);
+            // Fallback: Carga inmediata si ya están en pantalla o tras 2s
+            if (video.getBoundingClientRect().top < window.innerHeight) {
+                if (video.dataset.src && !video.src) {
+                    video.src = video.dataset.src;
+                    video.load();
+                }
+            }
+        });
+    }
+
+    // Ejecución segura
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSocialVideos);
+    } else {
+        initSocialVideos();
+    }
 </script>
