@@ -188,17 +188,30 @@ const CartMarketing = (() => {
         // Si ya jugó (localStorage permanente) → nunca más mostrar
         try { if (localStorage.getItem(CONFIG.PLAYED_KEY)) return; } catch(e) {}
 
-        // ANTI-SOLAPAMIENTO: No abrir si hay un modal abierto (ej: ruleta principal)
-        if (document.querySelector('.marketing-modal.is-open')) {
-            console.log('CartMarketing: Modal abierto detectado, esperando...');
-            return;
-        }
-
-        console.log('CartMarketing: ¡Umbral alcanzado! Preparando Tiro Extra en 2.2s...');
+        console.log('CartMarketing: ¡Umbral alcanzado! Preparando Tiro Extra...');
         
+        // Prioridad: Si estamos en el home, esperamos 4s para que la ruleta principal salga primero
+        const isHome = document.body.classList.contains('template-home');
+        const waitTime = isHome ? 4000 : 2200; // 4s en home, 2.2s en resto
+
         setTimeout(() => {
             // Re-chequeo de sesión: si ya lo vio en esta sesión, no hacer nada
             try { if (sessionStorage.getItem(CONFIG.SESSION_KEY)) return; } catch(e) {}
+
+            // ANTI-SOLAPAMIENTO REFORZADO:
+            // Si hay CUALQUIER modal abierto, no abrir el tiro extra (reintentar luego)
+            if (document.querySelector('.marketing-modal.is-open')) {
+                console.log('CartMarketing: Hay un modal abierto, posponiendo Tiro Extra...');
+                setTimeout(triggerTiroExtraModal, 4000);
+                return;
+            }
+
+            // Si estamos en el home y la ruleta principal aún no se mostró (y no se ha jugado), esperamos
+            if (isHome && !sessionStorage.getItem('ruleta_visto')) {
+                 console.log('CartMarketing: Esperando a la ruleta principal...');
+                 setTimeout(triggerTiroExtraModal, 3000);
+                 return;
+            }
 
             const modalElement = document.getElementById(CONFIG.MODAL_ID);
             
@@ -230,7 +243,7 @@ const CartMarketing = (() => {
                 // Marcar como visto en sesión por si acaso no se marcó antes
                 try { sessionStorage.setItem(CONFIG.SESSION_KEY, 'true'); } catch(e) {}
             }
-        }, 2200);
+        }, waitTime);
     };
 
     // Escuchar cuando el usuario juega (postMessage desde el iframe)

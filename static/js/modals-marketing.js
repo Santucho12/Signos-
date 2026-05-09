@@ -66,15 +66,9 @@ window.MarketingModals = {
             modal.classList.add('is-open');
             document.body.style.overflow = 'hidden';
 
-            // Ocultar botón de recarga por defecto y mostrarlo solo si tarda en cargar (6s)
-            reloadBtn.style.opacity = '0';
-            reloadBtn.style.visibility = 'hidden';
-            setTimeout(() => {
-                if (modal.classList.contains('is-open')) {
-                    reloadBtn.style.opacity = '1';
-                    reloadBtn.style.visibility = 'visible';
-                }
-            }, 6000);
+            // Mostrar botón de recarga inmediatamente
+            reloadBtn.style.opacity = '1';
+            reloadBtn.style.visibility = 'visible';
 
             console.log(`MarketingModal [${id}]: Opened with URL ${freshUrl}`);
         };

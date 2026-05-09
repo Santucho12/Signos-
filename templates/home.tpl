@@ -93,15 +93,12 @@
 <!-- REDESIGN HOME CONTENT (Visible in Redesign)-->
 <!-- ========================================== -->
 <style>
-    /* SEGURIDAD: Ocultar el rediseño para clientes finales si el CSS aún no cargó */
+    /* REDISEÑO EN VIVO: Visible para todos los clientes */
     .redesign-home-content {
-        display: none !important;
-    }
-    .redesign-preview .redesign-home-content {
         display: block !important;
     }
-    /* SEGURIDAD: Ocultar contenido original cuando el rediseño está activo */
-    .redesign-preview .original-home-content {
+    /* Ocultar contenido original en producción */
+    .original-home-content {
         display: none !important;
     }
 </style>
@@ -160,6 +157,11 @@
         <a href="{{ store.url }}" class="redesign-hero-logo">
             <img src="{{ 'images/sgns-studio-logo.png' | static_url }}" alt="SGNS Studio Logo" fetchpriority="high" loading="eager" />
         </a>
+
+        <!-- Cartel de Preview (HOTSIGNOS) -->
+        <div class="redesign-preview-badge">
+            HOTSIGNOS 11, 12 Y 13 🔥
+        </div>
 
         <div class="redesign-hero-content-box">
             <h1 class="redesign-hero-title" data-redesign-animate="fadeUp" data-redesign-delay="200">TEMP 26</h1>
