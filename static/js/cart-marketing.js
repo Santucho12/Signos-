@@ -17,8 +17,9 @@ const CartMarketing = (() => {
     let bannerElement = null;
     let isUpdating = false;
 
-        // Activado para todos en Producción
-        console.log('CartMarketing: Sistema inicializado.');
+    const init = () => {
+        // Validar que estemos en MODO PREVIEW para el Tiro Extra y el Banner
+        console.log('CartMarketing: Sistema inicializado en modo Producción.');
         
         createBannerElement();
         setupEventListeners();
@@ -84,11 +85,18 @@ const CartMarketing = (() => {
     };
 
     const getCartSubtotal = () => {
-        const subtotalElement = document.querySelector('.js-cart-subtotal');
+        // Intentar varios selectores comunes de Tiendanube
+        const selectors = ['.js-cart-subtotal', '.js-cart-total', '.cart-total', '#cart-total'];
+        let subtotalElement = null;
+        
+        for (const s of selectors) {
+            subtotalElement = document.querySelector(s);
+            if (subtotalElement) break;
+        }
+
         if (!subtotalElement) return 0;
 
         // Tienda Nube siempre guarda data-priceraw en CENTAVOS
-        // $10.000 ARS → data-priceraw = "1000000" → dividimos siempre por 100
         let raw = subtotalElement.getAttribute('data-priceraw');
         if (raw) {
             let val = parseFloat(raw);
@@ -201,7 +209,7 @@ const CartMarketing = (() => {
                     url: CONFIG.MODAL_URL,
                     delay: 0,
                     sessionKey: CONFIG.SESSION_KEY, // Guardar en sesión al abrir
-                    isPreviewOnly: true
+                    isPreviewOnly: false
                 });
             } else if (!modalElement.classList.contains('is-open')) {
                 // Re-chequeo de anti-solapamiento justo antes de abrir

@@ -67,8 +67,10 @@ var Redesign = {
         handle();
     },
     init: function() {
-        console.log("Redesign JS V3: Initializing...");
-        if (!document.documentElement.classList.contains('redesign-active')) return;
+        // ACTIVACIÓN TOTAL: Hacer que el rediseño sea el oficial para todos
+        document.documentElement.classList.add('redesign-active');
+        
+        console.log("Redesign JS V3: Initializing (Production Mode)...");
         
         this.initElements();
         this.initCarousel();

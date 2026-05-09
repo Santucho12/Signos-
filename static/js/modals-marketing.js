@@ -15,13 +15,12 @@ window.MarketingModals = {
             url,
             delay = 3000,
             sessionKey = null,
-            isPreviewOnly = true,
+            isPreviewOnly = false,
             containerClass = 'ruleta-container'
         } = options;
 
         // 1. Validaciones iniciales
         if (document.getElementById(id)) return null;
-        if (isPreviewOnly && !document.documentElement.classList.contains('redesign-preview')) return null;
 
         // 2. Creación de Estructura DOM
         const modal = document.createElement('div');
