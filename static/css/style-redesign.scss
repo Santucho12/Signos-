@@ -876,21 +876,18 @@
 .redesign-active .redesign-btn-primary {
   font-family: 'Outfit', sans-serif;
   display: inline-block;
-  background: #000;
-  /* Dorado SIGNOS */
+  background: linear-gradient(135deg, #ff4500, #ff8c00);
   color: #fff;
   padding: 16px 40px;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 1.5px;
-  /* <--- Más elegante */
   text-transform: uppercase;
   border-radius: 100px;
-  /* <--- Forma Pill Premium Garantizada */
   transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), background 0.3s ease, color 0.3s ease;
   transform: scale(1);
   text-decoration: none;
-  /* box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3); */
+  box-shadow: 0 0 30px rgba(255, 69, 0, 0.4);
 }
 
 .redesign-active .redesign-btn-primary:hover {
@@ -3796,10 +3793,18 @@ ation-visible,
   height: 100% !important;
 }
 
-.redesign-active .template-category .item-product:hover {
-  transform: translateY(-8px) !important;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05) !important;
-  border-color: rgba(0, 0, 0, 0.03) !important;
+@media (min-width: 768px) {
+  .redesign-active .template-category .item-product:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05) !important;
+    border-color: rgba(0, 0, 0, 0.03) !important;
+  }
+}
+
+/* Botón COMPRAR siempre visible en todos los dispositivos para evitar doble tap en iOS y estar siempre activo */
+.redesign-active .item-actions {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 /* Forzar aspecto 1:1 en contenedores de imagen para igualar alturas de manera segura */
@@ -3880,9 +3885,11 @@ ation-visible,
   text-overflow: ellipsis !important;
 }
 
-.redesign-active .template-category .item-product:hover .item-name {
-  color: #000 !important;
-  opacity: 1;
+@media (min-width: 768px) {
+  .redesign-active .template-category .item-product:hover .item-name {
+    color: #000 !important;
+    opacity: 1;
+  }
 }
 
 /* Estilos Globales de Precios (Igualar Original y Descuento en TODO el sitio) */
@@ -4564,20 +4571,6 @@ ation-visible,
     font-size: 9px !important;
     letter-spacing: 0.5px !important;
     min-height: 26px;
-  }
-
-  /* Ocultar botón COMPRAR hasta que se pase el dedo (hover/active) */
-  .redesign-active .template-category .item-actions {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    transition: opacity 0.3s ease, visibility 0.3s ease !important;
-  }
-
-  .redesign-active .template-category .item-product:hover .item-actions,
-  .redesign-active .template-category .item-product:active .item-actions,
-  .redesign-active .template-category .item-product:focus .item-actions {
-    opacity: 1 !important;
-    visibility: visible !important;
   }
 
   /* #7: Mayor espacio entre tarjetas en mobile */
@@ -5536,9 +5529,9 @@ ation-visible,
   right: 10px;
   background: linear-gradient(135deg, #111, #333);
   color: #fff;
-  padding: 4px 10px;
+  padding: 5px 12px; /* Aumentado ~15% */
   font-family: 'Outfit', sans-serif;
-  font-size: 10px;
+  font-size: 11.5px; /* Aumentado ~15% */
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -5551,7 +5544,7 @@ ation-visible,
   .label-novedad-custom {
     top: 8px;
     right: 8px;
-    font-size: 9px;
-    padding: 3px 8px;
+    font-size: 10.5px; /* Aumentado ~15% */
+    padding: 4px 10px; /* Aumentado ~15% */
   }
 }

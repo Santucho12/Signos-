@@ -172,8 +172,8 @@
                 </span>
             </p>
             <div class="redesign-hero-btn-wrapper">
-                <a href="/productos" class="redesign-btn-primary">
-                    VER COLECCIÓN
+                <a href="https://indumentariasignos.com/bomba-hot-sale/?mpage=2" class="redesign-btn-primary">
+                    BOMBA HOT SALE
                 </a>
             </div>
             
@@ -206,7 +206,7 @@
         <div class="categorias-grid">
             <!-- Card 1: BUZOS -->
             <a href="/buzoss/" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="0">
-                <img src="{{ 'images/IMG_5918.JPG.jpeg' | static_url }}" alt="Buzos" class="categoria-bg-img">
+                <img src="{{ 'buzocategoria.jpg' | static_url }}" alt="Buzos" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">ESSENTIALS</span>
                 <span class="categoria-name">BUZOS</span>
@@ -215,7 +215,7 @@
 
             <!-- Card 2: REMERAS -->
             <a href="/remeras" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="150">
-                <img src="{{ 'images/IMG_6085.JPG.jpeg' | static_url }}" alt="Remeras" class="categoria-bg-img">
+                <img src="{{ 'remeracategoria.jpg' | static_url }}" alt="Remeras" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">BÁSICAS Y ESTAMPADAS</span>
                 <span class="categoria-name">REMERAS</span>
@@ -224,7 +224,7 @@
 
             <!-- Card 3: JEANS -->
             <a href="/jeans" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="300">
-                <img src="{{ 'images/WhatsApp Image 2026-05-04 at 20.25.38.jpeg' | static_url }}" alt="Jeans" class="categoria-bg-img">
+                <img src="{{ 'jeancategoria.jpg' | static_url }}" alt="Jeans" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">DENIM & MÁS</span>
                 <span class="categoria-name">JEANS</span>
@@ -233,7 +233,7 @@
 
             <!-- Card 4: JOGGINS -->
             <a href="/joggings/" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="450">
-                <img src="{{ 'images/WhatsApp Image 2026-05-04 at 20.25.39.jpeg' | static_url }}" alt="Joggins" class="categoria-bg-img">
+                <img src="{{ 'joggincategoria.jpg' | static_url }}" alt="Joggins" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">CONFORT</span>
                 <span class="categoria-name">JOGGINGS</span>
