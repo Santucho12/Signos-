@@ -172,8 +172,8 @@
                 </span>
             </p>
             <div class="redesign-hero-btn-wrapper">
-                <a href="https://indumentariasignos.com/reviente/" class="redesign-btn-primary">
-                    REVIENTE
+                <a href="https://indumentariasignos.com/bomba-hot-sale/" class="redesign-btn-primary">
+                    BOMBA HOT SALE
                 </a>
             </div>
             
