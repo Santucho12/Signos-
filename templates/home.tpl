@@ -158,11 +158,6 @@
             <img src="{{ 'images/sgns-studio-logo.png' | static_url }}" alt="SGNS Studio Logo" fetchpriority="high" loading="eager" />
         </a>
 
-        <!-- Cartel de Preview (HOTSIGNOS) -->
-        <div class="redesign-preview-badge">
-            HOTSIGNOS 11, 12 Y 13 🔥
-        </div>
-
         <div class="redesign-hero-content-box">
             <h1 class="redesign-hero-title" data-redesign-animate="fadeUp" data-redesign-delay="200">TEMP 26</h1>
             <p class="redesign-hero-subtitle" data-redesign-animate="fadeUp" data-redesign-delay="400">
@@ -172,8 +167,8 @@
                 </span>
             </p>
             <div class="redesign-hero-btn-wrapper">
-                <a href="https://indumentariasignos.com/bomba-hot-sale/" class="redesign-btn-primary">
-                    BOMBA HOT SALE
+                <a href="https://indumentariasignos.com/descuentos/" class="redesign-btn-primary">
+                    DESCUENTOS
                 </a>
             </div>
             

@@ -251,60 +251,6 @@
   }
 }
 
-/* ============================================================
-   CARTEL DE PREVIEW (HOTSIGNOS)
-   ============================================================ */
-.redesign-preview-badge {
-  display: none; /* Oculto por defecto */
-  position: absolute;
-  top: 190px; /* Subido 10px (antes 200px) */
-  left: 40px;
-  transform: none;
-  z-index: 101;
-  background: linear-gradient(135deg, #ff4500, #ff8c00);
-  color: #fff;
-  padding: 8px 25px;
-  border-radius: 4px;
-  font-family: 'Oswald', sans-serif !important;
-  font-weight: 700 !important;
-  font-style: italic;
-  font-size: 26px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  box-shadow: 0 0 30px rgba(255, 69, 0, 0.6);
-  pointer-events: none;
-  white-space: nowrap;
-  animation: redesign-fire-pulse-left 1.5s infinite alternate;
-}
-
-/* Visible para todos los clientes en el Rediseño Activo */
-.redesign-active .redesign-preview-badge {
-  display: block;
-}
-
-@media (max-width: 768px) {
-  .redesign-preview-badge {
-    top: 185px; /* Bajado 10px (antes 175px) */
-    left: 20px;
-    right: auto;
-    transform: none;
-    font-size: 14px; /* -15% aprox */
-    padding: 6px 15px;
-    animation: redesign-fire-pulse-left 1.5s infinite alternate;
-  }
-}
-
-@keyframes redesign-fire-pulse-left {
-  from {
-    transform: scale(1);
-    box-shadow: 0 0 15px rgba(255, 69, 0, 0.5);
-  }
-  to {
-    transform: scale(1.05);
-    box-shadow: 0 0 35px rgba(255, 69, 0, 0.8);
-  }
-}
-
 /* Estilo para los links del NAV (Global Base) */
 .redesign-active .nav-list-link,
 .redesign-active .js-item-name {
