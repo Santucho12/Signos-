@@ -822,7 +822,7 @@
 .redesign-active .redesign-btn-primary {
   font-family: 'Outfit', sans-serif;
   display: inline-block;
-  background: linear-gradient(135deg, #ff4500, #ff8c00);
+  background: #000;
   color: #fff;
   padding: 16px 40px;
   font-size: 14px;
@@ -833,13 +833,16 @@
   transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), background 0.3s ease, color 0.3s ease;
   transform: scale(1);
   text-decoration: none;
-  box-shadow: 0 0 30px rgba(255, 69, 0, 0.4);
+  box-shadow: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .redesign-active .redesign-btn-primary:hover {
   transform: scale(1.06) !important;
   color: #fff !important;
+  background: #111 !important;
   text-decoration: none !important;
+  box-shadow: none !important;
 }
 
 /* --- Animaciones de entrada elegantes --- */
@@ -880,26 +883,7 @@
   }
 }
 
-/* --- Animación moderada para llamar atención (TITILA suave) --- */
-@keyframes btnNeonPulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
-    filter: brightness(1);
-  }
 
-  50% {
-    transform: scale(1.03);
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 0 50px rgba(255, 215, 0, 0.5);
-    filter: brightness(1.15);
-  }
-
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
-    filter: brightness(1);
-  }
-}
 
 /* --- Rotador de texto Piel/Viento (100% CSS puro para evitar caché de JS) --- */
 .redesign-active .redesign-text-rotator {

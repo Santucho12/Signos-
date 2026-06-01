@@ -71,3 +71,153 @@
 	{# Category Placeholder #}
 	{% include 'snipplets/defaults/show_help_category.tpl' %}
 {% endif %}
+
+{# Modal de Descuentos Proximamente (Solo para la ruta /descuentos/) #}
+{% if category.handle == 'descuentos' or category.slug == 'descuentos' or 'descuentos' in category.name | lower %}
+    <!-- Estilos del Modal Proximamente -->
+    <style>
+        .redesign-modal-custom {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .redesign-modal-custom.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .redesign-modal-custom .modal-content {
+            background: #000;
+            padding: 45px 30px;
+            border-radius: 24px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            transform: scale(0.9) translateY(30px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .redesign-modal-custom.is-open .modal-content {
+            transform: scale(1) translateY(0);
+        }
+        .redesign-modal-custom .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 32px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #555;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+        .redesign-modal-custom .modal-close:hover {
+            color: #fff;
+        }
+        .redesign-modal-custom .modal-icon {
+            font-size: 54px;
+            margin-bottom: 20px;
+            animation: pulseEmoji 2s infinite;
+        }
+        @keyframes pulseEmoji {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        .redesign-modal-custom .modal-title {
+            font-family: 'Blunt Semiconit', sans-serif;
+            font-size: 30px;
+            margin-bottom: 12px;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .redesign-modal-custom .modal-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 19px;
+            color: #fff;
+            margin-bottom: 8px;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+        .redesign-modal-custom .modal-subtext {
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+        .redesign-modal-custom .modal-btn-close {
+            width: 100%;
+            padding: 18px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-radius: 12px;
+            cursor: pointer;
+            background: #fff;
+            color: #000;
+            border: none;
+            box-shadow: none !important;
+            transition: all 0.3s ease;
+        }
+        .redesign-modal-custom .modal-btn-close:hover {
+            background: #eee;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.1) !important;
+        }
+    </style>
+
+    <!-- Modal HTML -->
+    <div id="js-modal-proximamente" class="redesign-modal-custom">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Cerrar">&times;</button>
+            <div class="modal-body">
+                <div class="modal-icon">🔥</div>
+                <h2 class="modal-title">¡PRÓXIMAMENTE!</h2>
+                <p class="modal-text">Vamos a cargando descuentos muy bomba para vos.</p>
+                <p class="modal-subtext">¡Estate atento a nuestras Historias!</p>
+                <button class="redesign-btn-primary modal-btn-close">ENTENDIDO</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('js-modal-proximamente');
+            if (modal) {
+                // Abrir automáticamente si es la página de descuentos
+                setTimeout(() => {
+                    modal.classList.add('is-open');
+                    document.body.style.overflow = 'hidden';
+                }, 500);
+
+                const closeBtns = modal.querySelectorAll('.modal-close, .modal-btn-close');
+                closeBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        modal.classList.remove('is-open');
+                        document.body.style.overflow = '';
+                    });
+                });
+                
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.classList.remove('is-open');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+        });
+    </script>
+{% endif %}

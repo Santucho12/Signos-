@@ -167,8 +167,8 @@
                 </span>
             </p>
             <div class="redesign-hero-btn-wrapper">
-                <a href="https://indumentariasignos.com/descuentos/" class="redesign-btn-primary">
-                    DESCUENTOS
+                <a href="https://indumentariasignos.com/flash/" id="js-btn-descuentos" class="redesign-btn-primary" style="background: #000; color: #fff; border: 1px solid rgba(255,255,255,0.2); box-shadow: none !important;">
+                    FLASH
                 </a>
             </div>
             
@@ -200,8 +200,8 @@
         <!-- Grid de Categorías -->
         <div class="categorias-grid">
             <!-- Card 1: BUZOS -->
-            <a href="/buzoss/" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="0">
-                <img src="{{ 'buzocategoria.jpg' | static_url }}" alt="Buzos" class="categoria-bg-img">
+            <a href="/buzos/" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="0">
+                <img src="{{ 'buzos-img-categoria.jpg' | static_url }}" alt="Buzos" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">ESSENTIALS</span>
                 <span class="categoria-name">BUZOS</span>
@@ -569,3 +569,4 @@
         initSocialVideos();
     }
 </script>
+
