@@ -95,7 +95,8 @@
 
         {# Optimización de Video Hero (Carga Prioritaria Máxima) #}
         {% if template == 'home' %}
-            <link rel="preload" href="{{ 'herodesktop.mp4' | static_url }}" as="video" type="video/mp4" fetchpriority="high">
+            <link rel="preload" href="{{ 'herocomprimidodesktop.mp4' | static_url }}" as="video" type="video/mp4" fetchpriority="high" media="(min-width: 768px)">
+            <link rel="preload" href="{{ 'SGNS - Camisetas ARG.mp4' | static_url }}" as="video" type="video/mp4" fetchpriority="high" media="(max-width: 767px)">
         {% endif %}
 
         <link rel="preconnect" href="{{ store_resource_hints }}" />
@@ -165,7 +166,7 @@
         <link rel="stylesheet" href="{{ 'css/style-async.scss' | static_url }}" media="print" onload="this.media='all'">
 
         {# Estilos del Rediseño 2026 #}
-        <link rel="stylesheet" href="{{ 'css/style-redesign.css' | static_url }}">
+        <link rel="stylesheet" href="{{ 'css/style-redesign.scss' | static_url }}">
 
         <style>
             /* FIX MAESTRO: Notificación de Carrito — Aparece SOLO centrada */

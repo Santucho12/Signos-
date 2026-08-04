@@ -107,45 +107,54 @@
     <!-- 1. HERO VIDEO -->
     <section class="redesign-hero video-loading">
         <!-- Video de fondo Desktop -->
-        <video autoplay muted loop playsinline preload="auto" class="redesign-hero-video d-none d-md-block">
+        <video class="redesign-hero-video d-none d-md-block" autoplay muted loop playsinline preload="auto" fetchpriority="high" aria-label="SGNS Studio">
             <source src="{{ 'herocomprimidodesktop.mp4' | static_url }}" type="video/mp4">
         </video>
         <!-- Video de fondo Mobile -->
-        <video autoplay muted loop playsinline preload="auto" class="redesign-hero-video d-block d-md-none">
-            <source src="{{ 'videohome-hero.mp4' | static_url }}" type="video/mp4">
+        <video class="redesign-hero-video d-block d-md-none" autoplay muted loop playsinline preload="auto" fetchpriority="high" aria-label="SGNS Studio">
+            <source src="{{ 'SGNS - Camisetas ARG.mp4' | static_url }}" type="video/mp4">
         </video>
 
         <script>
             (function() {
-                var videos = document.querySelectorAll('.redesign-hero-video');
+                var medias = document.querySelectorAll('.redesign-hero-video');
                 var heroSection = document.querySelector('.redesign-hero');
-                
-                if (videos.length > 0 && heroSection) {
-                    var videosReady = 0;
-                    
-                    var onVideoReady = function(video) {
-                        video.play();
-                        videosReady++;
+
+                if (medias.length > 0 && heroSection) {
+                    var mediasReady = 0;
+
+                    var onMediaReady = function(media) {
+                        if (media.tagName === 'VIDEO') {
+                            media.play();
+                        }
+                        mediasReady++;
                         // Si al menos uno carga, quitamos el loading
-                        if (videosReady > 0) {
+                        if (mediasReady > 0) {
                             heroSection.classList.remove('video-loading');
                         }
                     };
 
-                    videos.forEach(function(video) {
-                        if (video.readyState >= 2) {
-                            onVideoReady(video);
+                    medias.forEach(function(media) {
+                        if (media.tagName === 'IMG') {
+                            if (media.complete) {
+                                onMediaReady(media);
+                            } else {
+                                media.addEventListener('load', function() { onMediaReady(media); });
+                                media.addEventListener('error', function() { onMediaReady(media); });
+                            }
+                        } else if (media.readyState >= 2) {
+                            onMediaReady(media);
                         } else {
-                            video.addEventListener('loadeddata', function() { onVideoReady(video); });
+                            media.addEventListener('loadeddata', function() { onMediaReady(media); });
                         }
                     });
-                    
+
                     // Fallback para quitar loading
                     setTimeout(function() { heroSection.classList.remove('video-loading'); }, 5000);
-                    
-                    // Forzar en mobile si el navegador lo bloquea inicialmente
+
+                    // Forzar reproducción en mobile si el navegador lo bloquea inicialmente
                     document.addEventListener('touchstart', function() {
-                        videos.forEach(function(video) { video.play(); });
+                        medias.forEach(function(media) { if (media.tagName === 'VIDEO') media.play(); });
                     }, {once:true});
                 }
             })();
@@ -286,7 +295,13 @@
                         <div class="offer-info-minimal">
                             <h4 class="offer-title-minimal">{{ product.name }}</h4>
                             <p class="offer-price-minimal">
-                                <span class="new-price">{{ product.price | money }}</span>
+                                <span class="transfer-price">
+                                    {{ component('payment-discount-price', {
+                                        visibility_condition: settings.payment_discount_price,
+                                        location: 'product',
+                                        container_classes: "transfer-price-inner",
+                                    }) }}
+                                </span>
                             </p>
                             <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                         </div>
@@ -325,10 +340,13 @@
                         <div class="offer-info-minimal">
                             <h4 class="offer-title-minimal">{{ product.name }}</h4>
                             <p class="offer-price-minimal">
-                                {% if product.compare_at_price %}
-                                    <span class="old-price">{{ product.compare_at_price | money }}</span>
-                                {% endif %}
-                                <span class="new-price">{{ product.price | money }}</span>
+                                <span class="transfer-price">
+                                    {{ component('payment-discount-price', {
+                                        visibility_condition: settings.payment_discount_price,
+                                        location: 'product',
+                                        container_classes: "transfer-price-inner",
+                                    }) }}
+                                </span>
                             </p>
                             <div class="offer-cta-reveal">VER PRODUCTO <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                         </div>

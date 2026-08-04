@@ -755,11 +755,17 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 30%;
+  /* Recorte suave para evitar bandas negras laterales en desktop */
+  object-position: 50% 50%;
   will-change: transform;
-  /* Ajuste intermedio: ni muy centrado (50) ni muy arriba (10) */
   /* Efecto cinematográfico Ken Burns: Deshabilitado temporalmente para mejorar performance */
   /* animation: heroVideoZoom 20s ease-in-out infinite; */
+}
+
+@media (min-width: 768px) {
+  .redesign-active .redesign-hero-video.d-none.d-md-block {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
 }
 
 @keyframes heroVideoZoom {
@@ -1128,9 +1134,8 @@
 
   .redesign-active .redesign-hero-video {
     animation: none !important;
-    /* Desactivamos el zoom lento en mobile para evitar saltos */
-    transform: translate(-50%, -50%) scale(1.1);
-    /* Lo dejamos fijo y centrado */
+    /* Sin zoom ni recorte: imagen completa y centrada */
+    transform: translate(-50%, -50%) scale(1);
   }
 
   .redesign-hero-title {
@@ -1834,21 +1839,26 @@ ation-visible,
    12. RESPONSIVE
    ============================================================ */
 
-@media (max-width: 768px) {
-
-  .redesign-active .item {
-    /* Ajustes mobile */
+@media (max-width: 767px) {
+  .redesign-hero {
+    height: 720px;
   }
 
-  .redesign-active .head-main {
-    /* Ajustes mobile del header */
+  .redesign-active .redesign-hero-video {
+    animation: none !important;
+    /* Sin zoom ni recorte: imagen completa y centrada */
+    transform: translate(-50%, -50%) scale(1);
   }
 
+  .redesign-hero-title {
+    font-size: 60px;
+  }
 }
 
-@media (min-width: 768px) {
-  .redesign-active .item:hover {
-    /* Hover solo en desktop */
+@media (max-width: 768px) {
+  .redesign-active .redesign-hero {
+    height: 720px;
+    margin-top: 0 !important;
   }
 }
 
@@ -2419,7 +2429,8 @@ ation-visible,
     font-size: 15px !important; /* Original: 18px */
   }
 
-  .redesign-active .novedades-grid-premium .offer-price-minimal .new-price {
+  .redesign-active .novedades-grid-premium .offer-price-minimal .new-price,
+  .redesign-active .novedades-grid-premium .offer-price-minimal .transfer-price {
     font-size: 18px !important; /* Original: 22px */
   }
 
@@ -2832,6 +2843,33 @@ ation-visible,
   font-weight: 900 !important;
   font-size: 22px !important;
   color: #fff !important;
+}
+
+.offer-price-minimal .transfer-price,
+.offer-price-minimal .transfer-price [class*="payment-discount-price"],
+.offer-price-minimal .transfer-price [class*="payment-discount-price"] * {
+  font-weight: 900 !important;
+  font-size: 22px !important;
+  color: #ff0000 !important;
+}
+
+/* Precio de transferencia en las cards del home: forzar rojo (misma lógica que el listado) */
+.redesign-active .novedades-grid-premium .offer-price-minimal .transfer-price,
+.redesign-active .novedades-grid-premium .offer-price-minimal .transfer-price *,
+.redesign-active .novedades-grid-premium .offer-price-minimal [class*="payment-discount-price"],
+.redesign-active .novedades-grid-premium .offer-price-minimal [class*="payment-discount-price"] * {
+  color: #ff0000 !important;
+}
+
+/* RED DE ARRASTRE: forzar rojo en CUALQUIER nodo dentro del precio de transferencia
+   del home, sin importar la clase que emita el componente nativo de Tiendanube.
+   Doble .redesign-active para máxima especificidad y ganarle a herencia de color. */
+.redesign-active.redesign-active .offer-card-premium .transfer-price,
+.redesign-active.redesign-active .offer-card-premium .transfer-price *,
+.redesign-active.redesign-active .offer-card-premium .transfer-price-inner,
+.redesign-active.redesign-active .offer-card-premium .transfer-price-inner * {
+  color: #ff0000 !important;
+  -webkit-text-fill-color: #ff0000 !important;
 }
 
 .offer-installments {
@@ -3836,6 +3874,25 @@ ation-visible,
   color: #000 !important;
 }
 
+/* Listado (grilla): reducir 40% el precio y el precio tachado, para que el
+   precio con transferencia quede como el más grande. Mobile y desktop. */
+.redesign-active .item-product .item-price,
+.redesign-active .item-product .js-price-display,
+.redesign-active .item-product .price-compare,
+.redesign-active .item-product .js-compare-price-display {
+  font-size: 12.342px !important; /* mobile: 11.22 + 10% */
+}
+
+/* Desktop: precio regular y con descuento un 25% + 10% más grandes, luego -5% */
+@media (min-width: 769px) {
+  .redesign-active .item-product .item-price,
+  .redesign-active .item-product .js-price-display,
+  .redesign-active .item-product .price-compare,
+  .redesign-active .item-product .js-compare-price-display {
+    font-size: 14.66px !important; /* 15.43 - 5% */
+  }
+}
+
 .redesign-active .price-compare,
 .redesign-active .js-compare-price-display,
 .redesign-active .price-compare-data {
@@ -3861,6 +3918,17 @@ ation-visible,
   @media (max-width: 768px) {
     font-size: 8px !important;
     padding: 1px 5px !important;
+  }
+}
+
+/* Etiquetas del listado (grilla) un 50% más grandes SOLO en desktop.
+   En mobile quedan igual que antes (regla de arriba con max-width: 768px). */
+@media (min-width: 769px) {
+  .redesign-active .item-product .label-discount,
+  .redesign-active .item-product .label-accent,
+  .redesign-active .item-product .labels-item {
+    font-size: calc(var(--font-smallest) * 1.9) !important;
+    padding: 3px 12px !important;
   }
 }
 
@@ -4630,6 +4698,65 @@ ation-visible,
   font-size: 12px !important;
   color: #666 !important;
   margin-top: 4px !important;
+}
+
+/* Precio con transferencia en el listado: rojo y destacado (mobile y desktop) */
+.redesign-active .item-product [class*="payment-discount-price"] {
+  color: #ff0000 !important;
+  font-size: calc(var(--font-small) * 1.53) !important; /* mobile: 1.7 - 10% */
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+}
+
+/* Desktop: el de transferencia un 5% más grande */
+@media (min-width: 769px) {
+  .redesign-active .item-product [class*="payment-discount-price"] {
+    font-size: calc(var(--font-small) * 1.785) !important; /* 1.7 + 5% */
+  }
+}
+
+.redesign-active .item-product [class*="payment-discount-price"] * {
+  color: #ff0000 !important;
+}
+
+/* ============================================================
+   DETALLE DE PRODUCTO: mismo tratamiento de precios que el listado
+   (transferencia grande y rojo, regular/descuento más chicos)
+   ============================================================ */
+
+/* Precio regular y con descuento más chicos (mobile y desktop) */
+.redesign-active.template-product .price-container .item-price,
+.redesign-active.template-product .price-container .js-price-display,
+.redesign-active.template-product .price-container .price-compare,
+.redesign-active.template-product .price-container .js-compare-price-display {
+  font-size: 12.342px !important; /* mobile: 11.22 + 10% */
+}
+
+@media (min-width: 769px) {
+  .redesign-active.template-product .price-container .item-price,
+  .redesign-active.template-product .price-container .js-price-display,
+  .redesign-active.template-product .price-container .price-compare,
+  .redesign-active.template-product .price-container .js-compare-price-display {
+    font-size: 14.66px !important; /* igual que el listado en desktop (15.43 - 5%) */
+  }
+}
+
+/* Precio con transferencia: rojo y destacado */
+.redesign-active.template-product .price-container [class*="payment-discount-price"] {
+  color: #ff0000 !important;
+  font-size: calc(var(--font-small) * 1.53) !important; /* mobile: 1.7 - 10% */
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+}
+
+.redesign-active.template-product .price-container [class*="payment-discount-price"] * {
+  color: #ff0000 !important;
+}
+
+@media (min-width: 769px) {
+  .redesign-active.template-product .price-container [class*="payment-discount-price"] {
+    font-size: calc(var(--font-small) * 1.785) !important; /* +5% en desktop */
+  }
 }
 
 /* Variantes (Talles) en Quickshop */
@@ -5477,4 +5604,4 @@ ation-visible,
     font-size: 10.5px; /* Aumentado ~15% */
     padding: 4px 10px; /* Aumentado ~15% */
   }
-}
+}
