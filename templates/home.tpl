@@ -110,8 +110,9 @@
            igual se descarga si tiene preload/autoplay, y en mobile eso bajaba tambien el de desktop. #}
         <!-- Video de fondo Desktop -->
         <video class="redesign-hero-video d-none d-md-block" muted loop playsinline preload="none" data-hero-src="{{ 'herocomprimidodesktop.mp4' | static_url }}" data-hero-media="(min-width: 768px)" aria-label="SGNS Studio"></video>
-        <!-- Video de fondo Mobile -->
-        <video class="redesign-hero-video d-block d-md-none" muted loop playsinline preload="none" data-hero-src="{{ 'hero-mobile-v2.mp4' | static_url }}" data-hero-media="(max-width: 767px)" aria-label="SGNS Studio"></video>
+        {# PRUEBA: en mobile usamos imagen en vez de video para aislar si el video era la causa de la lentitud #}
+        <!-- Imagen de fondo Mobile -->
+        <img class="redesign-hero-video d-block d-md-none" src="{{ 'hero-mobile.webp' | static_url }}" width="900" height="1600" fetchpriority="high" decoding="async" alt="SGNS Studio">
 
         <script>
             (function() {
@@ -127,8 +128,18 @@
                         heroSection.classList.remove('video-loading');
                     };
 
-                    // Solo cargamos el video que corresponde al viewport actual.
                     medias.forEach(function(media) {
+                        if (media.tagName === 'IMG') {
+                            if (media.complete) {
+                                onMediaReady(media);
+                            } else {
+                                media.addEventListener('load', function() { onMediaReady(media); });
+                                media.addEventListener('error', function() { heroSection.classList.remove('video-loading'); });
+                            }
+                            return;
+                        }
+
+                        // Solo cargamos el video que corresponde al viewport actual.
                         var src = media.getAttribute('data-hero-src');
                         var mq = media.getAttribute('data-hero-media');
                         if (!src || (mq && !window.matchMedia(mq).matches)) { return; }
