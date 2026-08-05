@@ -97,8 +97,7 @@
         {% if template == 'home' %}
             {# Sin fetchpriority=high: el video de fondo no debe competir con el CSS/fuentes que pintan la pagina #}
             <link rel="preload" href="{{ 'herocomprimidodesktop.mp4' | static_url }}" as="video" type="video/mp4" media="(min-width: 768px)">
-            {# PRUEBA: en mobile el hero es una imagen, no video #}
-            <link rel="preload" href="{{ 'hero-mobile.webp' | static_url }}" as="image" fetchpriority="high" media="(max-width: 767px)">
+            <link rel="preload" href="{{ 'videohome-recortado.mp4' | static_url }}" as="video" type="video/mp4" media="(max-width: 767px)">
         {% endif %}
 
         <link rel="preconnect" href="{{ store_resource_hints }}" />

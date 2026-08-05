@@ -703,14 +703,12 @@
   /* Fondo negro base mientras carga */
 }
 
-/* Estado de carga del video */
-.redesign-hero.video-loading .redesign-hero-content-box,
-.redesign-hero.video-loading .redesign-hero-overlay,
-.redesign-hero.video-loading .redesign-hero-benefits,
-.redesign-hero.video-loading .redesign-hero-video,
-.redesign-hero.video-loading .redesign-hero-logo {
+/* Estado de carga del video.
+   Solo se atenua el video: el titulo, logo, botones y beneficios son HTML/CSS
+   y deben pintarse de inmediato. Ocultarlos hasta que cargue el video hacia
+   que la home se viera en blanco (con spinner) durante segundos en mobile. */
+.redesign-hero.video-loading .redesign-hero-video {
   opacity: 0 !important;
-  visibility: hidden !important;
 }
 
 /* Spinner de carga Premium */
@@ -732,9 +730,11 @@
   z-index: 100;
 }
 
+/* Sin spinner: el contenido del hero ya es visible desde el primer pintado,
+   mostrar un spinner encima solo transmitia lentitud. */
 .redesign-hero.video-loading::after {
-  opacity: 1;
-  visibility: visible;
+  opacity: 0;
+  visibility: hidden;
 }
 
 @keyframes redesign-spin {
