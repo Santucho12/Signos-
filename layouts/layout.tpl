@@ -96,7 +96,7 @@
         {# Optimización de Video Hero (Carga Prioritaria Máxima) #}
         {% if template == 'home' %}
             <link rel="preload" href="{{ 'herocomprimidodesktop.mp4' | static_url }}" as="video" type="video/mp4" fetchpriority="high" media="(min-width: 768px)">
-            <link rel="preload" href="{{ 'SGNS - Camisetas ARG.mp4' | static_url }}" as="video" type="video/mp4" fetchpriority="high" media="(max-width: 767px)">
+            <link rel="preload" href="{{ 'hero-mobile-v2.mp4' | static_url }}" as="video" type="video/mp4" fetchpriority="high" media="(max-width: 767px)">
         {% endif %}
 
         <link rel="preconnect" href="{{ store_resource_hints }}" />
