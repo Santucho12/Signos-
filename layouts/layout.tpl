@@ -111,7 +111,10 @@
         <meta name="description" content="{{ page_description }}" />
         <link rel="preload" as="style" href="{{ [settings.font_headings, settings.font_rest] | google_fonts_url('400,700') }}" />
         {# Fuentes Premium para el Rediseño 2026 #}
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+        {# Cormorant Garamond no se usa en el CSS: se quito (eran 6 variantes al pedo).
+           Outfit se pide solo en los pesos realmente usados (300-900): antes faltaban
+           800 y 900, que el navegador tenia que sintetizar. #}
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         
         <style>
             @font-face {
@@ -509,8 +512,19 @@
         })();
         </script>
         <!-- Lenis Smooth Scroll (Efecto pesado y premium) -->
-        <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/dist/lenis.min.js"></script>
+        {# Solo se descarga en desktop: en mobile el efecto no se activa nunca
+           (innerWidth > 1024), asi que bajarlo era gastar DNS+TLS+parseo al pedo. #}
         <script>
+        (function() {
+            if (window.innerWidth <= 1024) { return; }
+            var s = document.createElement('script');
+            s.src = 'https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/dist/lenis.min.js';
+            s.async = true;
+            s.onload = initLenis;
+            document.body.appendChild(s);
+        })();
+
+        function initLenis() {
             if (typeof Lenis !== 'undefined' && window.innerWidth > 1024) { // Solo en Desktop y si cargó bien
                 const lenis = new Lenis({
                     duration: 1.2,
@@ -531,6 +545,7 @@
 
                 requestAnimationFrame(raf)
             }
+        }
         </script>
     </body>
 </html>
