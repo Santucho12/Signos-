@@ -106,14 +106,12 @@
     
     <!-- 1. HERO VIDEO -->
     <section class="redesign-hero video-loading">
+        {# Los src se asignan por JS segun viewport: un <video> oculto con display:none
+           igual se descarga si tiene preload/autoplay, y en mobile eso bajaba tambien el de desktop. #}
         <!-- Video de fondo Desktop -->
-        <video class="redesign-hero-video d-none d-md-block" autoplay muted loop playsinline preload="auto" fetchpriority="high" aria-label="SGNS Studio">
-            <source src="{{ 'herocomprimidodesktop.mp4' | static_url }}" type="video/mp4">
-        </video>
+        <video class="redesign-hero-video d-none d-md-block" muted loop playsinline preload="none" data-hero-src="{{ 'herocomprimidodesktop.mp4' | static_url }}" data-hero-media="(min-width: 768px)" aria-label="SGNS Studio"></video>
         <!-- Video de fondo Mobile -->
-        <video class="redesign-hero-video d-block d-md-none" autoplay muted loop playsinline preload="auto" fetchpriority="high" aria-label="SGNS Studio">
-            <source src="{{ 'hero-mobile-v2.mp4' | static_url }}" type="video/mp4">
-        </video>
+        <video class="redesign-hero-video d-block d-md-none" muted loop playsinline preload="none" data-hero-src="{{ 'hero-mobile-v2.mp4' | static_url }}" data-hero-media="(max-width: 767px)" aria-label="SGNS Studio"></video>
 
         <script>
             (function() {
@@ -121,32 +119,24 @@
                 var heroSection = document.querySelector('.redesign-hero');
 
                 if (medias.length > 0 && heroSection) {
-                    var mediasReady = 0;
-
                     var onMediaReady = function(media) {
                         if (media.tagName === 'VIDEO') {
-                            media.play();
+                            var p = media.play();
+                            if (p && p.catch) { p.catch(function(){}); }
                         }
-                        mediasReady++;
-                        // Si al menos uno carga, quitamos el loading
-                        if (mediasReady > 0) {
-                            heroSection.classList.remove('video-loading');
-                        }
+                        heroSection.classList.remove('video-loading');
                     };
 
+                    // Solo cargamos el video que corresponde al viewport actual.
                     medias.forEach(function(media) {
-                        if (media.tagName === 'IMG') {
-                            if (media.complete) {
-                                onMediaReady(media);
-                            } else {
-                                media.addEventListener('load', function() { onMediaReady(media); });
-                                media.addEventListener('error', function() { onMediaReady(media); });
-                            }
-                        } else if (media.readyState >= 2) {
-                            onMediaReady(media);
-                        } else {
-                            media.addEventListener('loadeddata', function() { onMediaReady(media); });
-                        }
+                        var src = media.getAttribute('data-hero-src');
+                        var mq = media.getAttribute('data-hero-media');
+                        if (!src || (mq && !window.matchMedia(mq).matches)) { return; }
+
+                        media.addEventListener('loadeddata', function() { onMediaReady(media); });
+                        media.addEventListener('error', function() { heroSection.classList.remove('video-loading'); });
+                        media.src = src;
+                        media.load();
                     });
 
                     // Fallback para quitar loading
@@ -154,7 +144,12 @@
 
                     // Forzar reproducción en mobile si el navegador lo bloquea inicialmente
                     document.addEventListener('touchstart', function() {
-                        medias.forEach(function(media) { if (media.tagName === 'VIDEO') media.play(); });
+                        medias.forEach(function(media) {
+                            if (media.tagName === 'VIDEO' && media.currentSrc) {
+                                var p = media.play();
+                                if (p && p.catch) { p.catch(function(){}); }
+                            }
+                        });
                     }, {once:true});
                 }
             })();
