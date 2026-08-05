@@ -112,7 +112,7 @@
         </video>
         <!-- Video de fondo Mobile -->
         <video class="redesign-hero-video d-block d-md-none" autoplay muted loop playsinline preload="auto" fetchpriority="high" aria-label="SGNS Studio">
-            <source src="{{ 'SGNS - Camisetas ARG.mp4' | static_url }}" type="video/mp4">
+            <source src="{{ 'hero-mobile-v2.mp4' | static_url }}" type="video/mp4">
         </video>
 
         <script>
