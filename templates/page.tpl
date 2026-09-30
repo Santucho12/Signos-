@@ -1,6 +1,10 @@
+{# Páginas "Drop" (Drop 1, Drop 2, ...): usan su propia landing #}
+{% set es_drop = 'drop' in page.handle | lower %}
+{% if not es_drop and page.handle != 'registroevento' and page.handle != 'registro-evento' and page.handle != 'evento' and page.handle != 'registroeventoparticipantes' and page.handle != 'registro-evento-participantes' %}
 {% embed "snipplets/page-header.tpl" %}
 	{% block page_header_text %}{{ page.name }}{% endblock page_header_text %}
 {% endembed %}
+{% endif %}
 
 {# Institutional page  #}
 
@@ -188,6 +192,18 @@
         </div>
     </div>
 </section>
+
+{% elseif es_drop %}
+
+    {% include "snipplets/drop-landing.tpl" %}
+
+{% elseif page.handle == 'registroevento' or page.handle == 'registro-evento' or page.handle == 'evento' %}
+
+    {% include "snipplets/registro-evento.tpl" %}
+
+{% elseif page.handle == 'registroeventoparticipantes' or page.handle == 'registro-evento-participantes' %}
+
+    {% include "snipplets/registro-evento-participantes.tpl" %}
 
 {% else %}
 

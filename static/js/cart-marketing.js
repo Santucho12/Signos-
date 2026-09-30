@@ -18,9 +18,15 @@ const CartMarketing = (() => {
     let isUpdating = false;
 
     const init = () => {
+        // Interruptor maestro de ruletas (definido en layout.tpl)
+        if (window.RULETAS_ACTIVAS === false) {
+            console.log('CartMarketing: Ruletas desactivadas, no se muestra nada.');
+            return;
+        }
+
         // Validar que estemos en MODO PREVIEW para el Tiro Extra y el Banner
         console.log('CartMarketing: Sistema inicializado en modo Producción.');
-        
+
         createBannerElement();
         setupEventListeners();
         checkCartStatus();

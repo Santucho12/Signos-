@@ -9,7 +9,7 @@
 #}
 
 {% set slide_item = slide_item | default(false) %}
-{% set columns_desktop = template == 'home' ? section_columns_desktop : 3 %}
+{% set columns_desktop = template == 'home' ? section_columns_desktop : 4 %}
 {% set columns_mobile = template == 'home' ? section_columns_mobile : settings.grid_columns_mobile %}
 {% set theme_editor = params.preview %}
 {% set appear_transition = appear_transition ?? true %}
@@ -85,9 +85,21 @@
                 {% set is_novedad = true %}
             {% endif %}
 
-            {% if is_novedad %}
-                <div class="label-novedad-custom">NOVEDAD</div>
+            {% set discount_pct = product.display_price and product.compare_at_price > product.price ? ((product.compare_at_price - product.price) * 100 + product.compare_at_price // 2) // product.compare_at_price : 0 %}
+
+
+            {% if discount_pct > 0 or is_novedad %}
+                <div class="sgns-item-badges">
+                    {% if discount_pct > 0 %}
+                        <span class="sgns-discount-badge">-{{ discount_pct }}%</span>
+                    {% endif %}
+                    {% if is_novedad %}
+                        <div class="label-novedad-custom">NOVEDAD</div>
+                    {% endif %}
+                </div>
             {% endif %}
+
+            <span class="sgns-bolsa" aria-hidden="true"><svg viewBox="0 0 565 512" aria-hidden="true"><path d="M528.22,422.85l-37.53-230.4c-6.05-37.16-38.15-64.45-75.8-64.45h-4.65C410.24,57.31,352.93,0,282.24,0S154.24,57.31,154.24,128h-4.65c-37.65,0-69.75,27.29-75.8,64.45l-37.53,230.4c-7.61,46.73,28.46,89.15,75.8,89.15H452.42c47.34,0,83.42-42.42,75.8-89.15ZM282.24,51.2c42.42,0,76.8,34.38,76.8,76.8H205.44c0-42.42,34.38-76.8,76.8-76.8Zm170.18,409.6H112.05c-15.78,0-27.8-14.14-25.27-29.72l37.53-230.4c2.02-12.39,12.72-21.48,25.27-21.48h4.65v51.2h51.2v-51.2h153.6v51.2h51.2v-51.2h4.65c12.55,0,23.25,9.1,25.27,21.48l37.53,230.4c2.54,15.58-9.48,29.72-25.27,29.72Z"/></svg></span>
 
             {% if not reduced_item %}
                 <div class="item-floating-elements">
@@ -178,7 +190,7 @@
         {% endif %}
         <div class="js-item-description item-description" data-store="product-item-info-{{ product.id }}">
             <a href="{{ product_url_with_selected_variant }}" title="{{ product.name }}" aria-label="{{ product.name }}" class="item-link{% if inline_quick_shop and not reduced_item %} item-link-quickshop{% endif %}">
-                <div class="js-item-name item-name mb-2 {% if columns_mobile == 3 %}d-none d-md-block{% endif %}" data-store="product-item-name-{{ product.id }}">{{ product.name }}</div>
+                <div class="js-item-name item-name nov-card__name mb-2 {% if columns_mobile == 3 %}d-none d-md-block{% endif %}" data-store="product-item-name-{{ product.id }}">{{ product.name }}</div>
                 {% if product.display_price %}
                     {% if is_subscription_only %}
                         {# Subscription only products: use subscription-price component with product_list location #}
@@ -191,22 +203,21 @@
                             },
                         }) }}
                     {% else %}
-                        {# Normal products: original price display #}
-                        <div class="js-item-price-container item-price-container {% if columns_mobile == 3 %}mb-0 mb-md-2{% else %}mb-2{% endif %}" data-store="product-item-price-{{ product.id }}">
+                        {# Normal products: mismo bloque de precios que las cards del home #}
+                        {% set transfer_pct = settings.payment_discount_price and not reduced_item and product.maxPaymentDiscount and product.maxPaymentDiscount.value > 0 ? product.maxPaymentDiscount.value : 0 %}
+                        <div class="js-item-price-container item-price-container nov-card__price {% if columns_mobile == 3 %}mb-0 mb-md-2{% else %}mb-2{% endif %}" data-store="product-item-price-{{ product.id }}">
                             {% if not reduced_item %}
-                                <span class="js-compare-price-display price-compare {% if columns_mobile == 3 and product.compare_at_price %}d-none d-md-inline-block{% endif %}" {% if not product.compare_at_price or not product.display_price %}style="display:none;"{% else %}style="display:inline-block;"{% endif %} data-price-compare-visibility="{{ product.compare_at_price ? 'true' : 'false' }}">
+                                <span class="js-compare-price-display price-compare nov-card__compare {% if columns_mobile == 3 and product.compare_at_price %}d-none d-md-inline-block{% endif %}" {% if not product.compare_at_price or not product.display_price %}style="display:none;"{% else %}style="display:inline-block;"{% endif %} data-price-compare-visibility="{{ product.compare_at_price ? 'true' : 'false' }}">
                                     {{ product.compare_at_price | money }}
                                 </span>
                             {% endif %}
-                            <span class="js-price-display item-price" data-product-price="{{ product.price }}">
+                            <span class="js-price-display item-price {% if transfer_pct > 0 %}nov-card__list{% else %}nov-card__transfer nov-card__transfer--plain{% endif %}" data-product-price="{{ product.price }}">
                                 {{ product.price | money }}
                             </span>
-                            {{ component('payment-discount-price', {
-                                    visibility_condition: settings.payment_discount_price and not reduced_item,
-                                    location: 'product',
-                                    container_classes: "font-small mt-1",
-                                }) 
-                            }}
+                            {% if transfer_pct > 0 %}
+                                <span class="nov-card__chip">-{{ transfer_pct }}% TRANSF.</span>
+                                <div class="nov-card__transfer">{{ (product.price * (100 - transfer_pct) / 100) | round | money }}</div>
+                            {% endif %}
                         </div>
                     {% endif %}
                 {% endif %}
@@ -223,7 +234,11 @@
                     {% if columns_mobile == 3 or theme_editor %}
                         <span class="js-item-installments-container d-none d-md-block">
                     {% endif %}
-                        {{ component('installments', {'location' : 'product_item', container_classes: { installment: "item-installments"}}) }}
+                        {# Cuotas sin interés, con el mismo formato que las cards del home #}
+                        {% set max_free_installments = product.show_installments and product.get_max_installments(false) ? product.get_max_installments(false).installment : 1 %}
+                        {% if max_free_installments > 1 %}
+                            <div class="nov-card__installments"><b>{{ max_free_installments }}</b> cuotas sin interés de <b>{{ (product.price / max_free_installments) | round | money }}</b></div>
+                        {% endif %}
                     {% if columns_mobile == 3 or theme_editor %}
                         </span>
                     {% endif %}

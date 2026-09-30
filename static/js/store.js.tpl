@@ -700,14 +700,17 @@ DOMContentLoaded.addEventOrExecute(() => {
         $top_nav.addClass("move-down").removeClass("move-up");
 
         jQueryNuvem(".js-toggle-menu-panel").click(function (e) {
+            e.preventDefault();
             var $panel = jQueryNuvem(this).next(".js-menu-panel");
             
-            // Si el panel mobile NO está visible, lo mostramos y prevenimos el link
-            if (!$panel.hasClass("nav-list-panel-show")) {
-                e.preventDefault();
-                $panel.show().addClass("nav-list-panel-show");
+            // Al hacer clic, alterna entre abrir y cerrar el desplegable
+            if ($panel.hasClass("nav-list-panel-show")) {
+                $panel.removeClass("nav-list-panel-show");
+                setTimeout(function() {
+                    $panel.hide();
+                }, 400);
             } else {
-                // Si YA está visible (por ejemplo, si el JS no lo tapó totalmente), permitimos navegar
+                $panel.show().addClass("nav-list-panel-show");
             }
         });
 
@@ -1545,7 +1548,7 @@ DOMContentLoaded.addEventOrExecute(() => {
             watchSlidesVisibility: true,
             slideVisibleClass: 'js-swiper-slide-visible',
             spaceBetween: itemSwiperSpaceBetween,
-            slidesPerView: slidesPerViewMobileVal,
+            slidesPerView: (typeof slidesPerViewMobileVal === "number" && slidesPerViewMobileVal > 2 && slidesPerViewMobileVal < 2.5) ? 2.05 : slidesPerViewMobileVal,
             navigation: {
                 nextEl: '.js-swiper-related-next',
                 prevEl: '.js-swiper-related-prev',

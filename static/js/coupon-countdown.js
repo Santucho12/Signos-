@@ -77,7 +77,7 @@ const CouponCountdown = (() => {
                 text-align: center !important;
             }
             .coupon-countdown-bar .countdown-timer.urgent {
-                color: #ff4d4d !important;
+                color: #E60000 !important;
             }
             .coupon-countdown-bar .countdown-divider {
                 width: 1px !important;

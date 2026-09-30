@@ -22,6 +22,11 @@
             <span class="d-inline-block {{ price_big_class }}">
             	<div class="js-price-display" id="price_display" {% if not product.display_price %}style="display:none;"{% endif %} data-product-price="{{ product.price }}">{% if product.display_price %}{{ product.price | money }}{% endif %}</div>
             </span>
+            {# Chip del descuento por transferencia, igual al de las cards #}
+            {% set transfer_pct = settings.payment_discount_price and product.maxPaymentDiscount and product.maxPaymentDiscount.value > 0 ? product.maxPaymentDiscount.value : 0 %}
+            {% if transfer_pct > 0 and product.display_price %}
+                <span class="nov-card__chip product-transfer-chip">-{{ transfer_pct }}% TRANSF.</span>
+            {% endif %}
         </div>
         {% if settings.product_detail_installments %}
             <div class="col-auto">
@@ -119,7 +124,7 @@
     {# BOTON PROBADOR VIRTUAL REDISEÑO #}
     <div class="redesign-active mt-2 mb-4" style="display: none;">
         <a href="javascript:void(0)" class="js-probador-btn">
-             PROBADOR VIRTUAL
+                        PROBADOR VIRTUAL
         </a>
     </div>
 

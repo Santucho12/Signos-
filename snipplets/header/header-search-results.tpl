@@ -11,17 +11,31 @@
                 		{{ product.name | highlight(query) }}
                 	</p>
                     {% if product.display_price %}
-                    	<p>
-                    		{{ product.price | money }}
-
-                            {% set product_can_show_installments = product.show_installments and product.display_price and product.get_max_installments.installment > 1 and settings.product_installments %}
-                            {% if product_can_show_installments %}
-                                {% set max_installments_without_interests = product.get_max_installments(false) %}
-                                {% if max_installments_without_interests and max_installments_without_interests.installment > 1 %}
-                                    <span>| {{ "Hasta <span class='installment-amount'>{1}</span> cuotas sin interés" | t(max_installments_without_interests.installment) }}</span>
-                                {% endif %}
+                        {# Precios como en la card: un solo tachado, el precio que se
+                           cobra en negro y la transferencia en una línea roja debajo. #}
+                        {% set transfer_pct = settings.payment_discount_price and product.maxPaymentDiscount and product.maxPaymentDiscount.value > 0 ? product.maxPaymentDiscount.value : 0 %}
+                    	<p class="search-suggest-price">
+                            {% if product.compare_at_price and product.compare_at_price > product.price %}
+                                <span class="search-suggest-compare">{{ product.compare_at_price | round | money }}</span>
                             {% endif %}
+                            <span class="search-suggest-now">{{ product.price | round | money }}</span>
                     	</p>
+
+                        {% if transfer_pct > 0 %}
+                            <p class="search-suggest-transfer">
+                                Transferencia: <b>{{ (product.price * (100 - transfer_pct) / 100) | round | money }}</b>
+                            </p>
+                        {% endif %}
+
+                        {% set product_can_show_installments = product.show_installments and product.display_price and product.get_max_installments.installment > 1 and settings.product_installments %}
+                        {% if product_can_show_installments %}
+                            {% set max_installments_without_interests = product.get_max_installments(false) %}
+                            {% if max_installments_without_interests and max_installments_without_interests.installment > 1 %}
+                                <p class="search-suggest-installments">
+                                    <b>{{ max_installments_without_interests.installment }}</b> cuotas sin interés de <b>{{ (product.price / max_installments_without_interests.installment) | round | money }}</b>
+                                </p>
+                            {% endif %}
+                        {% endif %}
                     {% endif %}
                 </div>
             </a>

@@ -8,6 +8,15 @@
 {% set _redesign_key = 'mi_redesign_2026' %}
 {% set _is_redesign_production = true %}
 
+{#/*============================================================================
+  #Ruletas (interruptor maestro)
+  - true  → aparecen la ruleta principal, el Tiro Extra y el banner de progreso.
+  - false → no se carga nada de eso (ni scripts, ni modales, ni carteles).
+  Cambiar solo esta linea para activar/desactivar.
+==============================================================================*/#}
+{% set _ruletas_activas = false %}
+{% set _is_event_page = (page.handle == 'registroevento' or page.handle == 'registro-evento' or page.handle == 'evento' or page.handle == 'registroeventoparticipantes' or page.handle == 'registro-evento-participantes') %}
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="{% for language in languages %}{% if language.active %}{{ language.lang }}{% endif %}{% endfor %}" {% if _is_redesign_production %}class="redesign-active"{% endif %}>
     <head>
@@ -24,11 +33,11 @@
                 src: url('{{ "fonts/Fontspring-DEMO-blunt-semiconit.otf" | static_url }}') format('opentype');
                 font-weight: normal;
                 font-style: normal;
-                font-display: block; /* 'block' evita que se vea la fuente vieja antes que la nueva */
+                font-display: swap; /* 'swap' pinta el texto de inmediato con la fuente de respaldo */
             }
-            .redesign-active body { opacity: 0; } /* Evita parpadeo inicial del diseño viejo */
-            .redesign-active.visible-when-content-ready body { opacity: 1; transition: opacity 0.3s ease; }
-            
+            {# El body ya NO se oculta: ocultarlo hasta DOMContentLoaded dejaba la
+               pantalla en blanco mientras se parseaban ~360 KB de JS inline. #}
+
             /* Lenis Smooth Scroll Setup */
             html.lenis {
               height: auto;
@@ -55,10 +64,18 @@
                 overflow: hidden;
             }
             .redesign-top-banner img { height: 100%; width: auto; }
+
+            /* Evita que se vea la home original o salte antes de la intro */
+            .redesign-active .original-home-content {
+                display: none !important;
+            }
         </style>
 
         {# Script Global de Detección de Preview (Evita parpadeos y permite desarrollo seguro) #}
         <script>
+            {# Interruptor de ruletas disponible antes de que cargue cualquier script #}
+            window.RULETAS_ACTIVAS = {% if _ruletas_activas %}true{% else %}false{% endif %};
+
             (function(){
                 var KEY = '{{ _redesign_key }}';
                 var COOKIE = 'redesign_preview';
@@ -79,28 +96,17 @@
                     document.documentElement.classList.add('redesign-preview');
                 }
 
-                {# Seguridad de visibilidad: Fuerza la aparición del rediseño apenas el DOM es procesado #}
-                document.addEventListener('DOMContentLoaded', function() {
-                    document.documentElement.classList.add('visible-when-content-ready');
-                });
-
-                {# Home ya no requiere preview: redesign-active se aplica desde el HTML server-side #}
+{# Home ya no requiere preview: redesign-active se aplica desde el HTML server-side #}
             })();
         </script>
 
-        {% if _is_redesign_production %}
-            {# PRODUCCIÓN (Categorías/Productos/Preview Admin): El diseño base ya es activo #}
-            <link rel="stylesheet" href="{{ 'css/style-redesign.scss' | static_url }}">
-        {% endif %}
+        {# style-redesign.scss se carga una sola vez, mas abajo. Estaba duplicado aca. #}
 
-        {# Optimización de Video Hero (Carga Prioritaria Máxima) #}
-        {% if template == 'home' %}
-            {# Sin fetchpriority=high: el video de fondo no debe competir con el CSS/fuentes que pintan la pagina #}
-            <link rel="preload" href="{{ 'herocomprimidodesktop.mp4' | static_url }}" as="video" type="video/mp4" media="(min-width: 768px)">
-            <link rel="preload" href="{{ 'videohome-recortado.mp4' | static_url }}" as="video" type="video/mp4" media="(max-width: 767px)">
-        {% endif %}
+        {# Sin preload del video del hero: el <video> usa preload="none" y lo pide
+           por JS despues del primer pintado. Precargarlo solo robaba ancho de banda
+           al CSS critico (1,2 MB en mobile / 6,6 MB en desktop). #}
 
-        <link rel="preconnect" href="{{ store_resource_hints }}" />
+<link rel="preconnect" href="{{ store_resource_hints }}" />
         <link rel="dns-prefetch" href="{{ store_resource_hints }}" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -109,6 +115,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{{ page_title }}</title>
         <meta name="description" content="{{ page_description }}" />
+        {# Favicon Circular Oficial #}
+        <link rel="icon" type="image/png" href="{{ 'favicon.png' | static_url }}" />
+        <link rel="shortcut icon" type="image/png" href="{{ 'favicon.png' | static_url }}" />
         <link rel="preload" as="style" href="{{ [settings.font_headings, settings.font_rest] | google_fonts_url('400,700') }}" />
         {# Fuentes Premium para el Rediseño 2026 #}
         {# Cormorant Garamond no se usa en el CSS: se quito (eran 6 variantes al pedo).
@@ -248,8 +257,13 @@
         {{ component('structured-data-organization') }}
         {{ component('structured-data') }}
 
+        {% if template == 'home' %}
+            {# Bloqueo y velo inmediato para que el primer fotograma ya tenga la intro y no parpadee nada #}
+            <script>(function(){document.documentElement.classList.add("sgns-intro-on","sgns-intro-lock");})();</script>
+        {% endif %}
+
     </head>
-    <body class="redesign-active {% if customer %}customer-logged-in{% endif %} template-{{ template | replace('.', '-') }}">
+    <body class="redesign-active {% if _is_event_page %}is-event-page{% endif %} {% if customer %}customer-logged-in{% endif %} template-{{ template | replace('.', '-') }}">
 
         {# Theme icons #}
 
@@ -273,29 +287,33 @@
 
         {{back_to_admin}}
 
-        {# Header = Advertising + Nav + Logo + Search + Ajax Cart #}
+        {% if not _is_event_page %}
+            {# Header = Advertising + Nav + Logo + Search + Ajax Cart #}
 
-        {% snipplet "header/header.tpl" %}
+            {% snipplet "header/header.tpl" %}
 
-        {% if settings.show_tab_nav %}
-            {% snipplet "navigation/navigation-tabs.tpl" %}
+            {% if settings.show_tab_nav %}
+                {% snipplet "navigation/navigation-tabs.tpl" %}
+            {% endif %}
         {% endif %}
 
         {# Page content #}
 
         {% template_content %}
 
-        {# Quickshop modal #}
+        {% if not _is_event_page %}
+            {# Quickshop modal #}
 
-        {% snipplet "grid/quick-shop.tpl" %}
+            {% snipplet "grid/quick-shop.tpl" %}
 
-        {# WhatsApp chat button #}
+            {# WhatsApp chat button #}
 
-        {% snipplet "whatsapp-chat.tpl" %}
+            {% snipplet "whatsapp-chat.tpl" %}
 
-        {# Footer #}
+            {# Footer #}
 
-        {% snipplet "footer/footer.tpl" %}
+            {% snipplet "footer/footer.tpl" %}
+        {% endif %}
 
         {% if cart.free_shipping.cart_has_free_shipping or cart.free_shipping.min_price_free_shipping.min_price %}
 
@@ -367,25 +385,48 @@
             var JS_URL   = '{{ "js/redesign.js" | static_url }}';
 
             // ── Cargar utilidades (SIEMPRE en producción) ───────────────
+            // Sin '?v=' + timestamp: ese parametro rompia el cache en cada visita
+            // y obligaba a re-descargar los 5 scripts en cada pagina.
             var loadScript = function(url) {
                 var s = document.createElement('script');
-                s.src = url + '?v=' + new Date().getTime();
+                s.src = url;
+                s.async = true;
                 document.body.appendChild(s);
             };
 
-            loadScript('{{ "js/modals-marketing.js" | static_url }}');
-            loadScript('{{ "js/cart-marketing.js" | static_url }}');
-            loadScript('{{ "js/cart-notes.js" | static_url }}');
-            loadScript('{{ "js/coupon-countdown.js" | static_url }}');
+            var loadMarketing = function() {
+                loadScript('{{ "js/modals-marketing.js" | static_url }}');
+                {% if _ruletas_activas %}
+                loadScript('{{ "js/cart-marketing.js" | static_url }}');
+                {% endif %}
+                loadScript('{{ "js/cart-notes.js" | static_url }}');
+                loadScript('{{ "js/coupon-countdown.js" | static_url }}');
+            };
 
-            // ── Pre-calentamiento de Vercel (evita cold-start en los 3 iframes) ──
-            var _warmUrls = [
-                'https://ruleta-signos.vercel.app/',
-                'https://ruleta-signos.vercel.app/tiroextra',
-                'https://probador-virtual-signosindumentaria.vercel.app/'
-            ];
-            _warmUrls.forEach(function(url) {
-                fetch(url, { method: 'GET', mode: 'no-cors' }).catch(function(){});
+            var isHome = {{ template == 'home' ? 'true' : 'false' }};
+            if (isHome) {
+                window.addEventListener('load', function() {
+                    setTimeout(loadMarketing, 1200);
+                });
+            } else {
+                loadMarketing();
+            }
+
+            // ── Pre-calentamiento de Vercel ──
+            // Se difiere hasta despues del load: hacerlo durante la carga critica
+            // gastaba DNS+TLS de dos dominios extra compitiendo con el render.
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    [
+                        {% if _ruletas_activas %}
+                        'https://ruleta-signos.vercel.app/',
+                        'https://ruleta-signos.vercel.app/tiroextra',
+                        {% endif %}
+                        'https://probador-virtual-signosindumentaria.vercel.app/'
+                    ].forEach(function(url) {
+                        fetch(url, { method: 'GET', mode: 'no-cors' }).catch(function(){});
+                    });
+                }, 2000);
             });
 
             // ── Inicialización de Ruleta Principal (PÚBLICO) ──────────────
@@ -415,7 +456,8 @@
                         }
                     });
 
-                    // 2. Ruleta Principal (AHORA EN PRODUCCIÓN)
+                    // 2. Ruleta Principal (solo si el interruptor esta encendido)
+                    {% if _ruletas_activas %}
                     MarketingModals.init({
                         id: 'redesign-ruleta-modal',
                         url: 'https://ruleta-signos.vercel.app/',
@@ -423,6 +465,7 @@
                         sessionKey: 'ruleta_visto',
                         isPreviewOnly: false // LIBERADO
                     });
+                    {% endif %}
                 }
             });
 
@@ -440,7 +483,8 @@
             // ── Cargar utilidades de rediseño ──────────────────────────
             var loadScriptRedesign = function(url) {
                 var s = document.createElement('script');
-                s.src = url + '?v=' + new Date().getTime();
+                s.src = url;
+                s.async = true;
                 document.body.appendChild(s);
             };
 
@@ -511,41 +555,26 @@
             // El bloque de inicialización fue movido arriba para permitir producción.
         })();
         </script>
-        <!-- Lenis Smooth Scroll (Efecto pesado y premium) -->
-        {# Solo se descarga en desktop: en mobile el efecto no se activa nunca
-           (innerWidth > 1024), asi que bajarlo era gastar DNS+TLS+parseo al pedo. #}
+        <!-- Scroll suave (Lenis): libreria local + init con teclado, links y modales -->
         <script>
-        (function() {
-            if (window.innerWidth <= 1024) { return; }
-            var s = document.createElement('script');
-            s.src = 'https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/dist/lenis.min.js';
-            s.async = true;
-            s.onload = initLenis;
-            document.body.appendChild(s);
-        })();
-
-        function initLenis() {
-            if (typeof Lenis !== 'undefined' && window.innerWidth > 1024) { // Solo en Desktop y si cargó bien
-                const lenis = new Lenis({
-                    duration: 1.2,
-                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                    direction: 'vertical',
-                    gestureDirection: 'vertical',
-                    smooth: true,
-                    mouseMultiplier: 1,
-                    smoothTouch: false,
-                    touchMultiplier: 2,
-                    infinite: false,
-                })
-
-                function raf(time) {
-                    lenis.raf(time)
-                    requestAnimationFrame(raf)
-                }
-
-                requestAnimationFrame(raf)
-            }
-        }
+            window.__sgnsLenisUrl = '{{ "js/lenis.min.js" | static_url }}';
         </script>
+        <script src="{{ "js/smooth-scroll.js" | static_url }}" defer></script>
+        <script src="{{ "js/whatsapp-bubble.js" | static_url }}" defer></script>
+        <script src="{{ "js/header-island.js" | static_url }}" defer></script>
+        {% if template == 'home' %}
+            {# Intro cinematográfica del inicio #}
+            <script src="{{ "js/intro.js" | static_url }}" defer></script>
+            {# El hero se oscurece al scrollear #}
+            <script src="{{ "js/hero-scroll.js" | static_url }}" defer></script>
+        {% endif %}
+        {% if template == 'category' or template == 'search' %}
+            {# Menú de "Ordenar" propio (reemplaza al select nativo) #}
+            <script src="{{ "js/sort-menu.js" | static_url }}" defer></script>
+        {% endif %}
+
+        {# Drop 01 bloqueado en todos los links (menú, pie, etc.) hasta el viernes 2/10/2026 22:00 #}
+        <script src="{{ "js/drop-lock.js" | static_url }}" defer></script>
+
     </body>
 </html>
