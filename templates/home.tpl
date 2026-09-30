@@ -734,6 +734,122 @@
         })();
     </script>
 
+    {# LOCALES: solo se ve en localhost (lo decide el script de abajo), no en la tienda publicada.
+       Cada local usa static/locales/local-N.webp (foto) y static/locales/local-N.mp4 (video en hover).
+       Mientras falte el archivo, la card queda oscura. Alsina ya usa un video existente. #}
+    {% if true %}
+    {% set locales = [
+        {'dir': 'OHIGGINS 191', 'ciudad': 'Bahía Blanca', 'foto': 'locales/local-1.webp', 'video': 'Alsina WEB - VERTICAL.mp4'},
+        {'dir': 'ALSINA 226', 'ciudad': 'Bahía Blanca', 'foto': 'locales/local-2.webp', 'video': 'Alsina WEB - VERTICAL.mp4'},
+        {'dir': 'VM WASHINGTON 691', 'ciudad': 'Bahía Blanca', 'foto': 'locales/local-3.webp', 'video': 'Alsina WEB - VERTICAL.mp4'},
+        {'dir': 'ZELARRAYAN 2250', 'ciudad': 'Bahía Blanca', 'foto': 'locales/local-4.webp', 'video': 'Alsina WEB - VERTICAL.mp4'},
+        {'dir': 'PEATONAL DORREGO 38', 'ciudad': 'Monte Hermoso', 'foto': 'locales/local-5.webp', 'video': 'Alsina WEB - VERTICAL.mp4'}
+    ] %}
+    <section class="sgns-locales">
+        <div class="container-wide">
+            <div class="social-header-split" data-redesign-animate="fadeUp">
+                <span class="social-brand-name">LOCALES</span>
+                <span class="social-label-name">Visitanos en Bahía Blanca y Monte Hermoso</span>
+            </div>
+            <div class="sgns-locales__grid">
+                {% for local in locales %}
+                <a class="sgns-local" href="https://www.google.com/maps/search/?api=1&query={{ (local.dir ~ ' ' ~ local.ciudad) | url_encode }}" target="_blank" rel="noopener" data-redesign-animate="fadeUp" data-redesign-delay="{{ loop.index0 * 120 }}">
+                    <div class="sgns-local__media">
+                        <img src="{{ local.foto | static_url }}" alt="Local {{ local.dir }}" class="sgns-local__img" loading="lazy" onerror="this.style.display='none'">
+                        <video class="sgns-local__video" muted loop playsinline preload="auto" data-src="{{ local.video | static_url }}"></video>
+                        <div class="sgns-local__head">
+                            <span class="sgns-local__ciudad">{{ local.ciudad }}</span>
+                            <span class="sgns-local__dir">{{ local.dir }}</span>
+                            <span class="sgns-local__linea"></span>
+                            <span class="sgns-local__hora"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Todos los días · 09:30 a 20:30 hs</span>
+                        </div>
+                        {# Botón de ubicación: la card entera es el link a Google Maps #}
+                        <span class="sgns-local__pin" aria-hidden="true" title="Cómo llegar"><svg viewBox="0 0 24 24"><path fill="#E60000" d="M12 1.5C7.86 1.5 4.5 4.86 4.5 9c0 5.6 7.5 13.5 7.5 13.5s7.5-7.9 7.5-13.5c0-4.14-3.36-7.5-7.5-7.5z"/><circle cx="12" cy="9" r="2.8" fill="rgba(0,0,0,.4)"/></svg></span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <style>
+    /* Botón de ubicación: vidrio oscuro con el pin rojo; al hover se llena de blanco y el pin salta */
+    .sgns-local__pin{position:absolute;right:18px;bottom:20px;z-index:5;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.14);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.32);box-shadow:0 8px 22px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .5s cubic-bezier(.34,1.56,.64,1),background .35s ease,border-color .35s ease,box-shadow .35s ease}
+    .sgns-local__pin::before{content:"";position:absolute;inset:-1px;border-radius:50%;border:1px solid rgba(255,255,255,.55);animation:sgnsPinOnda 2.6s ease-out infinite;pointer-events:none}
+    @keyframes sgnsPinOnda{0%{transform:scale(1);opacity:.7}70%,100%{transform:scale(1.55);opacity:0}}
+    .sgns-local__pin svg{width:24px;height:24px;display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45));transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+    .sgns-local:hover .sgns-local__pin{transform:scale(1.1);background:#fff;border-color:#fff;box-shadow:0 14px 30px rgba(0,0,0,.5)}
+    .sgns-local:hover .sgns-local__pin svg{transform:translateY(-3px) scale(1.08);filter:drop-shadow(0 4px 3px rgba(0,0,0,.3))}
+    .sgns-local__head{padding-right:82px !important}
+    @media (max-width:520px){.sgns-local__head{padding-right:58px !important}.sgns-local__pin{right:10px;bottom:12px;width:38px;height:38px}.sgns-local__pin svg{width:19px;height:19px}}
+    </style>
+    <style>
+    .sgns-locales{display:none;background:#fff;position:relative;z-index:2;padding:80px 0}
+    .sgns-locales__grid{display:grid;grid-template-columns:repeat(6,1fr);gap:32px;width:calc(100% - 40px);max-width:1260px;margin:0 auto}
+    .sgns-local{grid-column:span 2}
+    .sgns-local:nth-child(-n+2){grid-column:span 3}
+    .sgns-local:nth-child(-n+2) .sgns-local__media{aspect-ratio:5/4}
+    .sgns-local:nth-child(-n+2) .sgns-local__dir{font-size:22px}
+    .sgns-local:nth-child(-n+2) .sgns-local__hora{font-size:10.5px}
+    .sgns-local:nth-child(-n+2) .sgns-local__ciudad{font-size:10px}
+    .sgns-local{display:block;text-decoration:none;color:#fff}
+    .sgns-local__media{position:relative;aspect-ratio:3/4;overflow:hidden;background:#161616;border-radius:26px;isolation:isolate;box-shadow:0 10px 30px rgba(0,0,0,.14);transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s ease}
+    .sgns-local__img,.sgns-local__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .sgns-local__video{opacity:0;transition:opacity .35s ease}
+    .sgns-local.is-playing .sgns-local__video{opacity:1}
+    /* Sombra de abajo hacia arriba: siempre visible, sobre foto y video */
+    .sgns-local__media::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(to top,#000 0%,rgba(0,0,0,.96) 12%,rgba(0,0,0,.82) 22%,rgba(0,0,0,.5) 33%,rgba(0,0,0,.18) 43%,rgba(0,0,0,0) 52%)}
+    .sgns-local__media::before{content:"";position:absolute;inset:0;z-index:4;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 70px 8px rgba(0,0,0,.65),inset 0 0 0 1px rgba(255,255,255,.14);transition:box-shadow .5s ease}
+    .sgns-local:hover .sgns-local__media::before{box-shadow:inset 0 0 70px 8px rgba(0,0,0,.65),inset 0 0 0 1px rgba(255,255,255,.4)}
+    .sgns-local__img,.sgns-local__video{transition:transform 1.1s cubic-bezier(.2,.7,.2,1),opacity .35s ease}
+    .sgns-local:hover .sgns-local__img,.sgns-local:hover .sgns-local__video{transform:scale(1.06)}
+    .sgns-local__head{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;flex-direction:column;padding:0 20px 20px;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+    .sgns-local:hover .sgns-local__head{transform:translateY(-4px)}
+    .sgns-local__ciudad{font-size:8.5px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:6px}
+    .sgns-local__dir{font-size:18px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#fff;line-height:1.05}
+    .sgns-local__linea{display:block;height:1px;width:34px;margin:12px 0 10px;background:rgba(255,255,255,.7);transition:width .6s cubic-bezier(.2,.7,.2,1)}
+    .sgns-local:hover .sgns-local__linea{width:100%}
+    .sgns-local__hora{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.88)}
+    .sgns-local__hora svg{width:11px;height:11px;flex:none}
+    .sgns-local:hover .sgns-local__media{transform:translateY(-6px);box-shadow:0 18px 44px rgba(0,0,0,.24)}
+    @media (max-width:900px){.sgns-locales__grid{grid-template-columns:repeat(2,1fr);gap:16px}.sgns-local,.sgns-local:nth-child(-n+2){grid-column:span 1}.sgns-local:nth-child(5){grid-column:span 2}.sgns-local:nth-child(-n+2) .sgns-local__media{aspect-ratio:3/4}.sgns-local:nth-child(5) .sgns-local__media{aspect-ratio:16/10}.sgns-local:nth-child(-n+2) .sgns-local__dir{font-size:15px}.sgns-local:nth-child(-n+2) .sgns-local__hora{font-size:9px}.sgns-local:nth-child(-n+2) .sgns-local__ciudad{font-size:8.5px}.sgns-local__dir{font-size:15px}}
+    @media (max-width:520px){.sgns-locales{padding:50px 0}.sgns-local__head{padding:0 14px 14px}.sgns-local__dir,.sgns-local:nth-child(-n+2) .sgns-local__dir{font-size:12.5px;letter-spacing:.4px}.sgns-local:nth-child(-n+2) .sgns-local__hora{font-size:7.5px}.sgns-local:nth-child(-n+2) .sgns-local__ciudad{font-size:8px}.sgns-local__ciudad{font-size:8px;letter-spacing:2px;margin-bottom:5px}.sgns-local__linea{margin:10px 0 9px}.sgns-local__hora{font-size:7.5px;letter-spacing:.4px;gap:4px}.sgns-local__hora svg{width:11px;height:11px}.sgns-local__media{border-radius:20px}}
+        
+    </style>
+    <script>
+    (function() {
+        // Solo se muestra en local (localhost / 127.0.0.1), no en la tienda publicada
+        if (['localhost','127.0.0.1'].indexOf(location.hostname) === -1) { return; }
+        document.querySelector('.sgns-locales').style.display = 'block';
+        var cards = document.querySelectorAll('.sgns-local');
+        var conHover = window.matchMedia('(hover: hover)').matches;
+        cards.forEach(function(card) {
+            var v = card.querySelector('.sgns-local__video');
+            // El video se precarga apenas se muestra la sección, así al hover arranca casi al instante
+            v.preload = 'auto';
+            v.src = encodeURI(decodeURI(v.dataset.src));
+            v.load();
+            var espera;
+            function reproducir() {
+                // 0,3 segundos de espera antes de arrancar el video
+                clearTimeout(espera);
+                espera = setTimeout(function() {
+                    var p = v.play();
+                    if (p && p.catch) { p.catch(function() {}); }
+                    card.classList.add('is-playing');
+                }, 300);
+            }
+            function frenar() { clearTimeout(espera); v.pause(); card.classList.remove('is-playing'); }
+            if (conHover) {
+                card.addEventListener('mouseenter', reproducir);
+                card.addEventListener('mouseleave', frenar);
+            } else {
+                // En celular no hay hover: un toque alterna el video
+                card.addEventListener('click', function(e) { if (!card.classList.contains('is-playing')) { e.preventDefault(); } card.classList.contains('is-playing') ? frenar() : reproducir(); });
+            }
+        });
+    })();
+    </script>
+    {% endif %}
 
     <section class="redesign-social-feed">
         <div class="container-wide">
