@@ -206,7 +206,7 @@
                         <div class="sgns-drops-hoja__asa" aria-hidden="true"></div>
                         <div class="sgns-drops-hoja__tit">Drops<button type="button" class="sgns-drops-hoja__cerrar js-drops-cerrar" aria-label="Cerrar">&times;</button></div>
                         <div class="sgns-drops-hoja__cards">
-                            <a href="https://indumentariasignos.com/drop-04/" class="sgns-drops-card sgns-drops-card--nuevo" data-drop-propio>
+                            <a href="/drop-04/" class="sgns-drops-card sgns-drops-card--nuevo" data-drop-propio>
                                 <span class="sgns-drops-card__foto" data-foto="{{ 'drops-hoja-v2-04.webp' | static_url }}">
                                     <span class="sgns-drops-card__tapa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg><span class="js-drops-cd">--:--:--</span></span>
                                 </span>
@@ -214,17 +214,17 @@
                                 <span class="sgns-drops-card__estado sgns-drops-card__estado--bloq">Se desbloquea</span>
                                 <span class="sgns-drops-card__estado sgns-drops-card__estado--listo">Nuevo</span>
                             </a>
-                            <a href="https://indumentariasignos.com/drop-03/" class="sgns-drops-card" data-drop-propio>
+                            <a href="/drop-03/" class="sgns-drops-card" data-drop-propio>
                                 <span class="sgns-drops-card__foto" data-foto="{{ 'drops-hoja-v2-03.webp' | static_url }}"></span>
                                 <span class="sgns-drops-card__nombre">Drop 03</span>
                                 <span class="sgns-drops-card__estado">Disponible</span>
                             </a>
-                            <a href="https://indumentariasignos.com/drop-02-signos/" class="sgns-drops-card" data-drop-propio>
+                            <a href="/drop-02-signos/" class="sgns-drops-card" data-drop-propio>
                                 <span class="sgns-drops-card__foto" data-foto="{{ 'drops-hoja-v2-02.webp' | static_url }}"></span>
                                 <span class="sgns-drops-card__nombre">Drop 02</span>
                                 <span class="sgns-drops-card__estado">Disponible</span>
                             </a>
-                            <a href="https://indumentariasignos.com/drop-01-signos/" class="sgns-drops-card" data-drop-propio>
+                            <a href="/drop-01-signos/" class="sgns-drops-card" data-drop-propio>
                                 <span class="sgns-drops-card__foto" data-foto="{{ 'drops-hoja-v2-01.webp' | static_url }}"></span>
                                 <span class="sgns-drops-card__nombre">Drop 01</span>
                                 <span class="sgns-drops-card__estado">Disponible</span>
@@ -291,7 +291,7 @@
                 </script>
 
                 {# Botón CYBER SALE: bloqueado (con candado y cuenta regresiva "Se activa en") hasta hoy jueves 5/11/2026 a las 22:00 (data-drop-unlock). Desde ahí lleva a la categoría del Cyber, dura 48 horas hasta el sábado 7/11 a las 22:00, se extiende 24 horas más y desaparece el domingo 8/11 a las 22:00 (data-drop-cierre). Las mismas fechas están en static/js/cyber-fuego.js (INICIO) y en static/js/drop-lock.js (RESPALDO.cyber) #}
-                <a href="https://indumentariasignos.com/cyber-sgns/" class="sgns-hero-btn sgns-hero-btn--drop sgns-hero-btn--cyber is-locked" aria-disabled="true" data-drop-unlock="2026-11-05T22:00:00-03:00" data-drop-espera="Se activa en" data-drop-cierre="2026-11-08T22:00:00-03:00">
+                <a href="/cyber-sgns/" class="sgns-hero-btn sgns-hero-btn--drop sgns-hero-btn--cyber is-locked" aria-disabled="true" data-drop-unlock="2026-11-05T22:00:00-03:00" data-drop-espera="Se activa en" data-drop-cierre="2026-11-08T22:00:00-03:00">
                     <span class="sgns-drop-lock" aria-hidden="true">
                         <svg class="sgns-drop-lock__closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg>
                         <svg class="sgns-drop-lock__open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 7.6-1.7"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg>
@@ -304,12 +304,12 @@
 
                 {# Botón BERMUDAS NEW (en lugar de Promociones): lleva directo a la categoría de bermudas. Mismo estilo y lugar
                    que tenía Promociones (las reglas de .sgns-hero-btn--linea de abajo) #}
-                <a href="https://indumentariasignos.com/bermudas/" class="sgns-hero-btn sgns-hero-btn--linea">Bermudas New</a>
+                <a href="/bermudas/" class="sgns-hero-btn sgns-hero-btn--linea">Bermudas New</a>
 
                 {# Botón SAQUEO: abajo y en el medio de Drops y Bermudas. Bloqueado (candado y cuenta regresiva "Se activa en") hasta el
                    viernes 13/11/2026 a las 20:00 (data-drop-unlock); desde ahí lleva a la categoría SAQUEO WEB. Usa el mismo
                    estilo y el mismo script de contador que los botones Drop (.sgns-hero-btn--drop) #}
-                <a href="https://indumentariasignos.com/saqueo-web-136v1/" class="sgns-hero-btn sgns-hero-btn--drop sgns-hero-btn--saqueo is-locked" aria-disabled="true" data-drop-unlock="2026-11-13T20:00:00-03:00" data-drop-espera="Se activa en">
+                <a href="/saqueo-web-136v1/" class="sgns-hero-btn sgns-hero-btn--drop sgns-hero-btn--saqueo is-locked" aria-disabled="true" data-drop-unlock="2026-11-13T20:00:00-03:00" data-drop-espera="Se activa en">
                     <span class="sgns-drop-lock" aria-hidden="true">
                         <svg class="sgns-drop-lock__closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg>
                         <svg class="sgns-drop-lock__open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 7.6-1.7"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg>

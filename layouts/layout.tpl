@@ -649,5 +649,48 @@
         {# Carta de oro de Prenda dorada también fuera de su categoría (inicio, búsqueda, otras categorías) #}
         <script src="{{ "js/prenda-dorada.js" | static_url }}?v=20261113b" defer></script>
 
+        {# Fix universal: reescribe cualquier link con el dominio viejo indumentariasignos.com a ruta relativa para que nunca falle #}
+        <script>
+        (function() {
+            function sanitizeOldLinks(root) {
+                var links = (root || document).querySelectorAll('a[href*="indumentariasignos.com"]');
+                for (var i = 0; i < links.length; i++) {
+                    var a = links[i];
+                    try {
+                        var u = new URL(a.href);
+                        a.href = u.pathname + u.search + u.hash;
+                        if (a.getAttribute('target') === '_blank') {
+                            a.removeAttribute('target');
+                        }
+                    } catch(e) {
+                        a.href = a.href.replace(/^https?:\/\/(www\.)?indumentariasignos\.com/i, '');
+                        if (a.getAttribute('target') === '_blank') {
+                            a.removeAttribute('target');
+                        }
+                    }
+                }
+            }
+            document.addEventListener('DOMContentLoaded', function() { sanitizeOldLinks(); });
+            window.addEventListener('load', function() { sanitizeOldLinks(); });
+            document.addEventListener('click', function(e) {
+                var a = e.target && e.target.closest ? e.target.closest('a') : null;
+                if (a && a.href && a.href.indexOf('indumentariasignos.com') !== -1) {
+                    try {
+                        var u = new URL(a.href);
+                        a.href = u.pathname + u.search + u.hash;
+                        if (a.getAttribute('target') === '_blank') {
+                            a.removeAttribute('target');
+                        }
+                    } catch(err) {
+                        a.href = a.href.replace(/^https?:\/\/(www\.)?indumentariasignos\.com/i, '');
+                        if (a.getAttribute('target') === '_blank') {
+                            a.removeAttribute('target');
+                        }
+                    }
+                }
+            }, true);
+        })();
+        </script>
+
     </body>
 </html>
