@@ -15,11 +15,51 @@
   Cambiar solo esta linea para activar/desactivar.
 ==============================================================================*/#}
 {% set _ruletas_activas = false %}
+{# Categorías Drop (la URL dice "drop"): hero con video e intro como el inicio (snipplets/drop-hero.tpl).
+   Drop Gorras no: usa la plantilla normal de productos (la misma regla que templates/category.tpl) #}
+{% set _es_drop_cat = template == 'category' and (('drop' in category.url | lower and 'gorra' not in category.url | lower) or 'cyber' in category.url | lower) %}
+{# La página del Cyber: ahí todas las tarjetas ya tienen el estilo del Cyber (snipplets/drop-hero.tpl), así que no se le
+   suma el de .sgns-cyber-card (style-redesign.scss) a las que vienen marcadas por etiqueta #}
+{% set _es_cyber_cat = template == 'category' and 'cyber' in category.url | lower %}
 {% set _is_event_page = (page.handle == 'registroevento' or page.handle == 'registro-evento' or page.handle == 'evento' or page.handle == 'registroeventoparticipantes' or page.handle == 'registro-evento-participantes') %}
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="{% for language in languages %}{% if language.active %}{{ language.lang }}{% endif %}{% endfor %}" {% if _is_redesign_production %}class="redesign-active"{% endif %}>
     <head>
+        {# Volver con "atrás": sin intro y en el mismo lugar de la página. Se guarda la posición
+           al salir y se recupera al volver (la intro se saltea con window.__sgnsVuelta) #}
+        <script>
+            (function() {
+                var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+                var clave = 'sgns-y:' + location.pathname + location.search;
+                window.__sgnsVuelta = !!(nav && nav.type === 'back_forward');
+                window.addEventListener('pagehide', function() {
+                    try { sessionStorage.setItem(clave, String(window.pageYOffset || 0)); } catch (e) {}
+                });
+                if (!window.__sgnsVuelta) { return; }
+                document.documentElement.classList.add('sgns-vuelta');
+                var y = 0;
+                try { y = parseInt(sessionStorage.getItem(clave), 10) || 0; } catch (e) {}
+                if (!y) { return; }
+                if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+                // Se repite unas veces: las imágenes de la grilla van agrandando la página mientras cargan
+                function ir() {
+                    if (window.lenis) { window.lenis.scrollTo(y, { immediate: true, force: true }); }
+                    else { window.scrollTo(0, y); }
+                }
+                document.addEventListener('DOMContentLoaded', ir);
+                window.addEventListener('load', function() { ir(); setTimeout(ir, 300); setTimeout(ir, 800); });
+            })();
+        </script>
+        <style>html.sgns-vuelta .sgns-intro { display: none !important; }</style>
+        {# 0. El header viejo queda oculto hasta que header-island.js arma la barra nueva (clase sgns-island). Si el JS falla, aparece solo a los 1,2 s #}
+        <script>if (location.pathname.indexOf('registroevento') === -1) { document.documentElement.classList.add('sgns-isla-espera'); }</script>
+        <style>
+            html.sgns-isla-espera:not(.sgns-island) .js-head-main,
+            html.sgns-isla-espera:not(.sgns-island) .head-main { visibility: hidden; animation: sgnsIslaFallback 0s 1.2s forwards; }
+            @keyframes sgnsIslaFallback { to { visibility: visible; } }
+        </style>
+        <link rel="preload" href="{{ "js/header-island.js" | static_url }}?v=20261003b" as="script">
         {# 1. PRE-CARGA DE ACTIVOS CRÍTICOS (Soluciona parpadeos y saltos) #}
         <link rel="preload" href="{{ 'fonts/Fontspring-DEMO-blunt-semiconit.otf' | static_url }}" as="font" type="font/otf" crossorigin>
         <link rel="preload" href="{{ 'images/sgns-studio-logo.png' | static_url }}" as="image" fetchpriority="high">
@@ -34,6 +74,17 @@
                 font-weight: normal;
                 font-style: normal;
                 font-display: swap; /* 'swap' pinta el texto de inmediato con la fuente de respaldo */
+                /* La version demo de Blunt trae el 4 y los simbolos dibujados como "DEMO" y no tiene acentos:
+                   Blunt se usa solo para lo que esta bien y el resto lo dibuja Barlow Condensed Black Italic */
+                unicode-range: U+0020, U+002C, U+002E, U+0030-0033, U+0035-003B, U+003F, U+0041-005A, U+0061-007A;
+            }
+            @font-face {
+                font-family: 'Blunt Semiconit';
+                src: url('{{ "fonts/barlow-condensed-black-italic-latin.woff2" | static_url }}') format('woff2');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0021-002B, U+002D, U+002F, U+0034, U+003C-003E, U+0040, U+005B-0060, U+007B-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
             }
             {# El body ya NO se oculta: ocultarlo hasta DOMContentLoaded dejaba la
                pantalla en blanco mientras se parseaban ~360 KB de JS inline. #}
@@ -132,6 +183,17 @@
                 font-weight: normal;
                 font-style: normal;
                 font-display: swap;
+                /* La version demo de Blunt trae el 4 y los simbolos dibujados como "DEMO" y no tiene acentos:
+                   Blunt se usa solo para lo que esta bien y el resto lo dibuja Barlow Condensed Black Italic */
+                unicode-range: U+0020, U+002C, U+002E, U+0030-0033, U+0035-003B, U+003F, U+0041-005A, U+0061-007A;
+            }
+            @font-face {
+                font-family: 'Blunt Semiconit';
+                src: url('{{ "fonts/barlow-condensed-black-italic-latin.woff2" | static_url }}') format('woff2');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+                unicode-range: U+0021-002B, U+002D, U+002F, U+0034, U+003C-003E, U+0040, U+005B-0060, U+007B-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
             }
         </style>
         
@@ -179,7 +241,7 @@
         <link rel="stylesheet" href="{{ 'css/style-async.scss' | static_url }}" media="print" onload="this.media='all'">
 
         {# Estilos del Rediseño 2026 #}
-        <link rel="stylesheet" href="{{ 'css/style-redesign.scss' | static_url }}">
+        <link rel="stylesheet" href="{{ 'css/style-redesign.scss' | static_url }}?v=20261109f">
 
         <style>
             /* FIX MAESTRO: Notificación de Carrito — Aparece SOLO centrada */
@@ -257,13 +319,13 @@
         {{ component('structured-data-organization') }}
         {{ component('structured-data') }}
 
-        {% if template == 'home' %}
+        {% if template == 'home' or _es_drop_cat %}
             {# Bloqueo y velo inmediato para que el primer fotograma ya tenga la intro y no parpadee nada #}
-            <script>(function(){document.documentElement.classList.add("sgns-intro-on","sgns-intro-lock");})();</script>
+            <script>(function(){if(window.__sgnsVuelta){return;}document.documentElement.classList.add("sgns-intro-on","sgns-intro-lock");})();</script>
         {% endif %}
 
     </head>
-    <body class="redesign-active {% if _is_event_page %}is-event-page{% endif %} {% if customer %}customer-logged-in{% endif %} template-{{ template | replace('.', '-') }}">
+    <body class="redesign-active {% if _is_event_page %}is-event-page{% endif %} {% if customer %}customer-logged-in{% endif %} template-{{ template | replace('.', '-') }}{% if _es_drop_cat %} sgns-drop-cat{% endif %}{% if _es_cyber_cat %} sgns-cyber-cat{% endif %}">
 
         {# Theme icons #}
 
@@ -291,6 +353,8 @@
             {# Header = Advertising + Nav + Logo + Search + Ajax Cart #}
 
             {% snipplet "header/header.tpl" %}
+            {# La isla se arma acá mismo, apenas existe el header (antes iba con defer al final y se veía el header viejo) #}
+            <script src="{{ "js/header-island.js" | static_url }}?v=20261003b"></script>
 
             {% if settings.show_tab_nav %}
                 {% snipplet "navigation/navigation-tabs.tpl" %}
@@ -556,25 +620,34 @@
         })();
         </script>
         <!-- Scroll suave (Lenis): libreria local + init con teclado, links y modales -->
+        {# ?v=AAAAMMDD en los JS propios: el CDN de la tienda guarda copias viejas de los archivos de static/ (sobre todo la
+           comprimida que piden los navegadores). Al cambiar un JS, subir también este archivo con la fecha nueva en su ?v= #}
         <script>
             window.__sgnsLenisUrl = '{{ "js/lenis.min.js" | static_url }}';
         </script>
-        <script src="{{ "js/smooth-scroll.js" | static_url }}" defer></script>
-        <script src="{{ "js/whatsapp-bubble.js" | static_url }}" defer></script>
-        <script src="{{ "js/header-island.js" | static_url }}" defer></script>
+        <script src="{{ "js/smooth-scroll.js" | static_url }}?v=20261004f" defer></script>
+        <script src="{{ "js/whatsapp-bubble.js" | static_url }}?v=20261001" defer></script>
+        <script src="{{ "js/combo-traduccion.js" | static_url }}?v=20261023" defer></script>
+        {% if template == 'product' %}
+            <script src="{{ "js/combo-look.js" | static_url }}?v=20261024d" defer></script>
+        {% endif %}
         {% if template == 'home' %}
             {# Intro cinematográfica del inicio #}
-            <script src="{{ "js/intro.js" | static_url }}" defer></script>
+            <script src="{{ "js/intro.js" | static_url }}?v=20261003" defer></script>
             {# El hero se oscurece al scrollear #}
-            <script src="{{ "js/hero-scroll.js" | static_url }}" defer></script>
+            <script src="{{ "js/hero-scroll.js" | static_url }}?v=20261001" defer></script>
         {% endif %}
         {% if template == 'category' or template == 'search' %}
             {# Menú de "Ordenar" propio (reemplaza al select nativo) #}
-            <script src="{{ "js/sort-menu.js" | static_url }}" defer></script>
+            <script src="{{ "js/sort-menu.js" | static_url }}?v=20261001" defer></script>
         {% endif %}
 
         {# Drop 01 bloqueado en todos los links (menú, pie, etc.) hasta el viernes 2/10/2026 22:00 #}
-        <script src="{{ "js/drop-lock.js" | static_url }}" defer></script>
+        <script src="{{ "js/drop-lock.js" | static_url }}?v=20261113b" defer></script>
+        {# Cyber extendido en llamas (se apaga solo al llegar la fecha de cierre que tiene adentro) #}
+        <script src="{{ "js/cyber-fuego.js" | static_url }}?v=20261107a" defer></script>
+        {# Carta de oro de Prenda dorada también fuera de su categoría (inicio, búsqueda, otras categorías) #}
+        <script src="{{ "js/prenda-dorada.js" | static_url }}?v=20261113b" defer></script>
 
     </body>
 </html>

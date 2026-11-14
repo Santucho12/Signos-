@@ -92,8 +92,8 @@
                     <div class="sgns-select-wrapper">
                         <select id="eventJuego" name="juego" class="sgns-input sgns-select">
                             <option value="" disabled selected>Seleccioná un juego...</option>
-                            <option value="Fútbol">Fútbol</option>
-                            <option value="Básquet">Básquet</option>
+                            <option value="Fútbol" disabled>Fútbol (inscripción cerrada)</option>
+                            <option value="Básquet" disabled>Básquet (inscripción cerrada)</option>
                             <option value="Ping Pong">Ping Pong</option>
                         </select>
                     </div>
@@ -1177,6 +1177,10 @@
 
         if (!selectJuego.value) {
             setError(selectJuego, errorJuego, 'Seleccioná un juego');
+            valid = false;
+        } else if (selectJuego.selectedOptions[0] && selectJuego.selectedOptions[0].disabled) {
+            // Un juego cerrado puede quedar elegido (el navegador lo restaura al volver atrás): no se envía
+            setError(selectJuego, errorJuego, 'Las inscripciones de este juego están cerradas');
             valid = false;
         }
 

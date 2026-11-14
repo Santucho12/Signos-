@@ -108,7 +108,7 @@
 </style>
 {# Intro cinematográfica: el velo y el texto van acá, con sus estilos, para que
    valgan desde el primer cuadro. Los tiempos los maneja static/js/intro.js #}
-<script>(function(){var r=document.documentElement;r.classList.add("sgns-intro-on","sgns-intro-lock");setTimeout(function(){r.classList.remove("sgns-intro-on","sgns-intro-lock");},5000);})();</script>
+<script>(function(){if(window.__sgnsVuelta){return;}var r=document.documentElement;r.classList.add("sgns-intro-on","sgns-intro-lock");setTimeout(function(){r.classList.remove("sgns-intro-on","sgns-intro-lock");},5000);})();</script>
 
 {# La foto del hero se pide antes que nada: es el primer fotograma del video real, evitando cualquier cambio de imagen #}
 <link rel="preload" as="image" href="{{ 'hero-desktop-poster-v2.webp' | static_url }}" media="(min-width: 768px)" fetchpriority="high" />
@@ -190,72 +190,135 @@
                 </svg>
             </div>
             <div class="redesign-hero-btn-wrapper sgns-hero-botones">
-                {# Botón Drop 01 (reemplaza a Productos): bloqueado con candado hasta el viernes 2/10/2026 a las 22:00
-                   (hora Argentina). Para el próximo drop se cambian la fecha, el nombre y el link. #}
-                <a href="/drop01/" class="sgns-hero-btn sgns-hero-btn--drop is-locked" aria-disabled="true" data-drop-unlock="2026-10-02T22:00:00-03:00">
+                {# Botón DROPS ("Hoja desde abajo"): un solo botón que abre una hoja desde abajo con una foto de cada Drop.
+                   Drop 04 bloqueado (candado y cuenta regresiva en su foto) hasta el lunes 9/11/2026 a las 22:00 (data-drop-unlock;
+                   la misma fecha en RESPALDO['04'] de static/js/drop-lock.js). Mientras está bloqueado, el botón late en rojo.
+                   Para sumar un Drop: una tarjeta nueva primera en la lista (foto 360x480 en
+                   static/drops-hoja-v2-NN.webp) y pasar la fecha de data-drop-unlock #}
+                <div class="sgns-hero-drops is-locked" data-drop-unlock="2026-11-09T22:00:00-03:00">
+                    <button type="button" class="sgns-hero-btn sgns-hero-drops__btn js-drops-toggle" aria-haspopup="dialog" aria-expanded="false" aria-controls="sgns-drops-hoja">
+                        <b>Drops</b>
+                    </button>
+                </div>
+                <div class="sgns-drops-hoja is-locked" id="sgns-drops-hoja" role="dialog" aria-modal="true" aria-label="Drops" data-lenis-prevent>
+                    <div class="sgns-drops-hoja__telon js-drops-cerrar"></div>
+                    <div class="sgns-drops-hoja__panel">
+                        <div class="sgns-drops-hoja__asa" aria-hidden="true"></div>
+                        <div class="sgns-drops-hoja__tit">Drops<button type="button" class="sgns-drops-hoja__cerrar js-drops-cerrar" aria-label="Cerrar">&times;</button></div>
+                        <div class="sgns-drops-hoja__cards">
+                            <a href="https://indumentariasignos.com/drop-04/" class="sgns-drops-card sgns-drops-card--nuevo" data-drop-propio>
+                                <span class="sgns-drops-card__foto" data-foto="{{ 'drops-hoja-v2-04.webp' | static_url }}">
+                                    <span class="sgns-drops-card__tapa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg><span class="js-drops-cd">--:--:--</span></span>
+                                </span>
+                                <span class="sgns-drops-card__nombre">Drop 04</span>
+                                <span class="sgns-drops-card__estado sgns-drops-card__estado--bloq">Se desbloquea</span>
+                                <span class="sgns-drops-card__estado sgns-drops-card__estado--listo">Nuevo</span>
+                            </a>
+                            <a href="https://indumentariasignos.com/drop-03/" class="sgns-drops-card" data-drop-propio>
+                                <span class="sgns-drops-card__foto" data-foto="{{ 'drops-hoja-v2-03.webp' | static_url }}"></span>
+                                <span class="sgns-drops-card__nombre">Drop 03</span>
+                                <span class="sgns-drops-card__estado">Disponible</span>
+                            </a>
+                            <a href="https://indumentariasignos.com/drop-02-signos/" class="sgns-drops-card" data-drop-propio>
+                                <span class="sgns-drops-card__foto" data-foto="{{ 'drops-hoja-v2-02.webp' | static_url }}"></span>
+                                <span class="sgns-drops-card__nombre">Drop 02</span>
+                                <span class="sgns-drops-card__estado">Disponible</span>
+                            </a>
+                            <a href="https://indumentariasignos.com/drop-01-signos/" class="sgns-drops-card" data-drop-propio>
+                                <span class="sgns-drops-card__foto" data-foto="{{ 'drops-hoja-v2-01.webp' | static_url }}"></span>
+                                <span class="sgns-drops-card__nombre">Drop 01</span>
+                                <span class="sgns-drops-card__estado">Disponible</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                (function() {
+                    var caja = document.querySelector(".sgns-hero-drops");
+                    var hoja = document.getElementById("sgns-drops-hoja");
+                    if (!caja || !hoja) { return; }
+                    // La hoja va directo en el <body>: así queda fija a la pantalla y por encima de todo
+                    document.body.appendChild(hoja);
+                    var boton = caja.querySelector(".js-drops-toggle");
+                    var panel = hoja.querySelector(".sgns-drops-hoja__panel");
+                    var fin = new Date(caja.getAttribute("data-drop-unlock")).getTime();
+                    var relojes = hoja.querySelectorAll(".js-drops-cd");
+                    var pad = function(n) { return String(n).padStart(2, "0"); };
+                    var abierta = false, fotosListas = false, focoAntes = null;
+
+                    // Fotos: se cargan cuando la página terminó de cargar (o antes, al primer toque del botón)
+                    function fotos() {
+                        if (fotosListas) { return; }
+                        fotosListas = true;
+                        hoja.querySelectorAll("[data-foto]").forEach(function(el) { el.style.backgroundImage = "url(" + JSON.stringify(el.getAttribute("data-foto")) + ")"; });
+                    }
+                    if (document.readyState === "complete") { setTimeout(fotos, 1500); } else { window.addEventListener("load", function() { setTimeout(fotos, 1500); }); }
+                    boton.addEventListener("pointerenter", fotos);
+                    boton.addEventListener("touchstart", fotos, { passive: true });
+
+                    // Drop 04: cuenta regresiva en su foto hasta la hora de salida; después, "Nuevo"
+                    function bloqueado() { return Date.now() < fin; }
+                    function tick() {
+                        var t = fin - Date.now(), bloq = t > 0;
+                        caja.classList.toggle("is-locked", bloq);
+                        hoja.classList.toggle("is-locked", bloq);
+                        if (!bloq) { return; }
+                        var h = Math.floor(t / 36e5), m = Math.floor(t / 6e4) % 60, s = Math.floor(t / 1e3) % 60;
+                        relojes.forEach(function(el) { el.textContent = pad(h) + ":" + pad(m) + ":" + pad(s); });
+                        setTimeout(tick, 1000 - (Date.now() % 1000) + 5);
+                    }
+                    tick();
+                    hoja.querySelector(".sgns-drops-card--nuevo").addEventListener("click", function(e) { if (bloqueado()) { e.preventDefault(); } });
+
+                    function abrir(v) {
+                        if (v === abierta) { return; }
+                        abierta = v;
+                        if (v) { fotos(); focoAntes = document.activeElement; }
+                        hoja.classList.toggle("is-open", v);
+                        document.documentElement.classList.toggle("sgns-drops-abierta", v);
+                        boton.setAttribute("aria-expanded", v ? "true" : "false");
+                        if (v) { setTimeout(function() { hoja.querySelector(".sgns-drops-hoja__cerrar").focus({ preventScroll: true }); }, 60); }
+                        else if (focoAntes && focoAntes.focus) { focoAntes.focus({ preventScroll: true }); }
+                    }
+                    boton.addEventListener("click", function() { abrir(!abierta); });
+                    hoja.querySelectorAll(".js-drops-cerrar").forEach(function(el) { el.addEventListener("click", function() { abrir(false); }); });
+                    document.addEventListener("keydown", function(e) { if (abierta && e.key === "Escape") { abrir(false); } });
+                    // Con la hoja abierta la página de atrás no se mueve (salvo que la hoja no entre en pantalla y tenga su propio scroll)
+                    function frenar(e) { if (!(panel.contains(e.target) && panel.scrollHeight > panel.clientHeight + 1)) { e.preventDefault(); } }
+                    hoja.addEventListener("wheel", frenar, { passive: false });
+                    hoja.addEventListener("touchmove", frenar, { passive: false });
+                })();
+                </script>
+
+                {# Botón CYBER SALE: bloqueado (con candado y cuenta regresiva "Se activa en") hasta hoy jueves 5/11/2026 a las 22:00 (data-drop-unlock). Desde ahí lleva a la categoría del Cyber, dura 48 horas hasta el sábado 7/11 a las 22:00, se extiende 24 horas más y desaparece el domingo 8/11 a las 22:00 (data-drop-cierre). Las mismas fechas están en static/js/cyber-fuego.js (INICIO) y en static/js/drop-lock.js (RESPALDO.cyber) #}
+                <a href="https://indumentariasignos.com/cyber-sgns/" class="sgns-hero-btn sgns-hero-btn--drop sgns-hero-btn--cyber is-locked" aria-disabled="true" data-drop-unlock="2026-11-05T22:00:00-03:00" data-drop-espera="Se activa en" data-drop-cierre="2026-11-08T22:00:00-03:00">
                     <span class="sgns-drop-lock" aria-hidden="true">
                         <svg class="sgns-drop-lock__closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg>
                         <svg class="sgns-drop-lock__open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 7.6-1.7"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg>
                     </span>
                     <span class="sgns-drop-txt">
-                        <span class="sgns-drop-top"><b>Drop 01</b><span class="sgns-drop-label"><i></i><span class="js-drop-label">Se desbloquea en</span></span></span>
+                        <span class="sgns-drop-top"><b>CYBER SALE</b><span class="sgns-drop-label"><i></i><span class="js-drop-label">Se desbloquea en</span></span></span>
                         <em class="js-drop-count sgns-drop-count"><svg class="sgns-drop-crono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.6 1.6M9.5 2.5h5M12 2.5v3.5M19 6l1.4-1.4"/></svg><span><i>--</i><u>d</u></span><span><i>--</i><u>h</u></span><span><i>--</i><u>m</u></span><span><i>--</i><u>s</u></span></em>
                     </span>
                 </a>
 
-                {# Detección dinámica de la categoría o navegación de Promociones #}
-                {% set promo_item = null %}
-                {% for item in navigation %}
-                    {% if not promo_item and ('promo' in item.name | lower or 'oferta' in item.name | lower or 'promo' in item.url | lower) %}
-                        {% set promo_item = item %}
-                    {% endif %}
-                {% endfor %}
-                {% if not promo_item %}
-                    {% for cat in categories %}
-                        {% if not promo_item and ('promo' in cat.name | lower or 'oferta' in cat.name | lower or 'promo' in cat.url | lower) %}
-                            {% set promo_item = cat %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+                {# Botón BERMUDAS NEW (en lugar de Promociones): lleva directo a la categoría de bermudas. Mismo estilo y lugar
+                   que tenía Promociones (las reglas de .sgns-hero-btn--linea de abajo) #}
+                <a href="https://indumentariasignos.com/bermudas/" class="sgns-hero-btn sgns-hero-btn--linea">Bermudas New</a>
 
-                {% set promo_url = promo_item ? (promo_item.url | setting_url | default(promo_item.url)) : '/jeans-2x70k/' %}
-                {% set promo_subitems = promo_item ? (promo_item.subitems | default(promo_item.subcategories)) : null %}
-
-                {% if promo_subitems and promo_subitems is not empty %}
-                    <div class="sgns-hero-promos">
-                        <button type="button" class="sgns-hero-btn sgns-hero-btn--linea js-promos-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="sgns-promos-menu">
-                            {{ promo_item.name | default('Promociones') }}
-                        </button>
-                        <ul class="sgns-hero-promos__menu" id="sgns-promos-menu">
-                            {% for sub in promo_subitems %}
-                                <li><a href="{{ sub.url | setting_url | default(sub.url) }}">{{ sub.name }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <script>
-                    (function() {
-                        var caja = document.querySelector(".sgns-hero-promos");
-                        if (!caja) { return; }
-                        var boton = caja.querySelector(".js-promos-toggle");
-                        function abrir(v) {
-                            caja.classList.toggle("is-open", v);
-                            boton.setAttribute("aria-expanded", v ? "true" : "false");
-                        }
-                        var conHover = window.matchMedia("(hover: hover)").matches;
-                        boton.addEventListener("click", function(e) { e.stopPropagation(); abrir(conHover ? true : !caja.classList.contains("is-open")); });
-                        document.addEventListener("click", function(e) { if (!caja.contains(e.target)) { abrir(false); } });
-                        document.addEventListener("keyup", function(e) { if (e.key === "Escape") { abrir(false); } });
-                        if (conHover) {
-                            caja.addEventListener("mouseenter", function() { abrir(true); });
-                            caja.addEventListener("mouseleave", function() { abrir(false); });
-                        }
-                    })();
-                    </script>
-                {% else %}
-                    <a href="{{ promo_url }}" class="sgns-hero-btn sgns-hero-btn--linea">
-                        {{ promo_item ? promo_item.name : 'Promociones' }}
-                    </a>
-                {% endif %}
+                {# Botón SAQUEO: abajo y en el medio de Drops y Bermudas. Bloqueado (candado y cuenta regresiva "Se activa en") hasta el
+                   viernes 13/11/2026 a las 20:00 (data-drop-unlock); desde ahí lleva a la categoría SAQUEO WEB. Usa el mismo
+                   estilo y el mismo script de contador que los botones Drop (.sgns-hero-btn--drop) #}
+                <a href="https://indumentariasignos.com/saqueo-web-136v1/" class="sgns-hero-btn sgns-hero-btn--drop sgns-hero-btn--saqueo is-locked" aria-disabled="true" data-drop-unlock="2026-11-13T20:00:00-03:00" data-drop-espera="Se activa en">
+                    <span class="sgns-drop-lock" aria-hidden="true">
+                        <svg class="sgns-drop-lock__closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg>
+                        <svg class="sgns-drop-lock__open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 7.6-1.7"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg>
+                    </span>
+                    <span class="sgns-drop-txt">
+                        <span class="sgns-drop-top"><b>SAQUEO</b><span class="sgns-drop-label"><i></i><span class="js-drop-label">Se desbloquea en</span></span></span>
+                        <em class="js-drop-count sgns-drop-count"><svg class="sgns-drop-crono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.6 1.6M9.5 2.5h5M12 2.5v3.5M19 6l1.4-1.4"/></svg><span><i>--</i><u>d</u></span><span><i>--</i><u>h</u></span><span><i>--</i><u>m</u></span><span><i>--</i><u>s</u></span></em>
+                    </span>
+                </a>
             </div>
 
             <style>
@@ -273,8 +336,7 @@
                 box-shadow: 0 0 0 0 rgba(230,0,0,.5), 0 14px 30px -14px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.08); }
             .redesign-active .sgns-hero-btn--drop::before { display: none !important; }
             .redesign-active .sgns-hero-btn--drop.is-locked { animation: sgnsDropLatido 1.8s ease-in-out infinite; cursor: not-allowed; }
-            .redesign-active .sgns-hero-btn--drop.is-final { animation-duration: .9s; }
-            @keyframes sgnsDropLatido { 0%, 100% { box-shadow: 0 0 0 0 rgba(230,0,0,.45), 0 14px 30px -14px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.08); } 50% { box-shadow: 0 0 0 7px rgba(230,0,0,0), 0 14px 30px -12px rgba(230,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08); } }
+                        @keyframes sgnsDropLatido { 0%, 100% { box-shadow: 0 0 0 0 rgba(230,0,0,.45), 0 14px 30px -14px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.08); } 50% { box-shadow: 0 0 0 7px rgba(230,0,0,0), 0 14px 30px -12px rgba(230,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08); } }
 
             /* Candado: esquina inferior izquierda, mitad dentro y mitad fuera */
             .sgns-drop-lock { position: absolute; left: -13px; bottom: -13px; z-index: 3; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; background: radial-gradient(circle at 32% 24%, #303030 0%, #151515 55%, #090909 100%); border: 0; box-shadow: 0 0 0 3px rgba(8,8,8,.7), 0 8px 18px rgba(0,0,0,.65), inset 0 1.5px 0 rgba(255,255,255,.2), inset 0 -3px 6px rgba(0,0,0,.65); }
@@ -300,14 +362,21 @@
             .sgns-drop-count span:last-child i { animation: sgnsDropSeg 1s ease-in-out infinite; }
             @keyframes sgnsDropSeg { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
 
-            /* Desbloqueado */
-            .sgns-hero-btn--drop:not(.is-locked) { background: #fff !important; border-color: #fff !important; color: #111 !important; animation: none; }
-            .sgns-hero-btn--drop:not(.is-locked):hover { transform: translateY(-3px) !important; }
-            .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-lock { background: #111; }
+            /* Desbloqueado: pill rojo con brillo que pasa, candado blanco abierto y flecha */
+            .redesign-active .sgns-hero-btn--drop:not(.is-locked) { background: linear-gradient(180deg, #262626 0%, #0d0d0d 100%) !important; border: 0 !important; color: #fff !important; animation: none; overflow: visible; backdrop-filter: none; -webkit-backdrop-filter: none;
+                box-shadow: 0 0 0 0 rgba(255,255,255,.4), 0 14px 32px -10px rgba(0,0,0,.8); }
+            @keyframes sgnsDropListo { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,.35), 0 14px 32px -10px rgba(0,0,0,.8); } 50% { box-shadow: 0 0 0 9px rgba(255,255,255,0), 0 16px 36px -8px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.18); } }
+            .redesign-active .sgns-hero-btn--drop:not(.is-locked)::before { display: block !important; content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.22) 50%, transparent 65%); background-size: 250% 100%; animation: sgnsDropBrillo 3.4s linear infinite; }
+            @keyframes sgnsDropBrillo { 0% { background-position: 170% 0; } 100% { background-position: -170% 0; } }
+            .redesign-active .sgns-hero-btn--drop:not(.is-locked)::after { content: "\2192"; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 18px; line-height: 1; color: #fff; transition: transform .3s ease; }
+            .redesign-active .sgns-hero-btn--drop:not(.is-locked):hover { transform: translateY(-3px) !important; }
+            .redesign-active .sgns-hero-btn--drop:not(.is-locked):hover::after { transform: translate(4px, -50%); }
+            .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-lock { background: radial-gradient(circle at 32% 24%, #303030 0%, #151515 55%, #090909 100%); color: #fff; animation: none; border: 0; box-shadow: 0 0 0 3px rgba(8,8,8,.7), 0 8px 18px rgba(0,0,0,.65), inset 0 -3px 6px rgba(0,0,0,.65); }
             .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-lock__closed { display: none; }
             .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-lock__open { display: block; }
-            .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-top b { color: #111; }
-            .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-label { color: #444; }
+            .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-top b { color: #fff; }
+            .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-label { color: #22C55E; font-weight: 700 !important; }
+            .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-label i { background: #22C55E; }
             .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-count { display: none; }
 
             @media (max-width: 767px) {
@@ -347,8 +416,16 @@
             .sgns-drop-count u { font-size: 7px; }
             @media (max-width: 767px) {
                 .redesign-active .sgns-hero-botones > .sgns-hero-btn,
-                .redesign-active .sgns-hero-botones > .sgns-hero-promos { width: min(42vw, 164px) !important; min-width: min(42vw, 164px) !important; max-width: min(42vw, 164px) !important; flex: 0 0 min(42vw, 164px) !important; }
-                .redesign-active .sgns-hero-btn { height: 55px; font-size: 12.5px !important; }
+                .redesign-active .sgns-hero-botones > .sgns-hero-promos { width: min(43vw, 176px) !important; min-width: min(43vw, 176px) !important; max-width: min(43vw, 176px) !important; flex: 0 0 min(43vw, 176px) !important; }
+                /* Uno al lado del otro: Drop a la izquierda, Promociones a la derecha */
+                .redesign-active .sgns-hero-botones { flex-direction: row !important; flex-wrap: nowrap !important; justify-content: center !important; align-items: center !important; gap: 8px !important; }
+                .redesign-active .sgns-hero-botones > .sgns-hero-btn--drop { order: 1; }
+                .redesign-active .sgns-hero-botones > .sgns-hero-promos, .redesign-active .sgns-hero-botones > .sgns-hero-btn--linea { order: 2; }
+                .redesign-active .sgns-hero-btn { height: 58px; font-size: 13px !important; }
+                .redesign-active .sgns-hero-btn--drop { justify-content: center !important; }
+                .sgns-drop-txt { align-items: center; }
+                .sgns-drop-top { justify-content: center; }
+                .sgns-drop-count { justify-content: center; }
                 .redesign-active .sgns-hero-promos .sgns-hero-btn { width: 100% !important; min-width: 100% !important; max-width: 100% !important; flex: 1 1 100% !important; }
                 .redesign-active .sgns-hero-btn--drop { padding: 0 8px 0 28px !important; }
                 .sgns-drop-lock { width: 34px; height: 34px; left: -10px; bottom: -10px; }
@@ -357,8 +434,8 @@
                 .sgns-drop-top b { font-size: 11px; letter-spacing: .15em; }
                 .sgns-drop-count { gap: 5px; }
                 .sgns-drop-crono { width: 13px; height: 13px; }
-                .sgns-drop-count i { font-size: 13px; }
-                .sgns-drop-count u { font-size: 6px; }
+                .sgns-drop-count i { font-size: 12.5px; }
+                .sgns-drop-count u { font-size: 5.5px; }
             }
             @media (max-width: 360px) {
                 .redesign-active .sgns-hero-btn--drop { padding-left: 25px !important; }
@@ -368,23 +445,143 @@
             }
             /* Cronómetro y tiempo titilan juntos: todo el grupo se apaga y se prende al mismo ritmo */
             .sgns-hero-btn--drop.is-locked .sgns-drop-count { animation: sgnsDropTitila 1s ease-in-out infinite; }
-            .sgns-hero-btn--drop.is-final .sgns-drop-count { animation-duration: .6s; }
-            .sgns-drop-crono, .sgns-drop-count span:last-child i { animation: none !important; }
+                        .sgns-drop-crono, .sgns-drop-count span:last-child i { animation: none !important; }
             @keyframes sgnsDropTitila { 0%, 100% { opacity: 1; } 50% { opacity: .18; } }
+            @media (max-width: 767px) {
+                .redesign-active .sgns-hero-btn--drop.is-locked { animation: none !important; box-shadow: 0 14px 30px -14px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.08) !important; }
+                .sgns-hero-btn--drop.is-locked .sgns-drop-count { animation-duration: 2s !important; }
+            }
+            /* Celular, desbloqueado: "Ya disponible" en verde debajo de "Drop 01" (bloqueado se oculta para dar lugar al cronómetro) */
+            @media (max-width: 767px) {
+                .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-top { flex-direction: column; align-items: center; gap: 6px; }
+                .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-label { display: inline-flex; font-size: 9px; letter-spacing: .06em; }
+                .redesign-active .sgns-hero-btn--drop:not(.is-locked)::after { display: none; }
+            }
             @media (prefers-reduced-motion: reduce) {
                 .sgns-hero-btn--drop.is-locked, .sgns-hero-btn--drop.is-locked .sgns-drop-lock, .sgns-drop-label i { animation: none !important; }
                 /* El titileo del cronómetro es pedido explícito: se mantiene, solo más suave */
                 .sgns-hero-btn--drop.is-locked .sgns-drop-count { animation: sgnsDropTitila 1.4s ease-in-out infinite !important; }
             }
+            /* Drop 02 va debajo de Drop 01 (misma columna); Promociones queda a la derecha de Drop 01.
+               El espacio entre filas deja lugar al candado, que asoma por abajo del botón */
+            .redesign-active .sgns-hero-botones { display: grid !important; grid-template-columns: auto auto; justify-content: center !important; align-items: center !important; column-gap: 16px !important; row-gap: 26px !important; }
+            .redesign-active .sgns-hero-botones > .sgns-hero-btn--drop { grid-column: 1; grid-row: 1; }
+            .redesign-active .sgns-hero-botones > .sgns-hero-promos, .redesign-active .sgns-hero-botones > .sgns-hero-btn--linea { grid-column: 2; grid-row: 1; }
+            .redesign-active .sgns-hero-botones > .sgns-hero-btn--drop2 { grid-column: 1; grid-row: 2; }
+            .redesign-active .sgns-hero-botones > .sgns-hero-btn--cyber { grid-column: 2; grid-row: 2; }
+            /* SAQUEO: segunda fila, centrado entre Drops (izquierda) y Bermudas (derecha) */
+            .redesign-active .sgns-hero-botones > .sgns-hero-btn--saqueo { grid-column: 1 / span 2; grid-row: 2; justify-self: center; }
+            /* CYBER SGNS en neón: fondo negro, tubo cian alrededor que late, "se desbloquea en" en rosa y la cuenta en cian encendido */
+            .redesign-active .sgns-hero-btn--cyber.sgns-hero-btn--cyber { background: #07060d !important; border: 1.5px solid #E60000 !important; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: 0 0 10px rgba(230,0,0,.6), inset 0 0 10px rgba(230,0,0,.3), 0 0 30px rgba(230,0,0,.2); }
+            .redesign-active .sgns-hero-btn--cyber.is-locked { animation: sgnsCyberNeon 2.2s ease-in-out infinite; }
+            @keyframes sgnsCyberNeon { 0%, 100% { box-shadow: 0 0 10px rgba(230,0,0,.6), inset 0 0 10px rgba(230,0,0,.3), 0 0 30px rgba(230,0,0,.2); } 50% { box-shadow: 0 0 18px rgba(230,0,0,.9), inset 0 0 14px rgba(230,0,0,.5), 0 0 46px rgba(230,0,0,.4); } }
+            .sgns-hero-btn--cyber .sgns-drop-top b { color: #ffe5e5 !important; text-shadow: 0 0 6px #E60000, 0 0 14px #E60000; }
+            .sgns-hero-btn--cyber .sgns-drop-label, .sgns-hero-btn--cyber:not(.is-locked) .sgns-drop-label { color: #ffe5e5 !important; text-shadow: 0 0 6px #E60000, 0 0 12px #E60000; }
+            .sgns-hero-btn--cyber .sgns-drop-label i, .sgns-hero-btn--cyber:not(.is-locked) .sgns-drop-label i { background: #E60000; box-shadow: 0 0 6px #E60000; }
+            .sgns-hero-btn--cyber.is-locked .sgns-drop-lock { color: #ffe5e5; border: 1.5px solid #E60000; box-shadow: 0 0 0 3px rgba(8,8,8,.7), 0 0 12px rgba(230,0,0,.85), inset 0 -3px 6px rgba(0,0,0,.65); }
+            /* CYBERSIGNOS es más largo que "Drop 01": el texto arranca más a la izquierda para que entre completo */
+            .redesign-active .sgns-hero-btn--cyber { padding-left: 28px !important; }
+            @media (max-width: 767px) { .redesign-active .sgns-hero-btn--cyber { padding-left: 20px !important; } }
+            /* Ya disponibles (Drop 01, Drop 02, ...): sin el candado abierto; solo lo llevan los que siguen bloqueados */
+            .sgns-hero-btn--drop:not(.is-locked) .sgns-drop-lock { display: none !important; }
+            /* Contador de CYBER SGNS: números en cian neón, como el cartel "Abre en" */
+            .sgns-hero-btn--cyber .sgns-drop-count i { color: #ffe5e5; text-shadow: 0 0 6px #E60000, 0 0 14px #E60000, 0 0 26px rgba(230,0,0,.6); }
+            .sgns-hero-btn--cyber .sgns-drop-count u { color: rgba(255,229,229,.7); }
+            .sgns-hero-btn--cyber .sgns-drop-crono { color: #E60000; animation-name: sgnsCyberCrono; }
+            @keyframes sgnsCyberCrono { 0%, 100% { opacity: 1; filter: drop-shadow(0 0 7px rgba(230,0,0,.95)); } 50% { opacity: .12; filter: drop-shadow(0 0 0 rgba(230,0,0,0)); } }
+            .redesign-active .sgns-hero-botones > .sgns-hero-btn--drop3 { grid-column: 1; grid-row: 3; }
+            /* Promociones oculto mientras dura el Cyber: los Drops quedan en una columna. Cuando termina el Cyber (domingo
+               8/11 22:00, data-drop-cierre) el script de abajo saca su botón, le pone .sgns-cyber-fin a la caja y Promociones
+               vuelve a aparecer en el mismo lugar que tenía el Cyber */
+            .redesign-active .sgns-hero-botones:not(.sgns-cyber-fin) > .sgns-hero-promos, .redesign-active .sgns-hero-botones:not(.sgns-cyber-fin) > .sgns-hero-btn--linea { display: none !important; }
+            .redesign-active .sgns-hero-botones.sgns-cyber-fin > .sgns-hero-promos, .redesign-active .sgns-hero-botones.sgns-cyber-fin > .sgns-hero-btn--linea { grid-column: 2; grid-row: 1; }
+            /* Botón DROPS a la izquierda de Promociones: mismo tamaño que los botones, oscuro, con el número de Drops en
+               una pastilla blanca. Mientras el Drop nuevo está bloqueado late en rojo y el punto rojo titila (también con las
+               animaciones de Windows apagadas: es pedido) */
+            .redesign-active .sgns-hero-botones > .sgns-hero-drops { grid-column: 1; grid-row: 1; position: relative; display: flex; box-sizing: border-box; width: 254px !important; min-width: 254px !important; max-width: 254px !important; flex: 0 0 254px !important; }
+            .redesign-active .sgns-hero-drops__btn { position: relative; width: 100% !important; min-width: 100% !important; max-width: 100% !important; flex: 1 1 100% !important; gap: 10px; cursor: pointer; -webkit-appearance: none; appearance: none; color: #fff !important; -webkit-tap-highlight-color: transparent;
+                background: linear-gradient(180deg, #262626 0%, #0d0d0d 100%) !important; border: 0 !important; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: 0 14px 32px -10px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.08); }
+            .redesign-active .sgns-hero-drops__btn::before, .redesign-active .sgns-hero-drops__btn::after { display: none !important; }
+            .redesign-active .sgns-hero-drops__btn:hover, .redesign-active .sgns-hero-drops__btn:focus, .redesign-active .sgns-hero-drops__btn:active { opacity: 1 !important; outline: none; }
+            .redesign-active .sgns-hero-drops__btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+            .redesign-active .sgns-hero-drops__btn b { font-size: 12.5px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #fff; }
+            .sgns-hero-drops__num { min-width: 20px; height: 20px; padding: 0 6px; box-sizing: border-box; border-radius: 999px; background: #E60000; color: #fff; font-size: 10px; font-weight: 800; line-height: 20px; letter-spacing: 0; text-align: center; }
+            .sgns-hero-drops__alerta { display: none; width: 7px; height: 7px; border-radius: 50%; background: #E60000; box-shadow: 0 0 8px #E60000; animation: sgnsDropsTitila 1.2s ease-in-out infinite !important; }
+            .sgns-hero-drops.is-locked .sgns-hero-drops__alerta { display: block; }
+            .redesign-active .sgns-hero-drops.is-locked .sgns-hero-drops__btn { animation: sgnsDropsLatido 1.8s ease-in-out infinite !important; }
+            @keyframes sgnsDropsLatido { 0%, 100% { box-shadow: 0 0 0 0 rgba(230,0,0,.45), 0 14px 30px -14px rgba(0,0,0,.8), inset 0 0 0 1px rgba(230,0,0,.65); } 50% { box-shadow: 0 0 0 7px rgba(230,0,0,0), 0 14px 30px -12px rgba(230,0,0,.55), inset 0 0 0 1px rgba(230,0,0,.9); } }
+            @keyframes sgnsDropsTitila { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+            @media (max-width: 767px) {
+                .redesign-active .sgns-hero-botones > .sgns-hero-drops { width: min(43vw, 176px) !important; min-width: min(43vw, 176px) !important; max-width: min(43vw, 176px) !important; flex: 0 0 min(43vw, 176px) !important; }
+                .redesign-active .sgns-hero-drops__btn { gap: 8px; padding: 0 10px !important; }
+                .redesign-active .sgns-hero-drops__btn b { font-size: 11px; letter-spacing: .14em; white-space: nowrap; }
+                .sgns-hero-drops__num { min-width: 18px; height: 18px; line-height: 18px; font-size: 9.5px; padding: 0 5px; }
+            }
+            /* La hoja que sube desde abajo (el script la pasa al <body>): fondo oscurecido y panel negro con una foto por Drop.
+               En la compu queda centrada, con un ancho máximo */
+            #sgns-drops-hoja { position: fixed; inset: 0; z-index: 2147483000; visibility: hidden; transition: visibility 0s linear .55s; font-family: 'Outfit', sans-serif; color: #fff; }
+            #sgns-drops-hoja.is-open { visibility: visible; transition-delay: 0s; }
+            /* Con la hoja abierta, el chat y el botón de WhatsApp no se muestran (si no, quedan encima) */
+            html.sgns-drops-abierta .sgns-wa-bubble, html.sgns-drops-abierta .btn-whatsapp, html.sgns-drops-abierta .js-btn-whatsapp { visibility: hidden !important; }
+            #sgns-drops-hoja .sgns-drops-hoja__telon { position: absolute; inset: 0; background: rgba(0,0,0,.6); opacity: 0; transition: opacity .35s ease; cursor: pointer; }
+            #sgns-drops-hoja.is-open .sgns-drops-hoja__telon { opacity: 1; }
+            #sgns-drops-hoja .sgns-drops-hoja__panel { position: absolute; left: 0; right: 0; bottom: 0; max-height: 100%; overflow-y: auto; overscroll-behavior: contain; box-sizing: border-box; padding: 14px 40px calc(32px + env(safe-area-inset-bottom, 0px)); border-radius: 26px 26px 0 0; border-top: 1px solid rgba(255,255,255,.14); background: #111214; box-shadow: 0 -24px 60px -24px rgba(0,0,0,.85);
+                transform: translateY(105%); transition: transform .55s cubic-bezier(.16,1,.3,1); }
+            #sgns-drops-hoja.is-open .sgns-drops-hoja__panel { transform: none; }
+            #sgns-drops-hoja .sgns-drops-hoja__asa { width: 38px; height: 4px; border-radius: 2px; background: rgba(255,255,255,.25); margin: 0 auto 12px; }
+            #sgns-drops-hoja .sgns-drops-hoja__tit { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 18px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; }
+            #sgns-drops-hoja .sgns-drops-hoja__cerrar { width: 42px; height: 42px; padding: 0; display: grid; place-items: center; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: none; color: #fff; font-family: inherit; font-size: 24px; line-height: 1; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background-color .2s, color .2s; }
+            #sgns-drops-hoja .sgns-drops-hoja__cerrar:hover { background: #fff; color: #0c0c0d; }
+            #sgns-drops-hoja .sgns-drops-hoja__cerrar:focus { outline: none; }
+            #sgns-drops-hoja .sgns-drops-hoja__cerrar:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+            #sgns-drops-hoja .sgns-drops-hoja__cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+            #sgns-drops-hoja .sgns-drops-card { display: flex; flex-direction: column; gap: 8px; min-width: 0; color: #fff !important; text-decoration: none !important; -webkit-tap-highlight-color: transparent; }
+            #sgns-drops-hoja .sgns-drops-card__foto { position: relative; display: block; aspect-ratio: 3 / 4; border-radius: 16px; overflow: hidden; background: #222 center / cover no-repeat; transition: transform .3s ease; }
+            #sgns-drops-hoja .sgns-drops-card:hover .sgns-drops-card__foto { transform: translateY(-4px); }
+            /* Compu: la hoja va de lado a lado; las fotos toman el alto que entra en la pantalla (recortadas al centro) */
+            @media (min-width: 768px) { #sgns-drops-hoja .sgns-drops-card__foto { aspect-ratio: auto; height: clamp(220px, calc(100vh - 300px), 620px); } }
+            #sgns-drops-hoja .sgns-drops-card__tapa { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: rgba(0,0,0,.62); color: #fff; }
+            #sgns-drops-hoja .sgns-drops-card__tapa svg { width: 30px; height: 30px; }
+            #sgns-drops-hoja .sgns-drops-card__tapa span { font-size: 18px; font-weight: 700; color: #E60000; text-shadow: 0 0 10px rgba(230,0,0,.55); font-variant-numeric: tabular-nums; }
+            #sgns-drops-hoja .sgns-drops-card__nombre { margin-top: 4px; font-size: 16px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; }
+            #sgns-drops-hoja .sgns-drops-card__estado { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; color: #22C55E; }
+            #sgns-drops-hoja .sgns-drops-card__estado--bloq { color: #E60000; text-shadow: 0 0 10px rgba(230,0,0,.55); }
+            #sgns-drops-hoja.is-locked .sgns-drops-card--nuevo { cursor: not-allowed; }
+            #sgns-drops-hoja.is-locked .sgns-drops-card--nuevo .sgns-drops-card__estado--listo,
+            #sgns-drops-hoja:not(.is-locked) .sgns-drops-card__tapa, #sgns-drops-hoja:not(.is-locked) .sgns-drops-card__estado--bloq { display: none; }
+            @media (max-width: 767px) {
+                #sgns-drops-hoja .sgns-drops-hoja__panel { max-width: none; padding: 8px 12px calc(16px + env(safe-area-inset-bottom, 0px)); border-radius: 22px 22px 0 0; border-left: 0; border-right: 0; }
+                #sgns-drops-hoja .sgns-drops-card { gap: 6px; }
+                #sgns-drops-hoja .sgns-drops-card__foto { border-radius: 12px; }
+                #sgns-drops-hoja .sgns-drops-card__nombre { margin-top: 0; }
+                #sgns-drops-hoja .sgns-drops-hoja__tit { font-size: 13px; margin-bottom: 12px; }
+                #sgns-drops-hoja .sgns-drops-hoja__cerrar { width: 30px; height: 30px; font-size: 18px; }
+                #sgns-drops-hoja .sgns-drops-hoja__cards { gap: 7px; }
+                #sgns-drops-hoja .sgns-drops-card__nombre { font-size: 9px; letter-spacing: .08em; }
+                #sgns-drops-hoja .sgns-drops-card__estado { font-size: 8px; letter-spacing: .06em; }
+                #sgns-drops-hoja .sgns-drops-card__tapa svg { width: 16px; height: 16px; }
+                #sgns-drops-hoja .sgns-drops-card__tapa span { font-size: 9px; }
+            }
+            .redesign-active .sgns-hero-botones { grid-template-columns: auto; }
+            @media (max-width: 767px) {
+                .redesign-active .sgns-hero-botones { column-gap: 8px !important; row-gap: 18px !important; }
+            }
             </style>
             <script>
-            (function() {
-                var btn = document.querySelector('.sgns-hero-btn--drop');
-                if (!btn) { return; }
+            // Un contador por botón (Drop 01, Drop 02, ...), cada uno con su fecha en data-drop-unlock
+            document.querySelectorAll('.sgns-hero-btn--drop').forEach(function(btn) {
                 var cont = btn.querySelector('.js-drop-count');
                 var label = btn.querySelector('.js-drop-label');
                 var nums = cont.querySelectorAll('i');
                 var fin = new Date(btn.getAttribute('data-drop-unlock')).getTime();
+                // Terminado el evento (Cyber Monday) el botón ya no se muestra
+                var cierre = btn.getAttribute('data-drop-cierre');
+                if (cierre && Date.now() >= new Date(cierre).getTime()) {
+                    // Terminado el Cyber vuelve Promociones, en su lugar
+                    if (btn.classList.contains('sgns-hero-btn--cyber') && btn.parentElement) { btn.parentElement.classList.add('sgns-cyber-fin'); }
+                    btn.remove();
+                    return;
+                }
                 var pad = function(n) { return String(n).padStart(2, '0'); };
 
                 // Bloqueado: el clic no hace nada
@@ -401,18 +598,42 @@
                     var d = Math.floor(t / 864e5), h = Math.floor(t / 36e5) % 24, m = Math.floor(t / 6e4) % 60, s = Math.floor(t / 1e3) % 60;
                     var vals = [pad(d), pad(h), pad(m), pad(s)];
                     nums.forEach(function(el, i) { el.textContent = vals[i]; });
-                    // Última hora: el botón late más rápido y el texto cambia
+                    // Última hora: el texto cambia
                     var ultima = t < 36e5;
                     btn.classList.toggle('is-final', ultima);
-                    label.textContent = ultima ? '¡Última hora!' : 'Se desbloquea en';
+                    label.textContent = ultima ? '¡Última hora!' : (btn.getAttribute('data-drop-espera') || 'Se desbloquea en');
                     setTimeout(tick, 1000);
                 }
                 tick();
-            })();
+            });
             </script>
         </div>
 
 </section>
+    <script>
+    /* Hero con alto fijo en el celular: se mide una vez al cargar y queda en px (ver .sgns-alto-fijo
+       en style-redesign.scss). Solo se vuelve a medir si cambia el ancho (girar el celular); si cambia
+       solo el alto, es la barra del navegador que aparece o se esconde, y el hero no se toca. */
+    (function() {
+        var hero = document.querySelector('.redesign-home-content > .redesign-hero');
+        if (!hero) { return; }
+        var ancho = document.documentElement.clientWidth, espera;
+        function fijar() {
+            hero.style.setProperty('--sgns-alto-fijo', getComputedStyle(hero).height);
+            hero.classList.add('sgns-alto-fijo');
+        }
+        fijar();
+        window.addEventListener('resize', function() {
+            var w = document.documentElement.clientWidth;
+            if (w === ancho) { return; }
+            ancho = w;
+            // Al girar vuelve a medir una pantalla de alto, y se fija de nuevo cuando termina de girar
+            hero.classList.remove('sgns-alto-fijo');
+            clearTimeout(espera);
+            espera = setTimeout(fijar, 300);
+        });
+    })();
+    </script>
 
     <!-- 1.5 CATEGORÍAS SECTION -->
     <section class="redesign-categorias">
@@ -426,7 +647,7 @@
         <div class="categorias-grid">
             <!-- Card 1: BUZOS -->
             <a href="/buzos/" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="0">
-                <img src="{{ 'categoria-buzos.webp' | static_url }}" alt="Buzos" class="categoria-bg-img">
+                <img src="{{ 'categoria-buzos-v2.webp' | static_url }}" alt="Buzos" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">ESSENTIALS</span>
                 <span class="categoria-name">BUZOS</span>
@@ -435,7 +656,7 @@
 
             <!-- Card 2: REMERAS -->
             <a href="/remeras" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="150">
-                <img src="{{ 'categoria-remeras.webp' | static_url }}" alt="Remeras" class="categoria-bg-img">
+                <img src="{{ 'categoria-remeras-v3.webp' | static_url }}" alt="Remeras" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">BÁSICAS Y ESTAMPADAS</span>
                 <span class="categoria-name">REMERAS</span>
@@ -444,7 +665,7 @@
 
             <!-- Card 3: JEANS -->
             <a href="/jeans" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="300">
-                <img src="{{ 'categoria-jeans.webp' | static_url }}" alt="Jeans" class="categoria-bg-img">
+                <img src="{{ 'categoria-jeans-v2.webp' | static_url }}" alt="Jeans" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">DENIM & MÁS</span>
                 <span class="categoria-name">JEANS</span>
@@ -453,7 +674,7 @@
 
             <!-- Card 4: JOGGINS -->
             <a href="/joggings/" class="categoria-card" data-redesign-animate="fadeUp" data-redesign-delay="450">
-                <img src="{{ 'categoria-joggings.webp' | static_url }}" alt="Joggins" class="categoria-bg-img">
+                <img src="{{ 'categoria-joggings-v2.webp' | static_url }}" alt="Joggins" class="categoria-bg-img">
                 <div class="categoria-overlay"></div>
                 <span class="categoria-sub">CONFORT</span>
                 <span class="categoria-name">JOGGINGS</span>
@@ -483,6 +704,12 @@
                 <div class="novedades-grid-premium js-novedades-grid">
                     {% set raw_novedades = sections.new.products | default(sections.primary.products) | default(sections.featured.products) %}
                     {% for product in raw_novedades %}
+                    {# PRENDA DORADA (etiqueta o "GOLD EDITION" en el nombre): la carta de oro en lugar de la tarjeta, como en toda la tienda #}
+                    {% set nov_dorada = 'gold edition' in product.name | lower %}
+                    {% if product.tags is defined and product.tags %}{% for _tag in (product.tags is iterable ? product.tags : product.tags | split(',')) %}{% if _tag | trim | lower == 'prenda dorada' %}{% set nov_dorada = true %}{% endif %}{% endfor %}{% endif %}
+                    {% if nov_dorada %}
+                        {% include 'snipplets/carta-dorada-inicio.tpl' with { nov_delay: loop.index0 * 100 + 100 } %}
+                    {% else %}
                     {# Card de producto: foto + 2da foto en hover, precio de lista tachado, % y precio con transferencia en rojo, cuotas sin interés #}
                     {% set transfer_pct = settings.payment_discount_price and product.maxPaymentDiscount and product.maxPaymentDiscount.value > 0 ? product.maxPaymentDiscount.value : 0 %}
                     {% set max_free_installments = product.show_installments and product.get_max_installments(false) ? product.get_max_installments(false).installment : 1 %}
@@ -516,22 +743,21 @@
                         <div class="nov-card__info">
                             <h4 class="nov-card__name">{{ product.name }}</h4>
                             {% if product.display_price %}
-                                {% if transfer_pct > 0 %}
-                                    <div class="nov-card__list-row">
-                                        {% if product.compare_at_price and product.compare_at_price > product.price %}<s class="nov-card__compare">{{ product.compare_at_price | money }}</s>{% endif %}
-                                        <s class="nov-card__list">{{ product.price | money }}</s>
-                                        <span class="nov-card__chip">-{{ transfer_pct }}% TRANSF.</span>
-                                    </div>
-                                    <div class="nov-card__transfer">{{ (product.price * (100 - transfer_pct) / 100) | round | money }}</div>
-                                {% else %}
-                                    <div class="nov-card__transfer nov-card__transfer--plain">{{ product.price | money }}</div>
-                                {% endif %}
-                                {% if max_free_installments > 1 %}
-                                    <div class="nov-card__installments"><b>{{ max_free_installments }}</b> cuotas sin interés de <b>{{ (product.price / max_free_installments) | round | money }}</b></div>
-                                {% endif %}
+                                {# Precio: anterior tachado, precio, barra negra de cuotas y precio con transferencia #}
+                                <div class="sgns-precio">
+                                    {% if product.compare_at_price and product.compare_at_price > product.price %}<s class="sgns-precio__antes">{{ product.compare_at_price | money }}</s>{% endif %}
+                                    <div class="sgns-precio__actual">{{ product.price | money }}</div>
+                                    {% if max_free_installments > 1 %}
+                                        <div class="sgns-precio__cuotas"><b>{{ max_free_installments }} cuotas sin interés</b> de {{ (product.price / max_free_installments) | round | money }}</div>
+                                    {% endif %}
+                                    {% if transfer_pct > 0 %}
+                                        <div class="sgns-precio__transf">{{ (product.price * (100 - transfer_pct) / 100) | round | money }} con transferencia</div>
+                                    {% endif %}
+                                </div>
                             {% endif %}
                         </div>
                     </a>
+                    {% endif %}
                     {% endfor %}
                 </div>
 
@@ -543,6 +769,12 @@
             <div class="novedades-carousel-wrapper" style="position: relative;">
                 <div class="novedades-grid-premium js-offers-grid">
                     {% for product in sections.sale.products %}
+                    {# PRENDA DORADA (etiqueta o "GOLD EDITION" en el nombre): la carta de oro en lugar de la tarjeta, como en toda la tienda #}
+                    {% set nov_dorada = 'gold edition' in product.name | lower %}
+                    {% if product.tags is defined and product.tags %}{% for _tag in (product.tags is iterable ? product.tags : product.tags | split(',')) %}{% if _tag | trim | lower == 'prenda dorada' %}{% set nov_dorada = true %}{% endif %}{% endfor %}{% endif %}
+                    {% if nov_dorada %}
+                        {% include 'snipplets/carta-dorada-inicio.tpl' with { nov_delay: loop.index0 * 100 + 100 } %}
+                    {% else %}
                     {# Card de producto: foto + 2da foto en hover, precio de lista tachado, % y precio con transferencia en rojo, cuotas sin interés #}
                     {% set transfer_pct = settings.payment_discount_price and product.maxPaymentDiscount and product.maxPaymentDiscount.value > 0 ? product.maxPaymentDiscount.value : 0 %}
                     {% set max_free_installments = product.show_installments and product.get_max_installments(false) ? product.get_max_installments(false).installment : 1 %}
@@ -575,22 +807,21 @@
                         <div class="nov-card__info">
                             <h4 class="nov-card__name">{{ product.name }}</h4>
                             {% if product.display_price %}
-                                {% if transfer_pct > 0 %}
-                                    <div class="nov-card__list-row">
-                                        {% if product.compare_at_price and product.compare_at_price > product.price %}<s class="nov-card__compare">{{ product.compare_at_price | money }}</s>{% endif %}
-                                        <s class="nov-card__list">{{ product.price | money }}</s>
-                                        <span class="nov-card__chip">-{{ transfer_pct }}% TRANSF.</span>
-                                    </div>
-                                    <div class="nov-card__transfer">{{ (product.price * (100 - transfer_pct) / 100) | round | money }}</div>
-                                {% else %}
-                                    <div class="nov-card__transfer nov-card__transfer--plain">{{ product.price | money }}</div>
-                                {% endif %}
-                                {% if max_free_installments > 1 %}
-                                    <div class="nov-card__installments"><b>{{ max_free_installments }}</b> cuotas sin interés de <b>{{ (product.price / max_free_installments) | round | money }}</b></div>
-                                {% endif %}
+                                {# Precio: anterior tachado, precio, barra negra de cuotas y precio con transferencia #}
+                                <div class="sgns-precio">
+                                    {% if product.compare_at_price and product.compare_at_price > product.price %}<s class="sgns-precio__antes">{{ product.compare_at_price | money }}</s>{% endif %}
+                                    <div class="sgns-precio__actual">{{ product.price | money }}</div>
+                                    {% if max_free_installments > 1 %}
+                                        <div class="sgns-precio__cuotas"><b>{{ max_free_installments }} cuotas sin interés</b> de {{ (product.price / max_free_installments) | round | money }}</div>
+                                    {% endif %}
+                                    {% if transfer_pct > 0 %}
+                                        <div class="sgns-precio__transf">{{ (product.price * (100 - transfer_pct) / 100) | round | money }} con transferencia</div>
+                                    {% endif %}
+                                </div>
                             {% endif %}
                         </div>
                     </a>
+                    {% endif %}
                     {% endfor %}
                 </div>
 
@@ -734,16 +965,16 @@
         })();
     </script>
 
-    {# LOCALES: solo se ve en localhost (lo decide el script de abajo), no en la tienda publicada.
+    {# LOCALES: visible. Para ocultarla, cambiar el {% if true %} de abajo por {% if false %}.
        Cada local usa static/locales/local-N.webp (foto) y static/locales/local-N.mp4 (video en hover).
-       Mientras falte el archivo, la card queda oscura. Alsina ya usa un video existente. #}
+       Orden: 1 Ohiggins, 2 Alsina, 3 Villa Mitre, 4 Zelarrayan, 5 Monte Hermoso. #}
     {% if true %}
     {% set locales = [
-        {'dir': 'OHIGGINS 191', 'ciudad': 'Bahía Blanca', 'foto': 'locales/local-1.webp', 'video': 'Alsina WEB - VERTICAL.mp4'},
-        {'dir': 'ALSINA 226', 'ciudad': 'Bahía Blanca', 'foto': 'locales/local-2.webp', 'video': 'Alsina WEB - VERTICAL.mp4'},
-        {'dir': 'VM WASHINGTON 691', 'ciudad': 'Bahía Blanca', 'foto': 'locales/local-3.webp', 'video': 'Alsina WEB - VERTICAL.mp4'},
-        {'dir': 'ZELARRAYAN 2250', 'ciudad': 'Bahía Blanca', 'foto': 'locales/local-4.webp', 'video': 'Alsina WEB - VERTICAL.mp4'},
-        {'dir': 'PEATONAL DORREGO 38', 'ciudad': 'Monte Hermoso', 'foto': 'locales/local-5.webp', 'video': 'Alsina WEB - VERTICAL.mp4'}
+        {'dir': 'OHIGGINS 191', 'ciudad': 'Bahía Blanca', 'foto': 'locales/local-1.webp', 'video': 'locales/local-1-v2.mp4'},
+        {'dir': 'ALSINA 226', 'ciudad': 'Bahía Blanca', 'foto': 'locales/local-2.webp', 'video': 'locales/local-2.mp4', 'domingo': 'Domingos · 16:30 a 20:30 hs'},
+        {'dir': 'VM WASHINGTON 691', 'ciudad': 'Bahía Blanca', 'foto': 'locales/local-3.webp', 'video': 'locales/local-3-v2.mp4'},
+        {'dir': 'ZELARRAYAN 2250', 'ciudad': 'Bahía Blanca', 'foto': 'locales/local-4.webp', 'video': 'locales/local-4-v2.mp4'},
+        {'dir': 'PEATONAL DORREGO 38', 'ciudad': 'Monte Hermoso', 'foto': 'locales/local-5.webp', 'video': 'locales/local-5-v2.mp4'}
     ] %}
     <section class="sgns-locales">
         <div class="container-wide">
@@ -761,7 +992,7 @@
                             <span class="sgns-local__ciudad">{{ local.ciudad }}</span>
                             <span class="sgns-local__dir">{{ local.dir }}</span>
                             <span class="sgns-local__linea"></span>
-                            <span class="sgns-local__hora"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Todos los días · 09:30 a 20:30 hs</span>
+                            <span class="sgns-local__hora"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sgns-local__txt">Lun a sáb · 09:00 a 20:30 hs<em>{{ local.domingo | default('Domingos cerrado') }}</em></span></span>
                         </div>
                         {# Botón de ubicación: la card entera es el link a Google Maps #}
                         <span class="sgns-local__pin" aria-hidden="true" title="Cómo llegar"><svg viewBox="0 0 24 24"><path fill="#E60000" d="M12 1.5C7.86 1.5 4.5 4.86 4.5 9c0 5.6 7.5 13.5 7.5 13.5s7.5-7.9 7.5-13.5c0-4.14-3.36-7.5-7.5-7.5z"/><circle cx="12" cy="9" r="2.8" fill="rgba(0,0,0,.4)"/></svg></span>
@@ -810,41 +1041,83 @@
     .sgns-local:hover .sgns-local__linea{width:100%}
     .sgns-local__hora{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.88)}
     .sgns-local__hora svg{width:11px;height:11px;flex:none}
+    /* Horario en dos líneas: lunes a sábado, y debajo "Domingos cerrado" más tenue; el reloj queda a la altura de la primera */
+    .sgns-local__hora{align-items:flex-start}
+    .sgns-local__txt em{display:block;margin-top:3px;font-style:normal;opacity:.7}
     .sgns-local:hover .sgns-local__media{transform:translateY(-6px);box-shadow:0 18px 44px rgba(0,0,0,.24)}
-    @media (max-width:900px){.sgns-locales__grid{grid-template-columns:repeat(2,1fr);gap:16px}.sgns-local,.sgns-local:nth-child(-n+2){grid-column:span 1}.sgns-local:nth-child(5){grid-column:span 2}.sgns-local:nth-child(-n+2) .sgns-local__media{aspect-ratio:3/4}.sgns-local:nth-child(5) .sgns-local__media{aspect-ratio:16/10}.sgns-local:nth-child(-n+2) .sgns-local__dir{font-size:15px}.sgns-local:nth-child(-n+2) .sgns-local__hora{font-size:9px}.sgns-local:nth-child(-n+2) .sgns-local__ciudad{font-size:8.5px}.sgns-local__dir{font-size:15px}}
+    @media (max-width:900px){.sgns-locales__grid{grid-template-columns:repeat(2,1fr);gap:16px}.sgns-local,.sgns-local:nth-child(-n+2){grid-column:span 1}.sgns-local:nth-child(1){grid-column:span 2}.sgns-local:nth-child(-n+2) .sgns-local__media{aspect-ratio:3/4}.sgns-local:nth-child(1) .sgns-local__media{aspect-ratio:16/10}.sgns-local:nth-child(-n+2) .sgns-local__dir{font-size:15px}.sgns-local:nth-child(-n+2) .sgns-local__hora{font-size:9px}.sgns-local:nth-child(-n+2) .sgns-local__ciudad{font-size:8.5px}.sgns-local__dir{font-size:15px}}
     @media (max-width:520px){.sgns-locales{padding:50px 0}.sgns-local__head{padding:0 14px 14px}.sgns-local__dir,.sgns-local:nth-child(-n+2) .sgns-local__dir{font-size:12.5px;letter-spacing:.4px}.sgns-local:nth-child(-n+2) .sgns-local__hora{font-size:7.5px}.sgns-local:nth-child(-n+2) .sgns-local__ciudad{font-size:8px}.sgns-local__ciudad{font-size:8px;letter-spacing:2px;margin-bottom:5px}.sgns-local__linea{margin:10px 0 9px}.sgns-local__hora{font-size:7.5px;letter-spacing:.4px;gap:4px}.sgns-local__hora svg{width:11px;height:11px}.sgns-local__media{border-radius:20px}}
         
     </style>
     <script>
     (function() {
-        // Solo se muestra en local (localhost / 127.0.0.1), no en la tienda publicada
-        if (['localhost','127.0.0.1'].indexOf(location.hostname) === -1) { return; }
         document.querySelector('.sgns-locales').style.display = 'block';
         var cards = document.querySelectorAll('.sgns-local');
-        var conHover = window.matchMedia('(hover: hover)').matches;
+        var conHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        // Celular: el video arranca al apoyar o pasar el dedo por la card (como el hover del mouse)
+        // y se frena al tocar otra o cuando la card sale de pantalla. Se carga recién al acercarse.
+        function frenarCard(card) {
+            card.querySelector('.sgns-local__video').pause();
+            card.classList.remove('is-playing');
+        }
+        function tocar(card) {
+            cards.forEach(function(otra) { if (otra !== card && otra.classList.contains('is-playing')) { frenarCard(otra); } });
+            if (card.classList.contains('is-playing')) { return; }
+            var v = card.querySelector('.sgns-local__video');
+            if (!v.src) { v.src = encodeURI(decodeURI(v.dataset.src)); }
+            var p = v.play();
+            if (p && p.then) { p.then(function() { card.classList.add('is-playing'); }).catch(function() {}); }
+            else { card.classList.add('is-playing'); }
+        }
+        var enPantalla = !conHover && 'IntersectionObserver' in window ? new IntersectionObserver(function(entradas) {
+            entradas.forEach(function(e) {
+                var card = e.target, v = card.querySelector('.sgns-local__video');
+                if (e.isIntersecting && !v.src) { v.src = encodeURI(decodeURI(v.dataset.src)); v.load(); }
+                if (!e.isIntersecting && card.classList.contains('is-playing')) { frenarCard(card); }
+            });
+        }, { rootMargin: '200px 0px' }) : null;
+        if (enPantalla) {
+            // Si el dedo se desliza de una card a otra sin levantarse, pasa a la nueva
+            document.querySelector('.sgns-locales').addEventListener('touchmove', function(e) {
+                var t = e.touches[0];
+                var el = t && document.elementFromPoint(t.clientX, t.clientY);
+                var card = el && el.closest ? el.closest('.sgns-local') : null;
+                if (card) { tocar(card); }
+            }, { passive: true });
+        }
         cards.forEach(function(card) {
             var v = card.querySelector('.sgns-local__video');
+            v.muted = true; v.setAttribute('playsinline', '');
+            if (enPantalla) {
+                enPantalla.observe(card);
+                card.addEventListener('touchstart', function() { tocar(card); }, { passive: true });
+                return;
+            }
             // El video se precarga apenas se muestra la sección, así al hover arranca casi al instante
             v.preload = 'auto';
             v.src = encodeURI(decodeURI(v.dataset.src));
             v.load();
             var espera;
-            function reproducir() {
-                // 0,3 segundos de espera antes de arrancar el video
+            v.muted = true; v.setAttribute('playsinline', '');
+            function reproducir(sinEspera) {
+                // Mouse: 0,3 s de espera. Celular: al instante, dentro del toque (si no, el navegador bloquea el play)
                 clearTimeout(espera);
-                espera = setTimeout(function() {
+                function play() {
                     var p = v.play();
-                    if (p && p.catch) { p.catch(function() {}); }
-                    card.classList.add('is-playing');
-                }, 300);
+                    if (p && p.then) { p.then(function() { card.classList.add('is-playing'); }).catch(function() {}); }
+                    else { card.classList.add('is-playing'); }
+                }
+                if (sinEspera) { play(); } else { espera = setTimeout(play, 300); }
             }
             function frenar() { clearTimeout(espera); v.pause(); card.classList.remove('is-playing'); }
             if (conHover) {
-                card.addEventListener('mouseenter', reproducir);
+                card.addEventListener('mouseenter', function() { reproducir(false); });
                 card.addEventListener('mouseleave', frenar);
             } else {
-                // En celular no hay hover: un toque alterna el video
-                card.addEventListener('click', function(e) { if (!card.classList.contains('is-playing')) { e.preventDefault(); } card.classList.contains('is-playing') ? frenar() : reproducir(); });
+                // En celular no hay hover: un toque alterna el video (el primer toque no abre el mapa)
+                card.addEventListener('click', function(e) {
+                    if (!card.classList.contains('is-playing')) { e.preventDefault(); reproducir(true); } else { frenar(); }
+                });
             }
         });
     })();
@@ -887,7 +1160,8 @@
                         <p>📍 VM WASHINGTON 691</p>
                         <p>📍 ZELARRAYAN 2250</p>
                         <p>📍 PEATONAL DORREGO 38 (MONTE HERMOSO)</p>
-                        <p>HORARIO DE CORRIDO: 09:30 A 20:30hs</p>
+                        <p>HORARIO DE CORRIDO: 09:00 A 20:30hs</p>
+                        <p>DOMINGOS CERRADO</p>
                     </div>
 
                     <div class="social-preview-grid">

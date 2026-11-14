@@ -112,7 +112,9 @@
 
 {# Product form, includes: Variants, CTA and Shipping calculator #}
 
- <form id="product_form" class="js-product-form" method="post" action="{{ store.cart_url }}" data-store="product-form-{{ product.id }}">
+{# Conjuntos (tag huapps_kit): la app de combos reemplaza este formulario unos segundos después de cargar.
+   sgns-es-kit lo oculta y muestra un recuadro de carga hasta entonces, así no se ve como un producto suelto. #}
+ <form id="product_form" class="js-product-form{% if 'huapps_kit' in product.tags %} sgns-es-kit{% endif %}" method="post" action="{{ store.cart_url }}" data-store="product-form-{{ product.id }}">
 	<input type="hidden" name="add_to_cart" value="{{product.id}}" />
     {% if template == "product" %}
         {% set show_size_guide = true %}

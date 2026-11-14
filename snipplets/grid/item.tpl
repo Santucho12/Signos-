@@ -39,10 +39,25 @@
 
 {% set show_secondary_image = settings.product_hover %}
 
+{# Etiquetas "CYBER SGNS" y "PRENDA DORADA" (puestas en los productos en Tiendanube): con ellas la tienda reconoce desde el
+   servidor las prendas del Cyber y las doradas, sin esperar a static/js/prenda-dorada.js (en los listados Tiendanube no
+   trae las categorías). product.tags llega como lista de textos #}
+{% set tag_cyber = false %}
+{% set tag_dorada = false %}
+{% if product.tags is defined and product.tags %}
+    {% for _tag in (product.tags is iterable ? product.tags : product.tags | split(',')) %}
+        {% if _tag | trim | lower == 'cyber sgns' %}{% set tag_cyber = true %}{% endif %}
+        {% if _tag | trim | lower == 'prenda dorada' %}{% set tag_dorada = true %}{% endif %}
+    {% endfor %}
+{% endif %}
+{# Las doradas también llevan "(GOLD EDITION)" en el nombre. La dorada manda: si lo es, no lleva la tarjeta del Cyber #}
+{% set dorada_srv = tag_dorada or 'gold edition' in product.name | lower %}
+{% set cyber_srv = tag_cyber and not dorada_srv %}
+
 {% if slide_item %}
     <div class="swiper-slide">
 {% endif %}
-    <div class="js-item-product{% if slide_item %} js-item-slide p-0{% endif %}{% if not slide_item %} col-{% if columns_mobile == 1 %}12{% elseif columns_mobile == 2 %}6{% else %}4{% endif %} col-md-{% if columns_desktop == 2 %}6{% elseif columns_desktop == 3 %}4{% else %}3{% endif %}{% endif %} item item-product {% if reduced_item %}item-product-reduced{% endif %} grid-item {% if reduced_item %}item-product-reduced{% endif %}" data-product-type="list" data-product-id="{{ product.id }}" data-store="product-item-{{ product.id }}" data-component="product-list-item" data-component-value="{{ product.id }}"{% if appear_transition %} data-transition="fade-in-up"{% endif %}>
+    <div class="js-item-product{% if cyber_srv %} sgns-cyber-card{% endif %}{% if slide_item %} js-item-slide p-0{% endif %}{% if not slide_item %} col-{% if columns_mobile == 1 %}12{% elseif columns_mobile == 2 %}6{% else %}4{% endif %} col-md-{% if columns_desktop == 2 %}6{% elseif columns_desktop == 3 %}4{% else %}3{% endif %}{% endif %} item item-product {% if reduced_item %}item-product-reduced{% endif %} grid-item {% if reduced_item %}item-product-reduced{% endif %}" data-product-type="list" data-product-id="{{ product.id }}" data-store="product-item-{{ product.id }}" data-component="product-list-item" data-component-value="{{ product.id }}"{% if appear_transition %} data-transition="fade-in-up"{% endif %}>
         {% if (settings.quick_shop or settings.product_color_variants) and not reduced_item %}
             <div class="js-product-container js-quickshop-container{% if product.variations %} js-quickshop-has-variants{% endif %} position-relative" data-variants="{{ product.variants_object | json_encode }}" data-quickshop-id="quick{{ product.id }}">
         {% endif %}
@@ -84,14 +99,29 @@
             {% if product.category and ('novedad' in product.category.name | lower) %}
                 {% set is_novedad = true %}
             {% endif %}
+            {# Productos de la categoría "Prenda dorada": badge dorado "ÚNICO", como el de descuento #}
+            {% set is_dorada = false %}
+            {% for category in product.categories %}
+                {% if 'dorad' in category.name | lower %}
+                    {% set is_dorada = true %}
+                {% endif %}
+            {% endfor %}
+            {# También dentro de la propia categoría (por si el producto no la trae en product.categories) #}
+            {% if template == 'category' and category is defined and category.name is defined and 'dorad' in category.name | lower %}
+                {% set is_dorada = true %}
+            {% endif %}
+            {% if dorada_srv %}{% set is_dorada = true %}{% endif %}
 
             {% set discount_pct = product.display_price and product.compare_at_price > product.price ? ((product.compare_at_price - product.price) * 100 + product.compare_at_price // 2) // product.compare_at_price : 0 %}
 
 
-            {% if discount_pct > 0 or is_novedad %}
+            {% if discount_pct > 0 or is_novedad or is_dorada %}
                 <div class="sgns-item-badges">
                     {% if discount_pct > 0 %}
                         <span class="sgns-discount-badge">-{{ discount_pct }}%</span>
+                    {% endif %}
+                    {% if is_dorada %}
+                        <span class="sgns-discount-badge sgns-badge-unico">ÚNICO</span>
                     {% endif %}
                     {% if is_novedad %}
                         <div class="label-novedad-custom">NOVEDAD</div>
@@ -205,18 +235,22 @@
                     {% else %}
                         {# Normal products: mismo bloque de precios que las cards del home #}
                         {% set transfer_pct = settings.payment_discount_price and not reduced_item and product.maxPaymentDiscount and product.maxPaymentDiscount.value > 0 ? product.maxPaymentDiscount.value : 0 %}
-                        <div class="js-item-price-container item-price-container nov-card__price {% if columns_mobile == 3 %}mb-0 mb-md-2{% else %}mb-2{% endif %}" data-store="product-item-price-{{ product.id }}">
+                        <div class="js-item-price-container item-price-container nov-card__price sgns-precio {% if columns_mobile == 3 %}mb-0 mb-md-2{% else %}mb-2{% endif %}" data-store="product-item-price-{{ product.id }}">
                             {% if not reduced_item %}
-                                <span class="js-compare-price-display price-compare nov-card__compare {% if columns_mobile == 3 and product.compare_at_price %}d-none d-md-inline-block{% endif %}" {% if not product.compare_at_price or not product.display_price %}style="display:none;"{% else %}style="display:inline-block;"{% endif %} data-price-compare-visibility="{{ product.compare_at_price ? 'true' : 'false' }}">
+                                <span class="js-compare-price-display price-compare nov-card__compare sgns-precio__antes {% if columns_mobile == 3 and product.compare_at_price %}d-none d-md-inline-block{% endif %}" {% if not product.compare_at_price or not product.display_price %}style="display:none;"{% else %}style="display:inline-block;"{% endif %} data-price-compare-visibility="{{ product.compare_at_price ? 'true' : 'false' }}">
                                     {{ product.compare_at_price | money }}
                                 </span>
                             {% endif %}
-                            <span class="js-price-display item-price {% if transfer_pct > 0 %}nov-card__list{% else %}nov-card__transfer nov-card__transfer--plain{% endif %}" data-product-price="{{ product.price }}">
+                            {# Precio, barra negra de cuotas y precio con transferencia (las cuotas antes iban más abajo) #}
+                            <div class="js-price-display item-price sgns-precio__actual" data-product-price="{{ product.price }}">
                                 {{ product.price | money }}
-                            </span>
+                            </div>
+                            {% set max_free_installments = product.show_installments and product.get_max_installments(false) ? product.get_max_installments(false).installment : 1 %}
+                            {% if settings.product_installments and not reduced_item and max_free_installments > 1 %}
+                                <div class="sgns-precio__cuotas"><b>{{ max_free_installments }} cuotas sin interés</b> de {{ (product.price / max_free_installments) | round | money }}</div>
+                            {% endif %}
                             {% if transfer_pct > 0 %}
-                                <span class="nov-card__chip">-{{ transfer_pct }}% TRANSF.</span>
-                                <div class="nov-card__transfer">{{ (product.price * (100 - transfer_pct) / 100) | round | money }}</div>
+                                <div class="sgns-precio__transf">{{ (product.price * (100 - transfer_pct) / 100) | round | money }} con transferencia</div>
                             {% endif %}
                         </div>
                     {% endif %}
@@ -229,29 +263,6 @@
                     {% if columns_mobile == 3 or theme_editor %}
                         </span>
                     {% endif %}
-                {% endif %}
-                {% if settings.product_installments and not reduced_item %}
-                    {% if columns_mobile == 3 or theme_editor %}
-                        <span class="js-item-installments-container d-none d-md-block">
-                    {% endif %}
-                        {# Cuotas sin interés, con el mismo formato que las cards del home #}
-                        {% set max_free_installments = product.show_installments and product.get_max_installments(false) ? product.get_max_installments(false).installment : 1 %}
-                        {% if max_free_installments > 1 %}
-                            <div class="nov-card__installments"><b>{{ max_free_installments }}</b> cuotas sin interés de <b>{{ (product.price / max_free_installments) | round | money }}</b></div>
-                        {% endif %}
-                    {% if columns_mobile == 3 or theme_editor %}
-                        </span>
-                    {% endif %}
-                {% endif %}
-
-                {% if not reduced_item %}
-
-                    {{ component('subscriptions/subscription-message', {
-                        subscription_classes: {
-                            container: 'font-small mt-2 ' ~ (columns_mobile == 3 ? 'd-none d-md-block'),
-                        },
-                    }) }}
-
                 {% endif %}
             </a>
             {% if settings.quick_shop and not reduced_item %}
@@ -328,6 +339,33 @@
         {% endif %}
 
         {# Structured data to provide information for Google about the product content #}
+        {# PRENDA DORADA: los productos de la categoría "Prenda dorada" se muestran como carta de oro (estilo FIFA):
+           escudo dorado, sello ÚNICO, la foto, el nombre y los
+           precios como estadísticas (product.price viene en centavos: /100000 da los miles). Reemplaza a la tarjeta normal (style-redesign.scss, .sgns-dorada) #}
+        {% set es_dorada = false %}
+        {% for cat_d in product.categories %}{% if 'dorad' in cat_d.name | lower %}{% set es_dorada = true %}{% endif %}{% endfor %}
+        {% if template == 'category' and category is defined and category.name is defined and 'dorad' in category.name | lower %}{% set es_dorada = true %}{% endif %}
+        {# Con la etiqueta PRENDA DORADA o "(GOLD EDITION)" en el nombre ya sale dorada desde el servidor en cualquier página #}
+        {% if dorada_srv %}{% set es_dorada = true %}{% endif %}
+        {# Fuera de la categoría la carta va oculta (sgns-dorada--latente): static/js/prenda-dorada.js la activa si el
+           producto está en Prenda dorada, porque en el inicio, la búsqueda y el Cyber Tiendanube no trae esa categoría.
+           La carta de oro manda siempre, también sobre la tarjeta del Cyber #}
+        {% if not reduced_item %}
+            {% set dor_transf = settings.payment_discount_price and product.maxPaymentDiscount and product.maxPaymentDiscount.value > 0 ? product.maxPaymentDiscount.value : 0 %}
+            {% set dor_cuotas = product.show_installments and product.get_max_installments(false) ? product.get_max_installments(false).installment : 1 %}
+            <a class="sgns-dorada{% if not es_dorada %} sgns-dorada--latente{% endif %}" data-pid="{{ product.id }}" href="{{ product.url }}" title="{{ product.name }}" aria-label="{{ product.name }}">
+                <span class="sgns-dorada__unico">ÚNICO</span>
+                <span class="sgns-dorada__foto" style="background-image: url('{{ product.featured_image | product_image_url('large') }}');"></span>
+                <span class="sgns-dorada__nombre">{{ product.name }}</span>
+                <span class="sgns-dorada__stats">
+                    <span><b>{{ (product.price / 100000) | round }}K</b> PRECIO</span>
+                    {% if dor_transf > 0 %}<span><b>{{ (product.price * (100 - dor_transf) / 10000000) | round }}K</b> TRANSF</span>{% else %}<span><b>1/1</b> STOCK</span>{% endif %}
+                    {% if dor_cuotas > 1 %}<span><b>{{ dor_cuotas }}</b> CUOTAS</span><span><b>{{ (product.price / dor_cuotas / 100000) | round }}K</b> C/U</span>{% endif %}
+                    {% if dor_transf > 0 %}<span><b>1/1</b> STOCK</span>{% endif %}
+                    <span><b>SGNS</b> STUDIO</span>
+                </span>
+            </a>
+        {% endif %}
         {{ component('structured-data', {'item': true}) }}
     </div>
 {% if slide_item %}

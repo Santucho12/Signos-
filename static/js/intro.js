@@ -1,7 +1,8 @@
 /* Intro del inicio (estilo landing DG/VMAX): el hero arranca con el video
    desenfocado y el logo SGNS Studio con "Temporada 26" se revela de izquierda
    a derecha, suave, en su mismo lugar y tamaño. Después el fondo se enfoca y
-   entran el menú y los botones. Estilos: style-redesign.scss (INTRO v4). */
+   entran el menú y los botones. Estilos: style-redesign.scss (INTRO v4).
+   También la usa el hero de las categorías Drop (snipplets/drop-hero.tpl). */
 (function() {
     'use strict';
 
@@ -12,6 +13,12 @@
     function init() {
         var velo = document.getElementById('sgns-intro');
         if (!velo) { return; }
+
+        // Se volvió con "atrás": nada de intro, la página queda donde estaba
+        if (window.__sgnsVuelta) {
+            if (velo.parentNode) { velo.parentNode.removeChild(velo); }
+            return;
+        }
 
         var root = document.documentElement;
         root.classList.add('sgns-intro-lock');
@@ -38,6 +45,10 @@
 
         if (logo && logo.decode) {
             logo.decode().then(arrancar).catch(arrancar);
+            setTimeout(arrancar, 400);
+        } else if (document.fonts && document.fonts.load) {
+            // Hero de las categorías Drop: el título es texto, se espera su tipografía
+            document.fonts.load('1em "Blunt Semiconit"').then(arrancar, arrancar);
             setTimeout(arrancar, 400);
         } else {
             arrancar();

@@ -2,7 +2,8 @@
    Muestra, cada tanto, un globo con forma de chat arriba del botón flotante.
    Ciclo: aparece a los 4s, queda 15s, descansa 15s y vuelve. Si el visitante
    lo cierra a mano, no vuelve a aparecer hasta que recargue la página.
-   El mensaje que se envía incluye desde qué página escribe. */
+   El mensaje que se envía incluye desde qué página escribe.
+   No se muestra en las categorías Drop (body.sgns-drop-cat). */
 (function() {
     'use strict';
 
@@ -54,6 +55,8 @@
     }
 
     function init() {
+        // En las categorías Drop no aparece: la página es del video y la colección
+        if (document.body.classList.contains('sgns-drop-cat')) { return; }
         var btn = document.querySelector('.btn-whatsapp, .js-btn-whatsapp, a[href*="wa.me"]');
         if (!btn) { return; }
 

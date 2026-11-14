@@ -11,31 +11,21 @@
                 		{{ product.name | highlight(query) }}
                 	</p>
                     {% if product.display_price %}
-                        {# Precios como en la card: un solo tachado, el precio que se
-                           cobra en negro y la transferencia en una línea roja debajo. #}
                         {% set transfer_pct = settings.payment_discount_price and product.maxPaymentDiscount and product.maxPaymentDiscount.value > 0 ? product.maxPaymentDiscount.value : 0 %}
-                    	<p class="search-suggest-price">
+                        {# Mismo bloque de precio que las cards: anterior tachado, precio, barra de cuotas y transferencia #}
+                        {% set max_free = product.show_installments and settings.product_installments and product.get_max_installments(false) ? product.get_max_installments(false).installment : 1 %}
+                        <div class="sgns-precio sgns-precio--chico">
                             {% if product.compare_at_price and product.compare_at_price > product.price %}
-                                <span class="search-suggest-compare">{{ product.compare_at_price | round | money }}</span>
+                                <s class="sgns-precio__antes">{{ product.compare_at_price | round | money }}</s>
                             {% endif %}
-                            <span class="search-suggest-now">{{ product.price | round | money }}</span>
-                    	</p>
-
-                        {% if transfer_pct > 0 %}
-                            <p class="search-suggest-transfer">
-                                Transferencia: <b>{{ (product.price * (100 - transfer_pct) / 100) | round | money }}</b>
-                            </p>
-                        {% endif %}
-
-                        {% set product_can_show_installments = product.show_installments and product.display_price and product.get_max_installments.installment > 1 and settings.product_installments %}
-                        {% if product_can_show_installments %}
-                            {% set max_installments_without_interests = product.get_max_installments(false) %}
-                            {% if max_installments_without_interests and max_installments_without_interests.installment > 1 %}
-                                <p class="search-suggest-installments">
-                                    <b>{{ max_installments_without_interests.installment }}</b> cuotas sin interés de <b>{{ (product.price / max_installments_without_interests.installment) | round | money }}</b>
-                                </p>
+                            <div class="sgns-precio__actual">{{ product.price | round | money }}</div>
+                            {% if max_free > 1 %}
+                                <div class="sgns-precio__cuotas"><b>{{ max_free }} cuotas sin interés</b> de {{ (product.price / max_free) | round | money }}</div>
                             {% endif %}
-                        {% endif %}
+                            {% if transfer_pct > 0 %}
+                                <div class="sgns-precio__transf">{{ (product.price * (100 - transfer_pct) / 100) | round | money }} con transferencia</div>
+                            {% endif %}
+                        </div>
                     {% endif %}
                 </div>
             </a>

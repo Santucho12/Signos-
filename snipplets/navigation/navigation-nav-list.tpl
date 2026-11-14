@@ -88,6 +88,8 @@
 				</div>
 			{% endif %}
 		</li>
+	{% elseif subitem and 'drop' in item.name | lower and 'gorra' not in item.name | lower %}
+		{# Drop va solo en el menú principal, no como subcategoría de Productos (Drop Gorras sí, es una categoría común) #}
 	{% else %}
 		<li class="js-item-desktop nav-item {% if megamenu %}nav-item-desktop {% if not subitem %}nav-main-item{% endif %}{% endif %}" data-component="menu.item">
 			<a class="nav-list-link {{ item.current ? 'selected' : '' }}" href="{% if item.url %}{{ item.url | setting_url }}{% else %}#{% endif %}"><span class="nav-item-text-wrapper">{{ item.name }}</span></a>

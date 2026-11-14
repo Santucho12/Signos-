@@ -26,6 +26,17 @@
   src: url('../fonts/Fontspring-DEMO-blunt-semiconit.otf');
   font-weight: normal;
   font-style: normal;
+  /* La version demo de Blunt trae el 4 y los simbolos dibujados como "DEMO" y no tiene acentos:
+     Blunt se usa solo para lo que esta bien y el resto lo dibuja Barlow Condensed Black Italic */
+  unicode-range: U+0020, U+002C, U+002E, U+0030-0033, U+0035-003B, U+003F, U+0041-005A, U+0061-007A;
+}
+@font-face {
+  font-family: 'Blunt Semiconit';
+  src: url('../fonts/barlow-condensed-black-italic-latin.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0021-002B, U+002D, U+002F, U+0034, U+003C-003E, U+0040, U+005B-0060, U+007B-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -36,14 +47,14 @@
 
 /* font-family y weight: aplica a absolutamente todo */
 .redesign-active,
-.redesign-active *:not(.redesign-hero-title):not(.categorias-header-left):not(.novedades-brand-name):not(.novedades-title):not(.offers-brand-name):not(.social-brand-name):not(.template-category .page-header h1):not(.profile-username):not(.js-product-name):not(.products-section-title):not(.huapps-look-title):not(.sgns-hero-btn):not(.template-category .page-header h2):not(.categoria-name):not(.sgns-sort):not(.sgns-sort *):not(.sgns-cat-link):not(.sgns-filter-btn):not(.sgns-filter-btn *):not(.sgns-filters):not(.sgns-filters *) {
+.redesign-active *:not(.redesign-hero-title):not(.categorias-header-left):not(.novedades-brand-name):not(.novedades-title):not(.offers-brand-name):not(.social-brand-name):not(.template-category .page-header h1):not(.profile-username):not(.js-product-name):not(.products-section-title):not(.huapps-look-title):not(.sgns-hero-btn):not(.template-category .page-header h2):not(.categoria-name):not(.sgns-sort):not(.sgns-sort *):not(.sgns-cat-link):not(.sgns-filter-btn):not(.sgns-filter-btn *):not(.sgns-filters):not(.sgns-filters *):not(.sgns-drop-letra):not(.sgns-drop-historia__titulo):not(.sgns-drop-historia__cap):not(.sgns-drop-historia__num):not(.sgns-drop-dice__titulo):not(.sgns-drop-historia__fila *):not(.sgns-drop-cabecera__nombre):not(.sgns-drop-nombre__palabra) {
   font-family: 'Outfit', sans-serif !important;
   font-weight: 500 !important;
 }
 
 /* text-transform: excluimos los wrappers de animación para evitar
    el arrastre visual en mobile durante las animaciones de scroll */
-.redesign-active *:not([data-redesign-animate]):not(.redesign-novedades):not(.redesign-offers):not(.redesign-categorias):not(.redesign-hero-title):not(.categorias-header-left):not(.novedades-brand-name):not(.novedades-title):not(.offers-brand-name):not(.social-brand-name):not(.profile-username):not(.huapps-look-title):not(.sgns-hero-btn):not(.nov-card__installments):not(.product-installments):not(.product-installments > span):not(.sgns-sort):not(.sgns-sort *):not(.sgns-cat-link):not(.sgns-filter-btn):not(.sgns-filter-btn *):not(.sgns-filters):not(.sgns-filters *) {
+.redesign-active *:not([data-redesign-animate]):not(.redesign-novedades):not(.redesign-offers):not(.redesign-categorias):not(.redesign-hero-title):not(.categorias-header-left):not(.novedades-brand-name):not(.novedades-title):not(.offers-brand-name):not(.social-brand-name):not(.profile-username):not(.huapps-look-title):not(.sgns-hero-btn):not(.nov-card__installments):not(.product-installments):not(.product-installments > span):not(.sgns-sort):not(.sgns-sort *):not(.sgns-cat-link):not(.sgns-filter-btn):not(.sgns-filter-btn *):not(.sgns-filters):not(.sgns-filters *):not(.sgns-drop-historia__fila):not(.sgns-drop-dice__msg):not(.sgns-drop-dice__msg *):not(.sgns-drop-historia__fila *) {
   text-transform: uppercase !important;
 }
 
@@ -6520,7 +6531,7 @@ $social-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .redesign-categorias .categoria-card:hover .categoria-bg-img {
-  transform: scale(1.1) !important;
+  transform: scale(1.04) !important;
 }
 
 .redesign-categorias .categoria-name {
@@ -6957,6 +6968,13 @@ $social-ease: cubic-bezier(0.16, 1, 0.3, 1);
     height: 100vh !important;
     height: 100lvh !important;
     overflow: hidden !important;
+  }
+
+  /* Alto fijo en px, medido al cargar (script en templates/home.tpl). En navegadores como
+     el de Instagram la barra de abajo aparece y se esconde al scrollear y cambia el alto de
+     la pantalla (incluso 100lvh): el hero se agrandaba o achicaba y la página daba saltos. */
+  .redesign-home-content > .redesign-hero.sgns-alto-fijo {
+    height: var(--sgns-alto-fijo) !important;
   }
 
   .redesign-home-content > .redesign-hero + section {
@@ -7809,6 +7827,12 @@ body.redesign-active.template-product .price-container .product-installments .pr
 
 .redesign-active .item-product .sgns-item-badges .label-novedad-custom {
   background: #111 !important;
+}
+
+/* ÚNICO (productos de "Prenda dorada"): igual que el de descuento pero dorado */
+.redesign-active .sgns-discount-badge.sgns-badge-unico {
+  background: linear-gradient(135deg, #F3D37A 0%, #C9982E 55%, #A87A1C 100%) !important;
+  color: #1a1206 !important;
 }
 
 
@@ -12264,3 +12288,1728 @@ html.redesign-active.sgns-intro-lock body {
     font-weight: 800 !important;
   }
 }
+
+/* ==========================================================================
+   Categorías Drop (la URL dice "drop"): hero con video e intro cinematográfica
+   como el del inicio, con el nombre del Drop en blanco, y abajo tres videos en
+   una fila (snipplets/drop-hero.tpl). Todo lo que va debajo del hero es negro.
+   body.sgns-drop-cat lo ponen layouts/layout.tpl y el snipplet.
+   ========================================================================== */
+
+/* Portada: el primer fotograma del video, visible desde el primer pintado */
+body.sgns-drop-cat .sgns-drop-hero {
+  background-color: #0d0d0d;
+  background-image: var(--sgns-poster-escritorio);
+  background-size: cover;
+  background-position: center;
+}
+
+/* Sin la franja de promos de arriba: el menú sube a su lugar */
+body.sgns-drop-cat ~ .sgns-island-bar,
+body.sgns-drop-cat .sgns-island-bar {
+  display: none !important;
+}
+
+html.sgns-island body.redesign-active.sgns-drop-cat header.head-main.head-main {
+  top: 0 !important;
+}
+
+html.sgns-island-scrolled body.redesign-active.sgns-drop-cat header.head-main.head-main {
+  top: 10px !important;
+}
+
+/* El hero arranca arriba de todo, debajo del menú, como en el inicio */
+html.sgns-island body.sgns-drop-cat .sgns-island-spacer,
+body.sgns-drop-cat .sgns-drop-hero ~ section.container-fluid.d-md-none {
+  display: none !important;
+}
+
+/* Telón: el hero queda quieto y la fila de videos sube tapándolo, con las
+   esquinas de arriba redondeadas; después siguen los productos */
+body.sgns-drop-cat .sgns-drop-hero {
+  position: sticky;
+  top: -40px;
+  z-index: 0;
+}
+
+body.sgns-drop-cat .sgns-drop-trio,
+body.sgns-drop-cat .sgns-drop-hero ~ .js-category-controls-prev,
+body.sgns-drop-cat .sgns-drop-hero ~ .js-category-body,
+body.sgns-drop-cat .sgns-drop-hero ~ .js-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fondo negro debajo del hero, el mismo del pie de página */
+body.sgns-drop-cat {
+  background: #080808 !important;
+}
+
+body.sgns-drop-cat .sgns-drop-trio {
+  background: #080808 !important;
+}
+
+/* Los productos van sobre negro con letras blancas, el mismo fondo del resto del Drop y del pie de página */
+body.sgns-drop-cat .sgns-drop-hero ~ .js-category-controls-prev,
+html body.sgns-drop-cat .sgns-drop-hero ~ .js-category-controls.category-controls,
+body.sgns-drop-cat .sgns-drop-hero ~ .js-category-body {
+  background: #080808 !important;
+  color: #ffffff;
+}
+
+/* Tres veces el video del hero de escritorio, en una fila. El espacio a los costados
+   es el mismo que hay entre video y video */
+body.sgns-drop-cat .sgns-drop-trio {
+  --sgns-trio-espacio: 16px;
+  padding: 64px var(--sgns-trio-espacio);
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -18px 40px -24px rgba(0, 0, 0, 0.35);
+}
+
+.sgns-drop-trio__fila {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sgns-trio-espacio);
+}
+
+.sgns-drop-trio__video {
+  display: block;
+  width: 100%;
+  /* Apenas más alto que el video (4:3): se recorta un poco a los costados */
+  aspect-ratio: 6 / 5;
+  object-fit: cover;
+  border-radius: 20px;
+  background: #151515;
+}
+
+/* El nombre del Drop, chico y en blanco sobre negro, en una sección alta que queda
+   fija mientras se scrollea: la palabra se agranda hasta que el blanco llena la
+   pantalla y de ahí sigue la sección blanca (script en snipplets/drop-hero.tpl) */
+body.sgns-drop-cat .sgns-drop-nombre {
+  position: relative;
+  /* Por encima de "Lo que se dice", que queda fija debajo y aparece cuando el blanco se desvanece */
+  z-index: 2;
+  height: 330vh;
+  background: transparent !important;
+  pointer-events: none;
+}
+
+.sgns-drop-nombre__fijo {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: #080808;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+}
+
+.sgns-drop-nombre__blanco {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.redesign-active .sgns-drop-nombre .sgns-drop-nombre__texto {
+  top: 0;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(56px, 11vw, 185px);
+  letter-spacing: 0.01em;
+  line-height: 0.9;
+  white-space: nowrap;
+  text-shadow: none;
+}
+
+/* Monograma arriba, la palabra en el medio y la fecha abajo, todo centrado */
+.redesign-active .sgns-drop-nombre .sgns-drop-nombre__texto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.18em;
+}
+
+.redesign-active .sgns-drop-nombre .sgns-drop-nombre__palabra {
+  display: block;
+  /* La regla global de la tienda le pondría Outfit: acá va la letra del título */
+  font-family: 'Blunt Semiconit', sans-serif !important;
+  font-weight: 400 !important;
+}
+
+.sgns-drop-nombre__logo {
+  display: block;
+  width: 0.85em;
+  height: auto;
+  /* Más pegado a la palabra */
+  margin-bottom: -0.1em;
+}
+
+.redesign-active .sgns-drop-nombre .sgns-drop-nombre__fecha {
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  /* Más separada de la palabra */
+  margin-top: 2em;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: max(11px, 0.07em) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3em !important;
+  line-height: 1;
+  text-transform: uppercase !important;
+  color: #bdbdbd;
+}
+
+.sgns-drop-nombre__fecha i {
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background: #E60000;
+}
+
+/* La sección blanca que sigue al zoom: la historia en cuatro filas que aparecen de a una */
+body.sgns-drop-cat .sgns-drop-historia {
+  position: relative;
+  z-index: 1;
+  padding: 24vh clamp(20px, 8vw, 140px) 8vh;
+  /* Se monta 1px sobre los tres videos: sin esto, en algunos anchos queda una rendija
+     entre las dos secciones por la que se ve el video del hero */
+  margin-top: -1px;
+  background: #080808 !important;
+}
+
+/* "Lo que se dice": sección alta con el centro fijo; los mensajes entran desde los
+   costados según el scroll (--entrada de 0 a 1 y --subida los hace seguir subiendo) */
+body.sgns-drop-cat .sgns-drop-dice {
+  position: relative;
+  z-index: 1;
+  /* 5 mensajes: cada uno tiene unos 33vh de scroll (antes eran 8 en 480vh) */
+  height: 380vh;
+  /* En el celular los mensajes arrancan 60vh antes (ESPERA_MOVIL en snipplets/drop-hero.tpl)
+     y son 4 en vez de 5: la sección se acorta lo mismo y cada mensaje sigue con su tramo */
+  @media (max-width: 767px) {
+    height: 287vh;
+  }
+  /* Arranca debajo del zoom, justo cuando la pantalla ya es toda blanca: el zoom se
+     desvanece y esta sección ya está en su lugar, sin tramo vacío en el medio */
+  margin-top: -169vh;
+  background: #ffffff !important;
+}
+
+.sgns-drop-dice__fijo {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sgns-drop-dice__centro {
+  position: absolute;
+  inset: 0;
+  /* Debajo del menú fijo, así "DROP 01" queda a la vista */
+  padding-top: 110px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.redesign-active .sgns-drop-dice__kicker {
+  margin: 0;
+  font-size: 12px !important;
+  letter-spacing: 0.3em !important;
+  color: #6b6b6b !important;
+}
+
+.redesign-active .sgns-drop-dice__titulo {
+  margin: 0;
+  font-family: 'Blunt Semiconit', sans-serif;
+  font-weight: 400;
+  font-size: clamp(40px, 6vw, 96px) !important;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: #080808 !important;
+}
+
+.sgns-drop-dice__logo {
+  width: clamp(120px, 16vw, 240px);
+  height: auto;
+  margin-top: 18px;
+}
+
+.sgns-drop-dice__collage {
+  width: auto;
+  height: min(81vh, 820px);
+  max-width: 60vw;
+  object-fit: contain;
+}
+
+@media (max-width: 767px) {
+  .sgns-drop-dice__collage {
+    height: auto;
+    max-width: 86vw;
+  }
+}
+
+.sgns-drop-dice__msg {
+  --entrada: 0;
+  --subida: 0;
+  position: absolute;
+  /* Nacen abajo y suben con el scroll; se alternan un poco en altura */
+  top: calc(72% + var(--alto, 0) * 6%);
+  max-width: min(340px, 38vw);
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.35);
+  font-size: 17px;
+  line-height: 1.35;
+  color: #111;
+  opacity: var(--entrada);
+  transform: translate(calc((1 - var(--entrada)) * var(--desde)), calc(var(--subida) * -90vh));
+}
+
+.redesign-active .sgns-drop-dice__msg,
+.redesign-active .sgns-drop-dice__msg * {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+.sgns-drop-dice__msg b {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 13.5px;
+  font-weight: 700 !important;
+  color: #075e54;
+}
+
+.sgns-drop-dice__msg--izq {
+  --desde: -60px;
+  left: calc(3vw + var(--corre, 0vw));
+  border-top-left-radius: 4px;
+}
+
+.sgns-drop-dice__msg--der {
+  --desde: 60px;
+  right: calc(3vw + var(--corre, 0vw));
+  background: #d9fdd3;
+  border-top-right-radius: 4px;
+}
+
+/* Desparejos: cada mensaje queda a distinta distancia del borde (el primer hijo es el centro) */
+.sgns-drop-dice__msg:nth-child(2) { --corre: 3vw; }
+.sgns-drop-dice__msg:nth-child(3) { --corre: 1vw; }
+.sgns-drop-dice__msg:nth-child(4) { --corre: 0vw; }
+.sgns-drop-dice__msg:nth-child(5) { --corre: 2vw; }
+.sgns-drop-dice__msg:nth-child(6) { --corre: 4vw; }
+.sgns-drop-dice__msg:nth-child(7) { --corre: 1.5vw; }
+.sgns-drop-dice__msg:nth-child(8) { --corre: 0.5vw; }
+.sgns-drop-dice__msg:nth-child(9) { --corre: 3.5vw; }
+
+/* Mensajes que van solo en la computadora o solo en el celular */
+@media (max-width: 767px) {
+  .sgns-drop-dice__msg.sgns-solo-pc { display: none; }
+  /* 4 mensajes en una sección más corta: suben un poco menos para ir al mismo ritmo */
+  .sgns-drop-dice__msg { transform: translate(calc((1 - var(--entrada)) * var(--desde)), calc(var(--subida) * -75vh)); }
+}
+@media (min-width: 768px) {
+  .sgns-drop-dice__msg.sgns-solo-movil { display: none; }
+}
+
+@media (max-width: 767px) {
+  .sgns-drop-dice__msg {
+    max-width: 56vw;
+    padding: 7px 10px;
+    border-radius: 11px;
+    font-size: 11px;
+    --corre: 0vw !important;
+  }
+
+  .sgns-drop-dice__msg b {
+    margin-bottom: 1px;
+    font-size: 10px;
+  }
+
+  .sgns-drop-dice__msg--izq { left: 12px; }
+  .sgns-drop-dice__msg--der { right: 12px; }
+}
+
+.redesign-active .sgns-drop-historia .sgns-drop-historia__fila {
+  max-width: 26ch;
+  margin: 0 0 0.9em;
+  font-size: clamp(24px, 3.2vw, 52px) !important;
+  font-weight: 400 !important;
+  line-height: 1.1;
+  letter-spacing: -0.03em !important;
+  text-wrap: balance;
+  text-transform: none !important;
+  /* Dos tonos: el texto en gris y lo importante en blanco */
+  color: rgba(255, 255, 255, 0.42) !important;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.redesign-active .sgns-drop-historia .sgns-drop-historia__fila:last-child {
+  margin-bottom: 0;
+}
+
+.redesign-active .sgns-drop-historia .sgns-drop-historia__fila.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Todo alineado a la izquierda, en blanco */
+.redesign-active .sgns-drop-historia .sgns-drop-historia__fila {
+  max-width: 34ch;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  /* Escrito normal (solo la primera letra en mayúscula), con la palabra clave de cada fila en rojo */
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-size: clamp(23px, 3.2vw, 52px) !important;
+  margin-bottom: 1.15em;
+}
+
+.redesign-active .sgns-drop-historia .sgns-drop-historia__fila:last-child {
+  margin-bottom: 0;
+}
+
+.redesign-active .sgns-drop-historia .sgns-drop-historia__fila b {
+  font-weight: 700 !important;
+  color: #E60000 !important;
+}
+
+/* Encabezado de los productos (como el diseño del artefacto): cinta negra y DROP 01 grande */
+body.sgns-drop-cat .sgns-drop-cabecera {
+  position: relative;
+  z-index: 1;
+  background: #080808 !important;
+}
+
+.sgns-drop-cabecera__cinta {
+  overflow: hidden;
+  background: #080808;
+  color: #ffffff;
+  /* Sobre el fondo negro de los productos, una línea fina la separa del título */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.sgns-drop-cabecera__pista {
+  display: inline-flex;
+  align-items: center;
+  gap: 170px;
+  padding: 14px 0 14px 170px;
+  white-space: nowrap;
+  /* 8 vueltas de las frases: la mitad siempre tapa la pantalla más ancha */
+  animation: sgnsCinta 32s linear infinite;
+}
+
+.redesign-active .sgns-drop-cabecera__pista span {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3em !important;
+}
+
+.redesign-active .sgns-drop-cabecera__pista span {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* El punto rojo va pegado a su palabra, a la izquierda */
+.sgns-drop-cabecera__pista i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #E60000;
+}
+
+@keyframes sgnsCinta {
+  to { transform: translateX(-50%); }
+}
+
+.sgns-drop-cabecera__titulo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 56px 40px 8px;
+}
+
+.redesign-active .sgns-drop-cabecera__kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3em !important;
+  color: #bdbdbd !important;
+}
+
+.redesign-active .sgns-drop-cabecera__kicker span {
+  font-size: inherit !important;
+  letter-spacing: inherit !important;
+}
+
+.sgns-drop-cabecera__kicker i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #E60000;
+}
+
+.redesign-active .sgns-drop-cabecera .sgns-drop-cabecera__nombre {
+  margin: 0;
+  font-family: 'Blunt Semiconit', sans-serif;
+  font-weight: 400;
+  font-size: clamp(56px, 7vw, 110px) !important;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: #ffffff !important;
+}
+
+/* Sobre el negro: Ordenar con borde y letras blancas, y Filtrar en blanco con letras negras */
+html body.sgns-drop-cat .js-category-controls .sgns-sort__btn,
+html body.sgns-drop-cat .js-category-controls .sgns-sort__btn:hover,
+html body.sgns-drop-cat .js-category-controls .sgns-sort.is-open .sgns-sort__btn {
+  background: transparent !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+html body.sgns-drop-cat .js-modal-open.btn-default.btn-medium.form-select.sgns-filter-btn,
+html body.sgns-drop-cat .js-modal-open.btn-default.btn-medium.form-select.sgns-filter-btn:hover,
+html body.sgns-drop-cat .js-modal-open.btn-default.btn-medium.form-select.sgns-filter-btn:focus {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #080808 !important;
+}
+
+html body.sgns-drop-cat .sgns-filter-btn__icon {
+  stroke: #080808 !important;
+}
+
+@media (max-width: 767px) {
+  .sgns-drop-cabecera__titulo {
+    padding: 32px 16px 4px;
+  }
+
+  .redesign-active .sgns-drop-cabecera .sgns-drop-cabecera__nombre {
+    font-size: 52px !important;
+  }
+}
+
+/* La palabra y el logo están siempre, sin animación de entrada */
+.redesign-active .sgns-drop-nombre .sgns-drop-nombre__texto {
+  clip-path: none;
+  /* La clase del título del inicio trae su propia animación y lo deja invisible */
+  animation: none;
+  opacity: 1;
+}
+
+.sgns-drop-letra {
+  display: inline-block;
+  /* Sin animación de entrada: está siempre */
+}
+
+.sgns-drop-nombre__texto.is-visible .sgns-drop-letra {
+  opacity: 1;
+  transform: none;
+}
+
+/* El título de la barra (el nombre del Drop) no se ve: ya está en grande arriba.
+   Queda en la página para los lectores de pantalla */
+html body.sgns-drop-cat .js-category-controls .page-header h1 {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+}
+
+/* El espacio entre la barra y la grilla va pintado: con margen quedaba una
+   franja transparente por la que se veía el video */
+html body.sgns-drop-cat .sgns-drop-hero ~ .js-category-controls.category-controls {
+  margin-bottom: 0 !important;
+}
+
+body.sgns-drop-cat .sgns-drop-hero ~ .js-category-body {
+  margin-top: 0 !important;
+  padding-top: 30px;
+}
+
+/* Sin la flecha de "volver arriba" */
+body.sgns-drop-cat .redesign-scroll-top-btn {
+  display: none !important;
+}
+
+/* El nombre del Drop en blanco, en el lugar del logo del inicio */
+.redesign-active .sgns-drop-hero .sgns-drop-hero__titulo {
+  top: 0;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(64px, 8.4vw, 124px);
+  letter-spacing: 0.01em;
+  line-height: 0.9;
+  white-space: nowrap;
+}
+
+/* Arriba de todo el menú va sobre el video: buscador, bolsa, cuenta y
+   hamburguesa en blanco, como en el inicio. Con la píldora vuelven a negro. */
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .sgns-nav-buscar {
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  color: #ffffff !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.22);
+}
+
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .sgns-nav-buscar:hover {
+  border-color: #ffffff !important;
+}
+
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .sgns-nav-buscar svg {
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.35));
+}
+
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .head-main .utilities-icon,
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .head-main .cart-summary svg,
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .head-main .cart-summary svg path,
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .head-main .cart-summary svg use,
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .head-main .utilities-container svg,
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .head-main .utilities-container svg path,
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .head-main .utilities-container svg use,
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .head-main .col-utility.d-md-none svg,
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .head-main .col-utility.d-md-none svg path,
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .head-main .col-utility.d-md-none svg use {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.35));
+}
+
+html.sgns-island:not(.sgns-island-scrolled) body.sgns-drop-cat .head-main .cart-summary .badge-amount {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 767px) {
+  body.sgns-drop-cat .sgns-drop-hero {
+    top: 0;
+    height: 100vh;
+    height: 100lvh;
+    background-image: var(--sgns-poster-movil);
+  }
+
+  /* Alto fijo medido al cargar (script en snipplets/drop-hero.tpl) */
+  body.sgns-drop-cat .sgns-drop-hero.sgns-alto-fijo {
+    height: var(--sgns-alto-fijo);
+  }
+
+  body.sgns-drop-cat .sgns-drop-trio {
+    /* El mismo espacio entre video y video que contra los bordes */
+    --sgns-trio-espacio: 13px;
+    padding: 28px var(--sgns-trio-espacio);
+    border-radius: 20px 20px 0 0;
+  }
+
+  .sgns-drop-trio__video {
+    /* En celular van parados: más altos que anchos */
+    aspect-ratio: 5 / 9;
+    border-radius: 10px;
+  }
+
+  body.sgns-drop-cat .sgns-drop-hero ~ .js-category-body {
+    padding-top: 18px;
+  }
+
+  .redesign-active .sgns-drop-hero .sgns-drop-hero__titulo {
+    font-size: clamp(60px, 20vw, 96px);
+  }
+
+  .redesign-active .sgns-drop-nombre .sgns-drop-nombre__texto {
+    font-size: 22vw;
+  }
+
+  /* En celular el monograma va más grande en proporción a la palabra */
+  .sgns-drop-nombre__logo {
+    width: 1.2em;
+  }
+
+  /* La historia en celular: menos alto (en px, no vh, para que no salte con la barra
+     del navegador), letra apenas más grande y filas un poco más separadas */
+  body.sgns-drop-cat .sgns-drop-historia {
+    padding: 80px 20px 56px;
+    /* Por encima del zoom, que sube 140px para acortar el negro que queda debajo del texto */
+    z-index: 3;
+  }
+
+  body.sgns-drop-cat .sgns-drop-nombre {
+    margin-top: -140px;
+  }
+
+  .redesign-active .sgns-drop-historia .sgns-drop-historia__fila {
+    font-size: 25px !important;
+    margin-bottom: 2em;
+  }
+
+  .redesign-active .sgns-drop-historia .sgns-drop-historia__fila:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Ordenar y filtrar sin recargar (static/js/sort-menu.js): mientras llega el resultado, la grilla se atenúa */
+.js-category-body .js-product-table {
+  transition: opacity 0.25s ease;
+}
+
+.sgns-grid-cargando .js-category-body .js-product-table {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Página del Drop: la barra de Ordenar / Filtrar va sin líneas ni sombra, sobre negro */
+html body.sgns-drop-cat .js-category-controls,
+html body.sgns-drop-cat .js-category-controls.is-sticky {
+  border: 0 !important;
+  box-shadow: none !important;
+  background: #080808 !important;
+}
+
+/* Página del Drop: lo que queda entre la cabecera y la barra de filtros (el detector de 1px y las
+   migas del celular) lleva el mismo negro de la sección: si no, se ve una línea */
+html body.sgns-drop-cat .js-category-controls-prev,
+html body.sgns-drop-cat .sgns-drop-cabecera ~ section.container-fluid.d-md-none {
+  background: #080808 !important;
+}
+
+@media (max-width: 767px) {
+  /* Aire debajo de DROP 01 para que la barra de filtros no le corte la base de las letras */
+  .sgns-drop-cabecera__titulo {
+    padding-bottom: 14px;
+  }
+}
+
+/* La flecha de "volver arriba" no se muestra en ninguna página (el botón lo crea layouts/layout.tpl) */
+.redesign-scroll-top-btn {
+  display: none !important;
+}
+
+/* Página del Drop: la cabecera se monta 2px sobre lo que sigue. Con ciertos anchos de pantalla el
+   borde entre las dos secciones cae en medio píxel y se veía una línea gris (el fondo negro de la página) */
+html body.sgns-drop-cat .sgns-drop-cabecera {
+  margin-bottom: -2px;
+  padding-bottom: 2px;
+  box-shadow: 0 2px 0 #080808;
+}
+
+html body.sgns-drop-cat .js-category-controls {
+  margin-top: -1px;
+  box-shadow: 0 -2px 0 #080808, 0 2px 0 #080808 !important;
+}
+
+/* Franja de promos en celular: una regla vieja escondía los textos a partir del tercero (era de cuando
+   la franja no se movía). La pista quedaba corta y la vuelta saltaba y dejaba huecos: se muestran todos */
+@media (max-width: 767px) {
+  .sgns-island-bar .sgns-island-pista > span {
+    display: block !important;
+  }
+
+  .sgns-island-bar .sgns-island-pista {
+    animation-duration: 16s !important;
+  }
+}
+
+/* Segunda foto al pasar el mouse por la card (grilla de productos y Novedades/Ofertas), igual que
+   tussy.com.ar: las fotos se funden y a la vez se acercan un 6%, en 0,55 s para que el cambio sea suave.
+   Solo con mouse: en el celular no hay hover. */
+@media (hover: hover) and (pointer: fine) {
+  html body.redesign-active .item-image img {
+    transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  html body.redesign-active .item-image:hover img {
+    transform: scale(1.06) !important;
+  }
+
+  html body.redesign-active .product-item-secondary-images-loaded:not(.product-item-secondary-images-disabled):hover .item-image-featured {
+    opacity: 0;
+    transition-delay: 0s !important;
+  }
+
+  html body.redesign-active .product-item-secondary-images-loaded:not(.product-item-secondary-images-disabled):hover .item-image-featured ~ .item-image-secondary {
+    opacity: 1;
+  }
+
+  /* Novedades y Ofertas del inicio: el mismo fundido y el mismo acercamiento */
+  .nov-card .nov-card__img {
+    transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nov-card:hover .nov-card__img {
+    transform: scale(1.06);
+  }
+}
+
+/* Página del Drop: la grilla de productos en negro con letras blancas. El rojo #E60000 del precio, la
+   etiqueta de descuento y el cartel queda como está. La ventana de filtros (#nav-filters) sigue blanca: no se toca */
+html body.sgns-drop-cat .js-category-body .js-item-product,
+html body.sgns-drop-cat .js-category-body .item-product,
+html body.sgns-drop-cat .js-category-body .item-description {
+  background: transparent !important;
+}
+
+html body.sgns-drop-cat .js-category-body .item-name.nov-card__name,
+html body.sgns-drop-cat .js-category-body .item-product:hover .item-name.nov-card__name {
+  color: #ffffff !important;
+}
+
+/* Precio de lista tachado y precios secundarios: gris claro, que se lee sobre el negro */
+html body.sgns-drop-cat .js-category-body .item-price.nov-card__list,
+html body.sgns-drop-cat .js-category-body .nov-card__compare {
+  color: #a8a8a8 !important;
+}
+
+html body.sgns-drop-cat .js-category-body .item-installments.nov-card__installments {
+  color: #bdbdbd !important;
+}
+
+html body.sgns-drop-cat .js-category-body .nov-card__installments b,
+html body.sgns-drop-cat .js-category-body .nov-card__transfer--plain {
+  color: #ffffff !important;
+}
+
+/* "Mostrar más productos" en todas las grillas: bordes redondeados (píldora) */
+.redesign-active .js-load-more { border-radius: 999px !important; }
+
+/* "Mostrar más productos" y los mensajes de la grilla */
+html body.sgns-drop-cat .js-category-body .js-load-more,
+html body.sgns-drop-cat .js-category-body .js-load-more:hover {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #080808 !important;
+}
+
+html body.sgns-drop-cat .js-category-body h2,
+html body.sgns-drop-cat .js-category-body .svg-icon-text {
+  color: #ffffff;
+  fill: #ffffff;
+}
+
+/* Filtros aplicados (las etiquetas con la cruz y "Borrar filtros") */
+html body.sgns-drop-cat .js-category-controls .chip,
+html body.sgns-drop-cat .js-category-controls ~ .container-fluid .chip {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+}
+
+html body.sgns-drop-cat .js-category-controls .js-remove-all-filters,
+html body.sgns-drop-cat .js-category-controls ~ .container-fluid .js-remove-all-filters {
+  color: #ffffff !important;
+}
+
+/* Botón "Agregar todo" del combo (app huapps): bordes redondeados como el de Probador virtual */
+.huapps-kit-group-actions-cta {
+  border-radius: 999px !important;
+}
+
+/* Combo de la página de producto (app huapps), diseño "Ahorro como titular".
+   combo-look.js agrega la cabecera, limpia el color repetido y pone el total en data-total del botón. */
+.huapps-kit-group.js-huapps-buy-together-kit-content {
+  border: 1px solid #e3e3e0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: grid;
+  gap: 10px;
+}
+.sgns-combo-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.sgns-combo-titulo {
+  font-size: 17px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.sgns-combo-ahorro {
+  background: #E60000;
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.redesign-active .sgns-combo-ahorro {
+  color: #fff !important;
+}
+.huapps-kit-group .huapps-kit-group-products {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 10px;
+}
+.huapps-kit-group .huapps-kit-group-products > .js-huapps-buy-together-get-product,
+.huapps-kit-group .huapps-kit-group-item,
+.huapps-kit-group .huapps-kit-group-item-info-flex {
+  margin: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.huapps-kit-group .huapps-kit-group-products > .js-huapps-buy-together-get-product {
+  width: 100% !important;
+  max-width: none !important;
+  flex: none !important;
+}
+.huapps-kit-group .huapps-kit-group-icon-plus,
+.huapps-kit-group .huapps-kit-group-item-enabled-option {
+  display: none !important;
+}
+.huapps-kit-group .huapps-kit-group-item-border {
+  border: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+}
+.huapps-kit-group .huapps-kit-group-item-info-flex {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 14px !important;
+  align-items: flex-start;
+}
+.huapps-kit-group .huapps-kit-group-item-info-flex .huapps-kit-group-item-info-flex-img {
+  display: block !important;
+  flex: 0 0 56px !important;
+  min-width: 0 !important;
+  width: 56px !important;
+  max-width: 56px !important;
+}
+.huapps-kit-group .huapps-kit-group-item-info-flex-img img.huapps-buy-together-item-image {
+  aspect-ratio: auto !important;
+  min-height: 0 !important;
+  max-height: 70px !important;
+  width: 56px !important;
+  height: 70px !important;
+  max-width: none !important;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+.huapps-kit-group .huapps-kit-group-item-discount-tag {
+  display: none !important;
+}
+.huapps-kit-group .huapps-kit-group-item-info-flex-texts {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  padding-left: 0 !important;
+}
+.huapps-kit-group .huapps-kit-group-item-name,
+.huapps-kit-group .huapps-kit-group-item-name a {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  -webkit-line-clamp: unset !important;
+  display: block !important;
+}
+.huapps-kit-group .huapps-kit-group-item-name a {
+  font-size: 13px;
+  font-weight: 500;
+  color: #0b0b0b;
+}
+.huapps-kit-group .js-huapps-buy-together-item-name-variant {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: .1em;
+  color: #727272;
+  margin-top: 2px;
+}
+.huapps-kit-group .huapps-kit-group-item-prices {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  justify-content: flex-end !important;
+  align-items: baseline;
+  gap: 8px;
+}
+.huapps-kit-group .huapps-kit-group-item-prices-por {
+  font-size: 15px;
+  font-weight: 600;
+}
+.huapps-kit-group .huapps-kit-group-item-prices-de {
+  font-size: 12px;
+  color: #727272;
+  text-decoration: line-through;
+}
+.huapps-kit-group .huapps-product-item-variations-label,
+.huapps-kit-group .huapps-ckp-default-footer {
+  display: none !important;
+}
+.huapps-kit-group .huapps-kit-group-item-variations,
+.huapps-kit-group .huapps-product-item-variations {
+  margin: 4px 0 0 !important;
+  padding: 0 !important;
+}
+.huapps-kit-group .huapps-product-item-variations-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+/* Talles redondos */
+.huapps-kit-group .js-huapps-variant-button-cta {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 10px !important;
+  border-radius: 999px !important;
+  border: 1px solid #cfcfcb !important;
+  background: #fff !important;
+  color: #0b0b0b !important;
+  font-size: 11.5px !important;
+}
+.huapps-kit-group .js-huapps-variant-button-cta.cta-huapps-active {
+  background: #0b0b0b !important;
+  border-color: #0b0b0b !important;
+  color: #fff !important;
+}
+/* Botón con el total a la derecha */
+.huapps-kit-group-actions-cta.sgns-combo-cta {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 24px !important;
+  min-height: 50px;
+  border-radius: 999px !important;
+  margin: 2px 0 0 !important;
+}
+.huapps-kit-group-actions-cta.sgns-combo-cta::after {
+  content: attr(data-total);
+  letter-spacing: .06em;
+}
+/* La app fija 140px de alto a la foto en desktop */
+.huapps-kit-group .huapps-kit-group-item-info-flex .huapps-kit-group-item-info-flex-img,
+.huapps-kit-group .huapps-kit-group-item-info-flex .huapps-kit-group-item-info-flex-img > a {
+  min-height: 0 !important;
+  height: auto !important;
+}
+.huapps-kit-group .huapps-kit-group-item-info-flex .huapps-kit-group-item-info-flex-texts {
+  padding: 0 !important;
+}
+.huapps-kit-group .huapps-kit-group-item-name {
+  min-height: 0 !important;
+}
+
+/* Probador virtual y Agregar todo: mismo botón, uno blanco con borde negro y el otro negro */
+.redesign-active .template-product .js-probador-btn,
+.redesign-active .template-product .huapps-kit-group-actions-cta {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 48px !important;
+  min-height: 0 !important;
+  padding: 0 24px !important;
+  border: 1px solid #000 !important;
+  border-radius: 100px !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 12.4px !important;
+  font-weight: 600 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  box-shadow: none !important;
+}
+.redesign-active .template-product .js-probador-btn {
+  background: #fff !important;
+  color: #000 !important;
+}
+.redesign-active .template-product .huapps-kit-group-actions-cta {
+  background: #000 !important;
+  color: #fff !important;
+}
+.redesign-active .template-product .huapps-kit-group-actions-cta[data-total]::after {
+  content: "· " attr(data-total);
+  letter-spacing: 2px;
+}
+.redesign-active .template-product .js-product-form > .redesign-active:has(> .js-probador-btn) {
+  display: block !important;
+  width: 100% !important;
+}
+@media (max-width: 767px) {
+  .redesign-active .template-product .js-probador-btn,
+  .redesign-active .template-product .huapps-kit-group-actions-cta {
+    height: 44px !important;
+    font-size: 11px !important;
+  }
+}
+/* Borde negro también al pasar el mouse, al tocar y con foco (la app y el btn-primary lo cambian) */
+.redesign-active .template-product .huapps-kit-group-actions-cta:hover,
+.redesign-active .template-product .huapps-kit-group-actions-cta:focus,
+.redesign-active .template-product .huapps-kit-group-actions-cta:active,
+.redesign-active .template-product .huapps-kit-group-actions-cta:focus-visible {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #000 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Conjuntos: mientras la app de combos no cargó, en vez del formulario de producto suelto va un recuadro de carga.
+   combo-look.js agrega sgns-kit-sin-app si la app no aparece, y vuelve el formulario normal. */
+.js-product-form.sgns-es-kit:not(.sgns-kit-sin-app):not(:has(.js-huapps-buy-together-kit-content)) > * {
+  display: none !important;
+}
+.js-product-form.sgns-es-kit:not(.sgns-kit-sin-app):not(:has(.js-huapps-buy-together-kit-content))::before {
+  content: "";
+  display: block;
+  height: 300px;
+  border: 1px solid #e3e3e0;
+  border-radius: 14px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0) 0, rgba(255,255,255,.7) 50%, rgba(255,255,255,0) 100%) -100% 0 / 60% 100% no-repeat,
+    linear-gradient(#ececea, #ececea) 16px 18px / 45% 16px no-repeat,
+    linear-gradient(#ececea, #ececea) 16px 56px / 56px 70px no-repeat,
+    linear-gradient(#ececea, #ececea) 86px 60px / 50% 12px no-repeat,
+    linear-gradient(#ececea, #ececea) 86px 84px / 30% 12px no-repeat,
+    linear-gradient(#ececea, #ececea) 16px 142px / 56px 70px no-repeat,
+    linear-gradient(#ececea, #ececea) 86px 146px / 50% 12px no-repeat,
+    linear-gradient(#ececea, #ececea) 86px 170px / 30% 12px no-repeat,
+    linear-gradient(#ececea, #ececea) 16px 234px / calc(100% - 32px) 48px no-repeat,
+    #fff;
+  animation: sgns-kit-brillo 1.2s linear infinite;
+}
+.js-product-form.sgns-es-kit:not(.sgns-kit-sin-app):not(:has(.js-huapps-buy-together-kit-content))::before {
+  background-clip: padding-box;
+}
+@keyframes sgns-kit-brillo {
+  to { background-position: 200% 0, 16px 18px, 16px 56px, 86px 60px, 86px 84px, 16px 142px, 86px 146px, 86px 170px, 16px 234px, 0 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js-product-form.sgns-es-kit::before { animation: none !important; }
+}
+
+/* Página de producto: navbar a todo el ancho, blanca, arriba de la página; se va al scrollear y nunca se vuelve isla */
+html.sgns-island body.redesign-active.template-product .head-main,
+html.sgns-island body.redesign-active.template-product [data-store="header"].head-main,
+html.sgns-island-scrolled body.redesign-active.template-product .head-main,
+html.sgns-island-scrolled body.redesign-active.template-product [data-store="header"].head-main {
+  position: absolute !important;
+  top: 34px !important;
+  left: 0 !important;
+  transform: none !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 90px !important;
+  border: 0 !important;
+  border-bottom: 1px solid #eee !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+@media (max-width: 767px) {
+  html.sgns-island body.redesign-active.template-product .head-main,
+  html.sgns-island body.redesign-active.template-product [data-store="header"].head-main,
+  html.sgns-island-scrolled body.redesign-active.template-product .head-main,
+  html.sgns-island-scrolled body.redesign-active.template-product [data-store="header"].head-main {
+    top: 30px !important;
+    height: 64px !important;
+  }
+}
+/* La franja de promos también queda arriba de la página en vez de seguir al scroll */
+body.redesign-active.template-product .sgns-island-bar {
+  position: absolute !important;
+}
+/* Producto: menos aire entre la barra y la foto, y el título alineado con el borde de arriba de la foto */
+body.redesign-active.template-product .sgns-island-spacer {
+  height: 104px !important;
+}
+@media (min-width: 768px) {
+  body.redesign-active.template-product .js-sticky-product > .page-header {
+    padding-top: 0 !important;
+  }
+  /* El alto de línea deja aire arriba de las letras: se compensa para que la mayúscula toque el borde de la foto */
+  body.redesign-active.template-product .js-sticky-product .js-product-name {
+    position: relative !important;
+    top: -7px !important;
+  }
+  body.redesign-active.template-product .js-sticky-product > .page-header {
+    margin-bottom: -7px !important;
+  }
+}
+@media (max-width: 767px) {
+  body.redesign-active.template-product .sgns-island-spacer {
+    height: 74px !important;
+  }
+}
+
+/* Cards de producto: anterior tachado, precio grande, barra negra de cuotas y precio con transferencia en rojo */
+.sgns-precio {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 4px !important;
+  font-variant-numeric: tabular-nums;
+}
+.sgns-precio .sgns-precio__antes {
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: #8a8a8a !important;
+  text-decoration: line-through !important;
+  margin: 0 !important;
+}
+.sgns-precio .sgns-precio__antes:not([style*="none"]) {
+  display: block !important;
+}
+.sgns-precio .sgns-precio__actual {
+  display: block !important;
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+  color: #000 !important;
+  text-decoration: none !important;
+  margin: 0 !important;
+}
+.sgns-precio .sgns-precio__cuotas {
+  align-self: stretch;
+  background: #000;
+  color: #fff !important;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 12px !important;
+  line-height: 1.3;
+}
+.sgns-precio .sgns-precio__cuotas b {
+  color: #E60000 !important;
+  font-weight: 700;
+}
+.sgns-precio .sgns-precio__transf {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #E60000 !important;
+}
+@media (max-width: 767px) {
+  .sgns-precio .sgns-precio__actual { font-size: 18px !important; }
+  .sgns-precio .sgns-precio__cuotas { font-size: 10.5px !important; padding: 6px 8px; }
+  .sgns-precio .sgns-precio__transf { font-size: 12px !important; }
+}
+.sgns-precio--chico .sgns-precio__actual { font-size: 15px !important; }
+.sgns-precio--chico .sgns-precio__cuotas { font-size: 10.5px !important; padding: 4px 8px; border-radius: 6px; }
+.sgns-precio--chico .sgns-precio__transf { font-size: 11.5px !important; }
+
+/* Detalle de producto: mismo orden que las cards. Usa los componentes de Tiendanube
+   (se actualizan solos al cambiar de talle o al armar un combo), solo cambia cómo se ven. */
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns).price-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 6px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) > [class*="col"] {
+  flex: none !important;
+  width: 100% !important;
+  max-width: none !important;
+  padding: 0 !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) > .col {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 2px !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .product-transfer-chip {
+  display: none !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-compare-price-display,
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-compare-price-display * {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  color: #8a8a8a !important;
+  text-decoration: line-through !important;
+  text-decoration-color: #8a8a8a !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-price-display,
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-price-display * {
+  font-size: 30px !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+  color: #000 !important;
+  text-decoration: none !important;
+}
+/* Barra negra de cuotas */
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-max-installments.product-installments {
+  display: block !important;
+  background: #000 !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  padding: 9px 14px !important;
+  font-size: 14px !important;
+  line-height: 1.3 !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .product-installments > span {
+  color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .product-installments > .product-installment-amount,
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .product-installments > .product-installment-amount + span {
+  color: #E60000 !important;
+  font-weight: 700 !important;
+}
+/* Precio con transferencia: una línea roja */
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container,
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container * {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 1.3 !important;
+  color: #E60000 !important;
+  text-transform: lowercase;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product {
+  text-transform: none !important;
+}
+@media (max-width: 767px) {
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-price-display,
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-price-display * { font-size: 26px !important; }
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-max-installments.product-installments,
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .product-installments > span { font-size: 12.5px !important; }
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container,
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container * { font-size: 14px !important; }
+}
+/* Orden fijo: precios, barra de cuotas, transferencia (el tema reordenaba con flex) */
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) > .col { order: 1 !important; }
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) > .col-auto { order: 2 !important; }
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) > .col-12 { order: 3 !important; }
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .product-installments > .product-installment-value {
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 0 5px;
+  margin-top: 0 !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container > span:not(.js-payment-discount-installments) {
+  display: inline !important;
+  visibility: visible !important;
+  width: auto !important;
+  height: auto !important;
+  position: static !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container > span {
+  text-transform: none !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-payment-discount-name-product {
+  text-transform: lowercase !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-max-installments-container {
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Cards: precio y precio anterior en la misma línea; cuotas y transferencia debajo, a todo el ancho */
+.sgns-precio {
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: baseline !important;
+  column-gap: 8px !important;
+}
+.sgns-precio .sgns-precio__actual { order: 1; }
+.sgns-precio .sgns-precio__antes { order: 2; }
+.sgns-precio .sgns-precio__cuotas,
+.sgns-precio .sgns-precio__transf {
+  order: 3;
+  flex: 0 0 100%;
+}
+
+/* Barra de cuotas: del ancho del texto y en píldora */
+.sgns-precio::before {
+  content: "";
+  order: 3;
+  flex: 0 0 100%;
+  height: 0;
+  margin-top: -4px;
+}
+.sgns-precio .sgns-precio__cuotas {
+  order: 4;
+  flex: 0 0 auto !important;
+  max-width: 100%;
+  border-radius: 999px !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+.sgns-precio .sgns-precio__transf { order: 5; }
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-max-installments-container {
+  width: fit-content !important;
+  max-width: 100% !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-max-installments.product-installments {
+  border-radius: 999px !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+/* Transferencia alineada con el texto de adentro de la píldora de cuotas */
+.sgns-precio .sgns-precio__transf {
+  padding-left: 12px !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container {
+  padding-left: 16px !important;
+}
+/* Tachado a la izquierda del precio */
+.sgns-precio .sgns-precio__antes { order: 1 !important; }
+.sgns-precio .sgns-precio__actual { order: 2 !important; }
+/* Bloque de precio de las cards un poco más grande */
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__antes { font-size: 14.5px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__actual { font-size: 24px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { font-size: 13px !important; padding-top: 8px; padding-bottom: 8px; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf { font-size: 14px !important; }
+@media (max-width: 767px) {
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__antes { font-size: 13.5px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__actual { font-size: 20px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { font-size: 11.5px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf { font-size: 13px !important; }
+}
+/* Cards: nombre y bloque de precio un 15% más grandes */
+body.redesign-active .nov-card__name { font-size: 16px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__antes { font-size: 16.5px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__actual { font-size: 27.5px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { font-size: 15px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf { font-size: 16px !important; }
+@media (max-width: 767px) {
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__antes { font-size: 15.5px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__actual { font-size: 23px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { font-size: 13px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf { font-size: 15px !important; }
+}
+/* Píldora de cuotas: rojo y blanco con el mismo grosor y tamaño, siempre en una línea */
+.sgns-precio .sgns-precio__cuotas,
+.sgns-precio .sgns-precio__cuotas b {
+  font-weight: 700 !important;
+  font-size: inherit;
+  white-space: nowrap;
+}
+.sgns-precio .sgns-precio__cuotas b { font-size: 1em !important; }
+.sgns-precio .sgns-precio__transf { white-space: nowrap; }
+@media (max-width: 767px) {
+  /* Con dos cards por fila la card mide ~170px: tamaños que entran en una línea */
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { font-size: 11.5px !important; padding-left: 10px !important; padding-right: 10px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf { font-size: 13.5px !important; padding-left: 10px !important; }
+}
+/* Cards: un poco más chico que el +15% y con más aire entre líneas */
+body.redesign-active .nov-card__name { font-size: 15px !important; margin-bottom: 8px !important; }
+.sgns-precio:not(.sgns-precio--chico) { row-gap: 9px !important; column-gap: 10px !important; }
+.sgns-precio:not(.sgns-precio--chico)::before { margin-top: -9px; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__antes { font-size: 15.5px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__actual { font-size: 25.5px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas {
+  font-size: 13.5px !important;
+  letter-spacing: .02em;
+  padding: 9px 15px !important;
+}
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf { font-size: 15px !important; padding-left: 15px !important; letter-spacing: .01em; }
+@media (max-width: 767px) {
+  body.redesign-active .nov-card__name { font-size: 14px !important; }
+  .sgns-precio:not(.sgns-precio--chico) { row-gap: 7px !important; column-gap: 8px !important; }
+  .sgns-precio:not(.sgns-precio--chico)::before { margin-top: -7px; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__antes { font-size: 14px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__actual { font-size: 21.5px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { font-size: 11px !important; letter-spacing: 0; padding: 7px 10px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf { font-size: 13px !important; padding-left: 10px !important; letter-spacing: 0; }
+}
+/* Cards: nombre y precios corridos apenas a la derecha, despegados del borde de la foto */
+body.redesign-active .nov-card__name,
+.sgns-precio:not(.sgns-precio--chico) {
+  padding-left: 6px !important;
+}
+/* Cards: nombre, precios y transferencia arrancan en la misma vertical (la del texto
+   de adentro de la píldora); solo la píldora sobresale hacia la izquierda */
+body.redesign-active .nov-card__name,
+.sgns-precio:not(.sgns-precio--chico) { padding-left: 21px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { margin-left: -15px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf { padding-left: 0 !important; }
+@media (max-width: 767px) {
+  body.redesign-active .nov-card__name,
+  .sgns-precio:not(.sgns-precio--chico) { padding-left: 16px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { margin-left: -10px !important; }
+}
+/* Texto apenas más a la izquierda; la píldora queda donde estaba */
+body.redesign-active .nov-card__name,
+.sgns-precio:not(.sgns-precio--chico) { padding-left: 15px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { margin-left: -9px !important; }
+@media (max-width: 767px) {
+  body.redesign-active .nov-card__name,
+  .sgns-precio:not(.sgns-precio--chico) { padding-left: 11px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { margin-left: -5px !important; }
+}
+/* Bloque de precio un poco más compacto en vertical */
+body.redesign-active .nov-card__name { margin-bottom: 5px !important; }
+.sgns-precio:not(.sgns-precio--chico) { row-gap: 6px !important; }
+.sgns-precio:not(.sgns-precio--chico)::before { margin-top: -6px; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { padding-top: 7px !important; padding-bottom: 7px !important; }
+@media (max-width: 767px) {
+  .sgns-precio:not(.sgns-precio--chico) { row-gap: 5px !important; }
+  .sgns-precio:not(.sgns-precio--chico)::before { margin-top: -5px; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { padding-top: 6px !important; padding-bottom: 6px !important; }
+}
+/* Cards: todo un 14% más chico y un poco más compacto en vertical */
+body.redesign-active .nov-card__name { font-size: 13px !important; margin-bottom: 4px !important; }
+.sgns-precio:not(.sgns-precio--chico) { row-gap: 5px !important; }
+.sgns-precio:not(.sgns-precio--chico)::before { margin-top: -5px; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__antes { font-size: 13.3px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__actual { font-size: 22px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { font-size: 11.6px !important; padding-top: 6px !important; padding-bottom: 6px !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf { font-size: 12.9px !important; }
+@media (max-width: 767px) {
+  body.redesign-active .nov-card__name { font-size: 12px !important; }
+  .sgns-precio:not(.sgns-precio--chico) { row-gap: 4px !important; }
+  .sgns-precio:not(.sgns-precio--chico)::before { margin-top: -4px; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__antes { font-size: 12px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__actual { font-size: 18.5px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { font-size: 9.5px !important; padding-top: 5px !important; padding-bottom: 5px !important; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf { font-size: 11.2px !important; }
+}
+
+/* ==========================================================================
+   Detalle de producto con el mismo diseño final de las cards:
+   tachado a la izquierda del precio, píldora de cuotas del ancho del texto,
+   transferencia en rojo, todo alineado con el texto de adentro de la píldora.
+   ========================================================================== */
+html body.redesign-active.template-product:not(#sgns) .js-sticky-product .js-product-name,
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) {
+  padding-left: 15px !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) {
+  gap: 5px !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) > .col {
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: baseline !important;
+  column-gap: 12px !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) > .col > span { order: 2; }
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) > .col > span:has(.js-compare-price-display) { order: 1; }
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-compare-price-display,
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-compare-price-display * { font-size: 16px !important; }
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-price-display,
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-price-display * { font-size: 28px !important; }
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-max-installments-container {
+  margin-left: -9px !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-max-installments.product-installments,
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .product-installments > span {
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  white-space: nowrap;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-max-installments.product-installments {
+  padding: 7px 15px 7px 9px !important;
+}
+/* "de" en blanco como en las cards: el texto "cuotas sin interés de" viene junto, así que se pinta todo en rojo
+   y el valor en blanco (igual que antes); el número de cuotas queda rojo */
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container {
+  padding-left: 0 !important;
+}
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container,
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container * {
+  font-size: 15px !important;
+}
+@media (max-width: 767px) {
+  html body.redesign-active.template-product:not(#sgns) .js-sticky-product .js-product-name,
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) { padding-left: 11px !important; }
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-max-installments-container { margin-left: -6px !important; }
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-max-installments.product-installments { padding: 6px 12px 6px 6px !important; }
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-max-installments.product-installments,
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .product-installments > span { font-size: 12px !important; }
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-price-display,
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-price-display * { font-size: 24px !important; }
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-compare-price-display,
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-compare-price-display * { font-size: 14px !important; }
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container,
+  html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container * { font-size: 13.5px !important; }
+}
+/* Cards: sin mayúsculas forzadas por el tema, tachado un poco más grande, un poco más compacto */
+.sgns-precio,
+.sgns-precio * { text-transform: none !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__antes { font-size: 14.5px !important; }
+.sgns-precio:not(.sgns-precio--chico) { row-gap: 4px !important; }
+.sgns-precio:not(.sgns-precio--chico)::before { margin-top: -4px; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__actual { line-height: 1 !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { padding-top: 5px !important; padding-bottom: 5px !important; line-height: 1.25 !important; }
+.sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf { line-height: 1.2 !important; }
+@media (max-width: 767px) {
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__antes { font-size: 13px !important; }
+  .sgns-precio:not(.sgns-precio--chico) { row-gap: 3px !important; }
+  .sgns-precio:not(.sgns-precio--chico)::before { margin-top: -3px; }
+  .sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { padding-top: 4px !important; padding-bottom: 4px !important; }
+}
+/* El tema fuerza mayúsculas con selectores muy específicos: se pisa con un ID ficticio */
+body:not(#sgns) .sgns-precio,
+body:not(#sgns) .sgns-precio * { text-transform: none !important; }
+
+/* ==========================================================================
+   CARDS · valores finales con un ID ficticio para ganarle a los selectores del
+   tema (que pisaban grosor, tamaños y espacios en home, listado y relacionados)
+   ========================================================================== */
+body:not(#sgns) .nov-card__name { font-size: 13px !important; margin-bottom: 4px !important; padding-left: 15px !important; }
+body:not(#sgns) .sgns-precio:not(.sgns-precio--chico) {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: baseline !important;
+  column-gap: 10px !important;
+  row-gap: 4px !important;
+  padding-left: 15px !important;
+  margin-top: 0 !important;
+}
+body:not(#sgns) .sgns-precio:not(.sgns-precio--chico) > * { margin: 0 !important; }
+body:not(#sgns) .sgns-precio:not(.sgns-precio--chico) .sgns-precio__antes {
+  font-size: 14.5px !important; font-weight: 400 !important; line-height: 1 !important; color: #8a8a8a !important;
+}
+body:not(#sgns) .sgns-precio:not(.sgns-precio--chico) .sgns-precio__actual {
+  font-size: 22px !important; font-weight: 700 !important; line-height: 1 !important; color: #000 !important;
+}
+body:not(#sgns) .sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas {
+  margin-left: -9px !important;
+  padding: 5px 15px !important;
+  font-size: 11.6px !important;
+  line-height: 1.25 !important;
+  border-radius: 999px !important;
+}
+body:not(#sgns) .sgns-precio .sgns-precio__cuotas,
+body:not(#sgns) .sgns-precio .sgns-precio__cuotas * {
+  font-weight: 700 !important;
+  letter-spacing: .02em !important;
+  white-space: nowrap !important;
+}
+body:not(#sgns) .sgns-precio .sgns-precio__cuotas { color: #fff !important; }
+body:not(#sgns) .sgns-precio .sgns-precio__cuotas b { color: #E60000 !important; font-size: 1em !important; }
+body:not(#sgns) .sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf {
+  font-size: 12.9px !important; font-weight: 500 !important; line-height: 1.2 !important; padding-left: 0 !important; color: #E60000 !important;
+}
+@media (max-width: 767px) {
+  body:not(#sgns) .nov-card__name { font-size: 12px !important; padding-left: 11px !important; }
+  body:not(#sgns) .sgns-precio:not(.sgns-precio--chico) { padding-left: 11px !important; column-gap: 7px !important; row-gap: 3px !important; }
+  body:not(#sgns) .sgns-precio:not(.sgns-precio--chico) .sgns-precio__antes { font-size: 12.5px !important; }
+  body:not(#sgns) .sgns-precio:not(.sgns-precio--chico) .sgns-precio__actual { font-size: 18.5px !important; }
+  body:not(#sgns) .sgns-precio:not(.sgns-precio--chico) .sgns-precio__cuotas { margin-left: -5px !important; padding: 4px 10px 4px 5px !important; font-size: 9.5px !important; letter-spacing: 0 !important; }
+  body:not(#sgns) .sgns-precio .sgns-precio__cuotas * { letter-spacing: 0 !important; }
+  body:not(#sgns) .sgns-precio:not(.sgns-precio--chico) .sgns-precio__transf { font-size: 11.2px !important; }
+}
+html:not(#sgns) body:not(#sgns) .sgns-precio .sgns-precio__cuotas b {
+  font-weight: 700 !important;
+  -webkit-text-stroke: 0 !important;
+}
+html:not(#sgns) body:not(#sgns) .js-swiper-related .nov-card__name,
+html:not(#sgns) body:not(#sgns) .item-product .nov-card__name {
+  min-height: 0 !important;
+  height: auto !important;
+}
+html:not(#sgns) body:not(#sgns) .nov-card__name { padding-top: 0 !important; padding-bottom: 0 !important; }
+/* El tema achica las cuotas del detalle con transform: scale(.75) en celular */
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .js-max-installments-container {
+  transform: none !important;
+}
+/* Precio con transferencia apenas más bold (cards y detalle) */
+html:not(#sgns) body:not(#sgns) .sgns-precio .sgns-precio__transf { font-weight: 600 !important; }
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container,
+html body.redesign-active.template-product:not(#sgns) .js-price-container:not(#sgns) .payment-discount-price-product-container * { font-weight: 600 !important; }
+
+/* Página del Drop (fondo negro): bloque de precio invertido. Precio en blanco, tachado gris claro,
+   píldora de cuotas blanca con letras negras; el rojo #E60000 queda igual */
+html:not(#sgns) body.sgns-drop-cat:not(#sgns) .sgns-precio .sgns-precio__actual { color: #fff !important; }
+html:not(#sgns) body.sgns-drop-cat:not(#sgns) .sgns-precio .sgns-precio__antes { color: #a8a8a8 !important; }
+html:not(#sgns) body.sgns-drop-cat:not(#sgns) .sgns-precio .sgns-precio__cuotas {
+  background: #fff !important;
+  color: #000 !important;
+}
+html:not(#sgns) body.sgns-drop-cat:not(#sgns) .sgns-precio .sgns-precio__cuotas b { color: #E60000 !important; }
+
+
+
+
+/* PRENDA DORADA: carta de oro (snipplets/grid/item.tpl, .sgns-dorada). Cuando la tarjeta la trae, se esconde todo lo demás
+   de la tarjeta normal y queda solo la carta */
+.redesign-active .js-item-product:has(> .sgns-dorada:not(.sgns-dorada--latente)) > :not(.sgns-dorada) { display: none !important; }
+.redesign-active .sgns-dorada.sgns-dorada--latente { display: none !important; }
+/* En los carruseles del inicio (snipplets/carta-dorada-inicio.tpl) la carta es un elemento del carrusel: que respete el
+   ancho de tarjeta (sin min-width: 0 el nombre en una línea la estiraba) y su propio alto. El relleno va en px: en % se
+   calcula sobre el ancho de todo el carrusel y achicaba la foto */
+.redesign-active .novedades-grid-premium .nov-card.sgns-dorada { min-width: 0; align-self: flex-start; padding: 22px 22px 0; }
+@media (max-width: 767px) { .redesign-active .novedades-grid-premium .nov-card.sgns-dorada { padding: 13px 11px 0; } }
+.redesign-active .sgns-dorada { position: relative; display: block; aspect-ratio: 3 / 4.9; padding: 7% 7% 0; color: #3b2a05 !important; text-decoration: none !important;
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 50% 100%, 0 88%);
+  background: radial-gradient(120% 70% at 30% 10%, #FFF3C4 0%, transparent 55%), linear-gradient(160deg, #F6DB86 0%, #E0B64F 35%, #C9982E 65%, #9E7419 100%);
+  transition: transform .3s ease, filter .3s ease; }
+.redesign-active .sgns-dorada:hover { transform: translateY(-4px); filter: brightness(1.06) drop-shadow(0 12px 18px rgba(140,100,20,.35)); }
+.redesign-active .sgns-dorada::before { content: ""; position: absolute; inset: 7px; clip-path: inherit; border: 1.5px solid rgba(255,248,210,.75); pointer-events: none; }
+.redesign-active .sgns-dorada * { font-family: 'Outfit', sans-serif !important; color: #3b2a05 !important; }
+.redesign-active .sgns-dorada__rating { position: absolute; left: 8%; top: 6%; z-index: 2; display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.redesign-active .sgns-dorada__rating strong { font-size: clamp(22px, 2.4vw, 36px); font-weight: 900 !important; }
+.redesign-active .sgns-dorada__rating small { margin-top: 4px; font-size: 11px; font-weight: 800 !important; letter-spacing: .12em; }
+.redesign-active .sgns-dorada__unico { position: absolute; right: 7%; top: 6%; z-index: 2; padding: 5px 10px; border-radius: 999px; background: #3b2a05; color: #F3D37A !important; font-size: 10.5px; font-weight: 900 !important; letter-spacing: .14em; }
+.redesign-active .sgns-dorada__foto { display: block; width: 100%; margin: 3% auto 0; aspect-ratio: 1; background: #fff center 30% / cover no-repeat; border-radius: 12px; box-shadow: 0 6px 18px -8px rgba(90,60,5,.55); }
+.redesign-active .sgns-dorada__nombre { display: block; margin-top: 6%; padding-bottom: 4%; text-align: center; font-size: clamp(13px, 1.25vw, 19px); font-weight: 900 !important; letter-spacing: .05em; text-transform: uppercase; border-bottom: 1px solid rgba(59,42,5,.3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.redesign-active .sgns-dorada__stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-top: 5%; font-size: clamp(11px, .95vw, 14px); font-weight: 600 !important; letter-spacing: .02em; }
+.redesign-active .sgns-dorada__stats b { font-weight: 900 !important; }
+@media (max-width: 767px) {
+  .redesign-active .sgns-dorada { aspect-ratio: 3 / 5.3; padding: 8% 7% 0; }
+  .redesign-active .sgns-dorada__rating small { font-size: 9px; }
+  .redesign-active .sgns-dorada__unico { font-size: 8.5px; padding: 4px 7px; }
+  .redesign-active .sgns-dorada__stats { gap: 3px 6px; font-size: 10px; }
+}
+
+
+/* Tarjeta del Cyber en TODA la tienda (.sgns-cyber-card: la pone snipplets/grid/item.tpl con la etiqueta CYBER SGNS y, si
+   falta, static/js/prenda-dorada.js con la categoría Cyber). En la página del Cyber no (body.sgns-cyber-cat): ahí todas
+   las tarjetas ya tienen este estilo por snipplets/drop-hero.tpl. Copia de la de snipplets/drop-hero.tpl. (idea 07 "Tarjeta azul noche"): cada producto dentro de una tarjeta azul noche con borde cian,
+   la foto con bordes redondeados adentro, letras claras y el -% arriba a la derecha como cartel de neón rosa */
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card { position: relative; padding: 0 8px 20px !important; }
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card::before { content: ""; position: absolute; left: 8px; right: 8px; top: 0; bottom: 20px; border-radius: 22px; background: radial-gradient(90% 70% at 50% 30%, #2a0d10 0%, #14080a 60%, #08060a 100%); box-shadow: 0 0 0 2px #E60000, 0 0 14px rgba(230,0,0,.75), inset 0 0 18px rgba(230,0,0,.22), 0 18px 40px -18px rgba(230,0,0,.8); pointer-events: none; z-index: 0; }
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card > * { position: relative; z-index: 1; }
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .item-image { margin: 10px 10px 0 !important; border-radius: 14px !important; overflow: hidden; }
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .item-description { padding: 4px 18px 18px !important; }
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .item-name.nov-card__name, html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .item-product:hover .item-name.nov-card__name { color: #fff !important; }
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-precio .sgns-precio__actual { color: #fff !important; }
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-precio .sgns-precio__antes { color: #9a98b8 !important; }
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-precio .sgns-precio__cuotas { background: rgba(255,255,255,.08) !important; border: 1px solid rgba(230,0,0,.4); color: #fff !important; }
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-precio .sgns-precio__transf, html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-precio .sgns-precio__transf * { color: #ffe5e5 !important; -webkit-text-fill-color: #ffe5e5 !important; text-shadow: 0 0 10px rgba(230,0,0,.6); }
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-item-badges { top: 22px !important; right: 22px !important; left: auto !important; align-items: flex-end !important; }
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-discount-badge { background: #14080a !important; color: #ffe5e5 !important; border: 1.5px solid #E60000 !important; box-shadow: 0 0 10px rgba(230,0,0,.8), inset 0 0 8px rgba(230,0,0,.45) !important; text-shadow: 0 0 6px #E60000 !important;  font-family: 'Outfit', sans-serif !important; font-weight: 800 !important; font-size: 17px !important; padding: 7px 15px !important; font-family: 'Orbitron', sans-serif !important; letter-spacing: .06em !important; }
+html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-bolsa { right: 22px !important; bottom: 12px !important; }
+@media (max-width: 767px) {
+  html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card { padding: 0 5px 12px !important; }
+  html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card::before { left: 5px; right: 5px; bottom: 12px; border-radius: 16px; }
+  html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .item-image { margin: 6px 6px 0 !important; border-radius: 11px !important; }
+  html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .item-description { padding: 2px 10px 12px !important; }
+  html:not(#sgns) body:not(#sgns):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-item-badges { top: 14px !important; right: 14px !important; }
+}
+
+
+/* Tarjeta del Cyber fuera de su página: el tema pinta de blanco el bloque de texto y sus letras en negro/rojo.
+   Se dejan transparentes y con los colores del Cyber, igual que en la categoría */
+html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .item-product, html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .item-description, html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .js-item-description, html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .item-link { background: transparent !important; }
+html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .item-name, html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .item-name *, html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .nov-card__name { color: #fff !important; -webkit-text-fill-color: #fff !important; }
+html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-precio__actual, html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-precio__actual * { color: #fff !important; -webkit-text-fill-color: #fff !important; }
+html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-precio__antes { color: #9a98b8 !important; text-decoration-color: #E60000 !important; }
+html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-precio__cuotas { background: rgba(255,255,255,.08) !important; border: 1px solid rgba(230,0,0,.4) !important; color: #fff !important; }
+html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-precio__cuotas b { color: #ffe5e5 !important; -webkit-text-fill-color: #ffe5e5 !important; }
+html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-precio__transf, html:not(#sgns):not(#sgns2) body:not(#sgns):not(#sgns2):not(.sgns-cyber-cat) .js-item-product.sgns-cyber-card .sgns-precio__transf * { color: #ffe5e5 !important; -webkit-text-fill-color: #ffe5e5 !important; }

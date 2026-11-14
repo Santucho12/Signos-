@@ -2,7 +2,9 @@
    Reemplaza al select nativo (queda oculto en la página como respaldo):
    - En la barra de la grilla: botón "Ordenar: Novedades" que abre una tarjeta.
    - Dentro del modal de filtros (mobile): la lista va abierta, sin botón.
-   Elegir una opción recarga la página con ?sort_by=, conservando los filtros.
+   Ordenar y filtrar no recargan la página: se pide el resultado por detrás y se
+   cambian en el lugar la barra, los filtros y la grilla (la dirección no cambia).
+   Si el pedido falla, se navega como antes.
    También marca en el modal la categoría en la que estás. */
 (function() {
     'use strict';
@@ -32,11 +34,157 @@
         return '<svg class="sgns-sort__icon" viewBox="0 0 24 24" aria-hidden="true">' + ICONOS[nombre] + '</svg>';
     }
 
-    function ordenar(valor) {
-        var url = new URL(location.href);
-        url.searchParams.set('sort_by', valor);
+    // Dirección "virtual": el orden y los filtros aplicados, sin tocar la barra del navegador
+    var urlActual = new URL(location.href);
+    var cargando = false, enSitio = false, pagina = 1, hayMas = false, cargandoMas = false, conScroll = false;
+    // Lo que se reemplaza con el resultado: la barra (con el modal de filtros), los filtros
+    // aplicados del celular y el cuerpo con la grilla
+    var ZONAS = ['.js-category-controls', 'div.container-fluid.visible-when-content-ready.d-md-none', '.js-category-body'];
+
+    function limpiarPagina(url) {
+        url.pathname = url.pathname.replace(/\/page\/\d+\/?$/, '/');
         url.searchParams.delete('page');
-        location.href = url.toString();
+        url.searchParams.delete('mpage');
+        return url;
+    }
+
+    function ordenar(valor) {
+        var url = new URL(urlActual);
+        url.searchParams.set('sort_by', valor);
+        cargar(url);
+    }
+
+    function cargar(url) {
+        if (cargando) { return; }
+        cargando = true;
+        limpiarPagina(url);
+        document.documentElement.classList.add('sgns-grid-cargando');
+        fetch(url.toString(), { credentials: 'same-origin' }).then(function(r) {
+            if (!r.ok) { throw new Error(r.status); }
+            return r.text();
+        }).then(function(html) {
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            if (!doc.querySelector('.js-category-body')) { throw new Error('sin grilla'); }
+            // Si el modal de filtros está abierto, se cierra como lo cierra la tienda
+            var modal = document.getElementById('nav-filters');
+            var cerrar = modal && modal.classList.contains('modal-show') && modal.querySelector('.js-modal-close');
+            if (cerrar) { cerrar.click(); }
+            ZONAS.forEach(function(sel) {
+                var nuevos = doc.querySelectorAll(sel);
+                document.querySelectorAll(sel).forEach(function(viejo, i) {
+                    if (!nuevos[i]) { return; }
+                    var nuevo = document.importNode(nuevos[i], true);
+                    // La barra conserva su estado (fija arriba, etc.)
+                    if (sel === ZONAS[0]) { nuevo.className = viejo.className; }
+                    viejo.parentNode.replaceChild(nuevo, viejo);
+                });
+            });
+            urlActual = url;
+            enSitio = true;
+            pagina = 1;
+            hayMas = !!doc.querySelector('.js-load-more');
+            document.querySelectorAll('.js-load-more').forEach(function(b) { b.style.display = 'none'; });
+            init();
+            despuesDeCargar();
+            if (!conScroll) { conScroll = true; window.addEventListener('scroll', masProductos, { passive: true }); }
+        }).catch(function() {
+            location.href = url.toString();
+        }).then(function() {
+            cargando = false;
+            document.documentElement.classList.remove('sgns-grid-cargando');
+        });
+    }
+
+    function despuesDeCargar() {
+        document.querySelectorAll('.js-item-product').forEach(function(p) { p.classList.add('is-inViewport'); });
+        if (window.LS && typeof LS.productItemSlider === 'function') { try { LS.productItemSlider(); } catch (e) { /* sin slider */ } }
+        document.dispatchEvent(new CustomEvent('sgns:grilla'));
+    }
+
+    // Después de ordenar o filtrar en el lugar, las páginas siguientes las trae este script
+    // (el scroll infinito de la tienda sigue atado a la grilla anterior)
+    function masProductos() {
+        if (!enSitio || !hayMas || cargandoMas || cargando) { return; }
+        var grilla = document.querySelector('.js-product-table');
+        if (!grilla || grilla.getBoundingClientRect().bottom > window.innerHeight * 2) { return; }
+        cargandoMas = true;
+        var url = new URL(urlActual);
+        url.pathname = url.pathname.replace(/\/$/, '') + '/page/' + (pagina + 1) + '/';
+        url.searchParams.set('results_only', 'true');
+        url.searchParams.set('limit', '12');
+        if (window.LS && LS.theme && LS.theme.code) { url.searchParams.set('theme', LS.theme.code); }
+        var pedido = urlActual.toString();
+        fetch(url.toString(), { credentials: 'same-origin', headers: { Accept: 'application/json' } }).then(function(r) {
+            return r.json();
+        }).then(function(d) {
+            if (pedido !== urlActual.toString()) { return; }
+            if (d.has_results) {
+                grilla.insertAdjacentHTML('beforeend', d.html);
+                pagina++;
+                despuesDeCargar();
+            }
+            hayMas = !!d.has_next;
+        }).catch(function() {
+            hayMas = false;
+        }).then(function() {
+            cargandoMas = false;
+        });
+    }
+
+    // Filtros: los clics no llegan al código de la tienda (que recarga la página)
+    function filtrar(e) {
+        var el = e.target.closest ? e.target.closest('.js-apply-filter, .js-remove-filter, .js-remove-all-filters') : null;
+        if (!el || !document.querySelector('.js-category-body')) { return; }
+        e.preventDefault();
+        e.stopPropagation();
+        var url = new URL(urlActual);
+        if (el.classList.contains('js-remove-all-filters')) {
+            var queda = new URLSearchParams();
+            ['sort_by', 'q'].forEach(function(k) { if (url.searchParams.has(k)) { queda.set(k, url.searchParams.get(k)); } });
+            url.search = queda.toString();
+        } else {
+            var nombre = el.getAttribute('data-filter-name');
+            var valor = el.getAttribute('data-filter-value');
+            if (!nombre) { return; }
+            // El filtro de precio aplicado viene como "min_price|max_price": se quitan los dos
+            if (nombre.indexOf('|') !== -1) {
+                nombre.split('|').forEach(function(k) { url.searchParams.delete(k); });
+                cargar(url);
+                return;
+            }
+            // Varios valores del mismo filtro van juntos, separados por "|"
+            var valores = (url.searchParams.get(nombre) || '').split('|').filter(Boolean);
+            if (el.classList.contains('js-apply-filter')) {
+                if (valores.indexOf(valor) === -1) { valores.push(valor); }
+            } else {
+                // Sin valor: se quita el filtro entero
+                valores = valor ? valores.filter(function(v) { return v !== valor; }) : [];
+            }
+            valores.sort();
+            if (valores.length) { url.searchParams.set(nombre, valores.join('|')); } else { url.searchParams.delete(nombre); }
+        }
+        cargar(url);
+    }
+
+    // Filtro de precio (Desde / Hasta): el formulario tampoco recarga la página
+    function filtrarPrecio(e) {
+        // Llega por el envío del formulario o por el clic en "Aplicar" (que la tienda atiende por su cuenta)
+        var form = e.target;
+        if (e.type === 'click') {
+            var aplicar = form.closest ? form.closest('.js-price-filter-btn') : null;
+            form = aplicar && aplicar.closest('form');
+            if (!form) { return; }
+        }
+        if (!form.closest || !form.closest('.js-price-filter-container') || !document.querySelector('.js-category-body')) { return; }
+        e.preventDefault();
+        e.stopPropagation();
+        var url = new URL(urlActual);
+        ['min_price', 'max_price'].forEach(function(k) {
+            var campo = form.querySelector('[name="' + k + '"]');
+            var v = campo ? campo.value.trim() : '';
+            if (v) { url.searchParams.set(k, v); } else { url.searchParams.delete(k); }
+        });
+        cargar(url);
     }
 
     function armar(select, idx) {
@@ -166,6 +314,19 @@
         marcarCategoria();
         modalFiltros();
     }
+
+    document.addEventListener('click', filtrar, true);
+    document.addEventListener('submit', filtrarPrecio, true);
+    document.addEventListener('click', filtrarPrecio, true);
+    // Tras cambiar la grilla en el lugar, el formulario de precio es nuevo: "Aplicar" se habilita al escribir
+    document.addEventListener('input', function(e) {
+        var caja = e.target.closest ? e.target.closest('.js-price-filter-container') : null;
+        var btn = caja && caja.querySelector('.js-price-filter-btn');
+        if (!btn) { return; }
+        var hay = Array.prototype.some.call(caja.querySelectorAll('.js-price-filter-input'), function(c) { return c.value.trim(); });
+        btn.disabled = !hay;
+        btn.classList.toggle('disabled', !hay);
+    });
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);

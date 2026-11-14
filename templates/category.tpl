@@ -4,6 +4,12 @@
 {% set show_help = not has_products %}
 {% paginate by 12 %}
 
+{# Categorías Drop (la URL dice "drop"): hero con video arriba de los productos, como el del inicio.
+   Drop Gorras no: usa la plantilla normal de productos. Cyber Monday usa el mismo hero #}
+{% if ('drop' in category.url | lower and 'gorra' not in category.url | lower) or 'cyber' in category.url | lower %}
+	{% include 'snipplets/drop-hero.tpl' %}
+{% endif %}
+
 {% if not show_help %}
 
 {% set category_banner = (category.images is not empty) or ("banner-products.jpg" | has_custom_image) %}

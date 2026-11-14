@@ -132,7 +132,9 @@
         actualizar();
     }
 
-    if (document.readyState === 'loading') {
+    // Corre apenas el header está en la página (el script va justo después de él);
+    // si todavía no está, espera a que termine de cargar el HTML
+    if (document.readyState === 'loading' && !document.querySelector('.js-head-main, .head-main')) {
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
